@@ -5,5 +5,5 @@ CMakeFiles/
 
 # Files
 *.cmake
-CmakeCache.txt
+CMakeCache.txt
 game

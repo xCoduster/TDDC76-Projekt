@@ -1,0 +1,111 @@
+#include "GameState.h"
+
+#include <iostream>
+
+GameState::GameState()
+{
+
+}
+
+int GameState::run(sf::RenderWindow& window)
+{
+    bool running = true;
+    unsigned int fps = 0;
+    unsigned int ups = 0;
+
+    sf::Clock clock;
+
+	const sf::Time deltatime = sf::seconds(1 / 60.0f);
+	float timer = 0.0f;
+	unsigned int frames = 0;
+	unsigned int updates = 0;
+
+	sf::Time last_update = clock.getElapsedTime();
+	sf::Time accumulator = sf::seconds(0.0f);
+
+    playerTexture.loadFromFile("res/tmp.png");
+    playerSprite.setTexture(playerTexture);
+    player.setSprite(playerSprite);
+
+	while (running)
+	{
+        sf::Time frame_time = clock.restart();
+
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				return -1;
+
+			if (event.type == sf::Event::Resized)
+			{
+				// update the view to the new size of the window
+				//m_PlayerView.setSize((float)event.size.width / 4.0f, (float)event.size.height / 4.0f);
+				//m_Window->setView(m_PlayerView);
+			}
+
+            if (event.type == sf::Event::KeyPressed)
+			{
+				if (event.key.code == sf::Keyboard::Space)
+				{
+					return 0;
+				}
+			}
+
+		}
+
+		sf::Time now = clock.getElapsedTime();
+		sf::Time dt = now - last_update;
+		last_update += dt;
+
+		accumulator += dt;
+
+		while (accumulator >= deltatime)
+		{
+            //update(deltatime);
+            //std::cout << dt.asSeconds() << std::endl;
+			updates++;
+			accumulator -= deltatime;
+		}
+
+        update(frame_time);
+
+		
+		draw(window);
+		frames++;
+
+		if (clock.getElapsedTime().asSeconds() - timer > 1.0f)
+		{
+			timer += 1.0f;
+			fps = frames;
+			ups = updates;
+			frames = 0;
+			updates = 0;
+
+			// Every second
+
+			std::cout << "FPS: " << fps << ", UPS: " << ups << std::endl;
+		}
+	}
+
+    return -1;
+}
+
+void GameState::handle(sf::Event event)
+{
+
+}
+
+void GameState::update(const sf::Time& dt)
+{
+    player.update(dt);
+}
+
+void GameState::draw(sf::RenderWindow& window)
+{
+    window.clear(sf::Color::Black);
+
+    window.draw(player);
+
+    window.display();
+}

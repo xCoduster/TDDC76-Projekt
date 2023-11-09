@@ -1,0 +1,9 @@
+# Directories
+.vscode/
+build/
+CMakeFiles/
+
+# Files
+*.cmake
+CmakeCache.txt
+game

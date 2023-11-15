@@ -9,6 +9,9 @@ GameState::GameState()
 
 int GameState::run(sf::RenderWindow& window)
 {
+	Bomb bomb;
+	objects.push_back(&bomb);
+
 	window.setFramerateLimit(60);
 
     bool running = true;
@@ -26,25 +29,17 @@ int GameState::run(sf::RenderWindow& window)
 
 	while (running)
 	{
-        //sf::Time frame_time = clock.restart();
-
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 				return -1;
 
-			if (event.type == sf::Event::Resized)
-			{
-				// update the view to the new size of the window
-				//m_PlayerView.setSize((float)event.size.width / 4.0f, (float)event.size.height / 4.0f);
-				//m_Window->setView(m_PlayerView);
-			}
-
             if (event.type == sf::Event::KeyPressed)
 			{
 				if (event.key.code == sf::Keyboard::Space)
 				{
+					// Byt skärm till menyn
 					return 0;
 				}
 			}
@@ -86,6 +81,8 @@ void GameState::handle(sf::Event event)
 void GameState::update(const sf::Time& dt)
 {
     player.update(dt);
+	for (Object* object : objects)
+		object->update(dt);
 }
 
 void GameState::draw(sf::RenderWindow& window)
@@ -93,6 +90,9 @@ void GameState::draw(sf::RenderWindow& window)
     window.clear(sf::Color::Black);
 
     window.draw(player);
+
+	for (Object* object : objects)
+		window.draw(*object);
 
     window.display();
 }

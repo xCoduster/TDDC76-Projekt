@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-
 Bomb::Bomb()
 {
 	m_Texture.loadFromFile("res/tmp.png");
@@ -18,8 +17,6 @@ void Bomb::movement(const sf::Time& dt)
 {
     m_Speed.x = 0.0f;
 	m_Speed.y = 0.0f;
-
-	
 }
 
 void Bomb::Collision(const Collidable& other)

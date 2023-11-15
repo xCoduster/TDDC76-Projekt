@@ -7,12 +7,8 @@
 class Collidable : public Object
 {
 public:
-    Collidable();
-
-    sf::FloatRect m_BoundingBox;
-
     bool Collides(const Collidable& other);
     virtual void Collision(const Collidable& other) = 0;
-private:
+protected:
     std::string m_Tag;
 };

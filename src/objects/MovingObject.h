@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Object.h"
+#include "Collidable.h"
 
-//TODO: Kläm in Collidable mellan
-class MovingObject : public Object
+class MovingObject : public Collidable
 {
 public:
     virtual void update(const sf::Time& dt) = 0;
     virtual void movement(const sf::Time& dt) = 0;
+    virtual void Collision(const Collidable& other) = 0;
 
 protected:
     sf::Vector2f m_Speed;

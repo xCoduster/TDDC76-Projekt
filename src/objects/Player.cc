@@ -32,3 +32,8 @@ void Player::movement(const sf::Time& dt)
 		move(m_Speed * 120.0f * dt.asSeconds());
 	}
 }
+
+void Player::Collision(const Collidable& other)
+{
+	
+}

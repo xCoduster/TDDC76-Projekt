@@ -205,6 +205,33 @@ src/main.cc.s:
 	$(MAKE) -f CMakeFiles/game.dir/build.make CMakeFiles/game.dir/src/main.cc.s
 .PHONY : src/main.cc.s
 
+src/objects/Collidable.o: src/objects/Collidable.cc.o
+
+.PHONY : src/objects/Collidable.o
+
+# target to build an object file
+src/objects/Collidable.cc.o:
+	$(MAKE) -f CMakeFiles/game.dir/build.make CMakeFiles/game.dir/src/objects/Collidable.cc.o
+.PHONY : src/objects/Collidable.cc.o
+
+src/objects/Collidable.i: src/objects/Collidable.cc.i
+
+.PHONY : src/objects/Collidable.i
+
+# target to preprocess a source file
+src/objects/Collidable.cc.i:
+	$(MAKE) -f CMakeFiles/game.dir/build.make CMakeFiles/game.dir/src/objects/Collidable.cc.i
+.PHONY : src/objects/Collidable.cc.i
+
+src/objects/Collidable.s: src/objects/Collidable.cc.s
+
+.PHONY : src/objects/Collidable.s
+
+# target to generate assembly for a file
+src/objects/Collidable.cc.s:
+	$(MAKE) -f CMakeFiles/game.dir/build.make CMakeFiles/game.dir/src/objects/Collidable.cc.s
+.PHONY : src/objects/Collidable.cc.s
+
 src/objects/Player.o: src/objects/Player.cc.o
 
 .PHONY : src/objects/Player.o
@@ -250,6 +277,9 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/objects/Collidable.o"
+	@echo "... src/objects/Collidable.i"
+	@echo "... src/objects/Collidable.s"
 	@echo "... src/objects/Player.o"
 	@echo "... src/objects/Player.i"
 	@echo "... src/objects/Player.s"

@@ -6,6 +6,8 @@ project(SpaceCraze)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_COMPILER "g++")
 
+set(CMAKE_USE_RELATIVE_PATHS TRUE)
+
 # Välj vilka delar av SFML som ska användas.
 set(SFML_MODULES network graphics window system)
 

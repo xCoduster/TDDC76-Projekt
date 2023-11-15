@@ -14,6 +14,7 @@ public:
 
 protected:
     sf::Sprite m_Sprite;
+    sf::Texture m_Texture;
     bool m_Dead;
 
 private:

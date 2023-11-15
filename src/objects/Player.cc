@@ -2,6 +2,12 @@
 
 #include <iostream>
 
+Player::Player()
+{
+	m_Texture.loadFromFile("res/tmp.png");
+	m_Sprite.setTexture(m_Texture);
+}
+
 void Player::update(const sf::Time& dt)
 {
     movement(dt);

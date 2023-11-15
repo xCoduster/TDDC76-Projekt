@@ -9,6 +9,8 @@ GameState::GameState()
 
 int GameState::run(sf::RenderWindow& window)
 {
+	window.setFramerateLimit(60);
+
     bool running = true;
     unsigned int fps = 0;
     unsigned int ups = 0;
@@ -21,15 +23,10 @@ int GameState::run(sf::RenderWindow& window)
 	unsigned int updates = 0;
 
 	sf::Time last_update = clock.getElapsedTime();
-	sf::Time accumulator = sf::seconds(0.0f);
-
-    playerTexture.loadFromFile("res/tmp.png");
-    playerSprite.setTexture(playerTexture);
-    player.setSprite(playerSprite);
 
 	while (running)
 	{
-        sf::Time frame_time = clock.restart();
+        //sf::Time frame_time = clock.restart();
 
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -58,18 +55,8 @@ int GameState::run(sf::RenderWindow& window)
 		sf::Time dt = now - last_update;
 		last_update += dt;
 
-		accumulator += dt;
-
-		while (accumulator >= deltatime)
-		{
-            //update(deltatime);
-            //std::cout << dt.asSeconds() << std::endl;
-			updates++;
-			accumulator -= deltatime;
-		}
-
-        update(frame_time);
-
+        update(dt);
+		updates++;
 		
 		draw(window);
 		frames++;

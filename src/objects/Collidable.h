@@ -7,7 +7,9 @@
 class Collidable : public Object
 {
 public:
-    sf::Rect m_BoundingBox;
+    Collidable();
+
+    sf::FloatRect m_BoundingBox;
 
     bool Collides(const Collidable& other);
     virtual void Collision(const Collidable& other) = 0;

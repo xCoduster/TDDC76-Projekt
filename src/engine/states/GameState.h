@@ -2,6 +2,7 @@
 
 #include "State.h"
 #include "objects/Player.h"
+#include "objects/Bomb.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -17,7 +18,7 @@ public:
     virtual void update(const sf::Time& dt) override;
     virtual void draw(sf::RenderWindow& window) override;
 private:
-    sf::Texture playerTexture;
-    sf::Sprite playerSprite;
     Player player;
+
+    std::vector<Object*> objects;
 };

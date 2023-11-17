@@ -5,7 +5,7 @@
 class PowerUp : public Collidable
 {
 public:
-    PowerUp() {}
+    PowerUp();
 
     virtual void update(const sf::Time& dt) override;
     virtual void Collision(const Collidable& other) override;

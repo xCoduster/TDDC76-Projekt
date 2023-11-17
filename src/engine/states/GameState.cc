@@ -10,8 +10,10 @@ GameState::GameState()
 int GameState::run(sf::RenderWindow& window)
 {
 	Projectile lazer;
+	PowerUp powerUp;
 
 	objects.push_back(&lazer);
+	objects.push_back(&powerUp);
 
 	window.setFramerateLimit(60);
 

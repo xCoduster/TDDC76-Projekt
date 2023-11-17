@@ -4,6 +4,7 @@
 #include "objects/Player.h"
 #include "objects/Bomb.h"
 #include "objects/Projectile.h"
+#include "objects/PowerUp.h"
 #include <SFML/Graphics.hpp>
 
 

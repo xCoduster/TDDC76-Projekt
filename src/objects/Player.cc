@@ -11,6 +11,10 @@ Player::Player()
 void Player::update(const sf::Time& dt)
 {
     movement(dt);
+
+	//m_BoundingBox
+
+	//std::cout << m_Sprite.getGlobalBounds().left << std::endl;
 }
 
 void Player::movement(const sf::Time& dt)
@@ -36,6 +40,7 @@ void Player::movement(const sf::Time& dt)
 			m_Speed *= 0.70710678f;
 
 		move(m_Speed * 120.0f * dt.asSeconds());
+		
 	}
 }
 

@@ -6,6 +6,9 @@ Player::Player()
 {
 	m_Texture.loadFromFile("res/tmp.png");
 	m_Sprite.setTexture(m_Texture);
+	sf::Vector2u texture_size { m_Texture.getSize() };
+	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
+
 }
 
 void Player::update(const sf::Time& dt)
@@ -17,6 +20,8 @@ void Player::movement(const sf::Time& dt)
 {
     m_Speed.x = 0.0f;
 	m_Speed.y = 0.0f;
+
+	sf::Vector2f old_position { m_Sprite.getPosition() };
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		m_Speed.x = -1.0f;
@@ -37,9 +42,15 @@ void Player::movement(const sf::Time& dt)
 
 		move(m_Speed * 120.0f * dt.asSeconds());
 	}
+
+	if ( m_Sprite.getPosition().x < 0 || m_Sprite.getPosition().y < 0 || m_Sprite.getPosition().x > 640 || m_Sprite.getPosition().y > 480 )
+	{
+		m_Sprite.setPosition(old_position);
+	}
+
 }
 
 void Player::Collision(const Collidable& other)
 {
 	
-}
+} 

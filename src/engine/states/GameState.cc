@@ -9,8 +9,9 @@ GameState::GameState()
 
 int GameState::run(sf::RenderWindow& window)
 {
-	Bomb bomb;
-	objects.push_back(&bomb);
+	Projectile lazer;
+
+	objects.push_back(&lazer);
 
 	window.setFramerateLimit(60);
 

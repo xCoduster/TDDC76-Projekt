@@ -5,7 +5,7 @@
 class Object : public sf::Drawable
 {
 public:
-    virtual void update(const sf::Time& dt) = 0;
+    virtual void update(const sf::Time& dt, std::vector<Object*>& new_objects ) = 0;
     void move(sf::Vector2f distance)
     {
         m_Sprite.move(distance);
@@ -17,9 +17,10 @@ public:
     }
 
     sf::Sprite m_Sprite;
+    bool m_Dead;
+
 protected:
     sf::Texture m_Texture;
-    bool m_Dead;
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const

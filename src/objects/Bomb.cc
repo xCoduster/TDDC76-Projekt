@@ -13,7 +13,7 @@ Bomb::Bomb()
 	m_Sprite.setPosition( X , Y);
 }
 
-void Bomb::update(const sf::Time& dt)
+void Bomb::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
     movement(dt);
 }
@@ -26,7 +26,7 @@ void Bomb::movement(const sf::Time& dt)
 	move(m_Speed * 120.0f * dt.asSeconds());
 }
 
-void Bomb::Collision(const Collidable& other)
+void Bomb::Collision(const Collidable& other, std::vector<Object*>& new_objects)
 {
 	std::cout << "Collison " << std::endl;
 }

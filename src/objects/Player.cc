@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Bomb.h"
 
 #include <iostream>
 
@@ -8,13 +9,14 @@ Player::Player()
 	m_Sprite.setTexture(m_Texture);
 }
 
-void Player::update(const sf::Time& dt)
+void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
     movement(dt);
 
 	//m_BoundingBox
 
 	//std::cout << m_Sprite.getGlobalBounds().left << std::endl;
+	
 }
 
 void Player::movement(const sf::Time& dt)
@@ -42,9 +44,10 @@ void Player::movement(const sf::Time& dt)
 		move(m_Speed * 120.0f * dt.asSeconds());
 		
 	}
+	
 }
 
-void Player::Collision(const Collidable& other)
+void Player::Collision(const Collidable& other,std::vector<Object*>& new_objects)
 {
 	
 }

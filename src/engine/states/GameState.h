@@ -20,5 +20,7 @@ public:
 private:
     Player player;
 
+    bool check;
+
     std::vector<Object*> objects;
 };

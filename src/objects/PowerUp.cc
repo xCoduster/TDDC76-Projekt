@@ -11,12 +11,12 @@ PowerUp::PowerUp()
 
 }
 
-void PowerUp::update(const sf::Time& dt)
+void PowerUp::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
 
 }
 
-void PowerUp::Collision(const Collidable& other)
+void PowerUp::Collision(const Collidable& other, std::vector<Object*>& new_objects)
 {
 	
 }

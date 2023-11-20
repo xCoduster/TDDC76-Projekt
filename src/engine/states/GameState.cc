@@ -1,5 +1,5 @@
 #include "GameState.h"
-
+#include "objects/PowerUp.h"
 #include <iostream>
 
 GameState::GameState()
@@ -9,6 +9,7 @@ GameState::GameState()
 
 int GameState::run(sf::RenderWindow& window)
 {
+	
 	check = true;
 
 	window.setFramerateLimit(60);
@@ -80,10 +81,10 @@ void GameState::handle(sf::Event event)
 void GameState::update(const sf::Time& dt)
 {
     std::vector<Object*> new_objects{};
+
 	if(check)
 	{
 	Bomb* bomb{new Bomb};
-	
 	new_objects.push_back(bomb);
 	check = false; 
 	}
@@ -101,6 +102,7 @@ void GameState::draw(sf::RenderWindow& window)
     window.clear(sf::Color::Black);
 
     window.draw(player);
+	window.draw(powerUp);
 
 	for (Object* object : objects)
 		window.draw(*object);

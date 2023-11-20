@@ -1,12 +1,13 @@
 #include "Player.h"
-#include "Bomb.h"
+#include "Projectile.h"
 
 #include <iostream>
 
 Player::Player()
 {
-	m_Texture.loadFromFile("res/tmp.png");
+	m_Texture.loadFromFile("res/player.png");
 	m_Sprite.setTexture(m_Texture);
+	m_Sprite.setRotation(90);
 	sf::Vector2u texture_size { m_Texture.getSize() };
 	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
 
@@ -15,7 +16,27 @@ Player::Player()
 void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
     movement(dt);
-
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	{
+		if(active_powerUp == true)
+		{
+			sf::Vector2f lazer_pos = m_Sprite.getPosition();
+			Projectile* lazer1{new Projectile(m_Sprite.getPosition())};
+			lazer_pos.y += 30;
+			Projectile* lazer2{new Projectile(lazer_pos)};
+			lazer_pos.y -= 60;
+			Projectile* lazer3{new Projectile(lazer_pos)};
+			new_objects.push_back(lazer1);
+			new_objects.push_back(lazer2);
+			new_objects.push_back(lazer3);
+		}
+		else
+		{	
+			Projectile* lazer{new Projectile(m_Sprite.getPosition())};
+			//cout << "lever fortfarande" << endl;
+			new_objects.push_back(lazer);
+		}
+	}
 	//m_BoundingBox
 
 	//std::cout << m_Sprite.getGlobalBounds().left << std::endl;

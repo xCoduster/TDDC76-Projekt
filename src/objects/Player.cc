@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Bomb.h"
 
 #include <iostream>
 
@@ -11,9 +12,14 @@ Player::Player()
 
 }
 
-void Player::update(const sf::Time& dt)
+void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
     movement(dt);
+
+	//m_BoundingBox
+
+	//std::cout << m_Sprite.getGlobalBounds().left << std::endl;
+	
 }
 
 void Player::movement(const sf::Time& dt)
@@ -41,6 +47,7 @@ void Player::movement(const sf::Time& dt)
 			m_Speed *= 0.70710678f;
 
 		move(m_Speed * 120.0f * dt.asSeconds());
+		
 	}
 
 	if ( m_Sprite.getPosition().x < 0 || m_Sprite.getPosition().y < 0 || m_Sprite.getPosition().x > 640 || m_Sprite.getPosition().y > 480 )
@@ -50,7 +57,7 @@ void Player::movement(const sf::Time& dt)
 
 }
 
-void Player::Collision(const Collidable& other)
+void Player::Collision(const Collidable& other,std::vector<Object*>& new_objects)
 {
 	
 } 

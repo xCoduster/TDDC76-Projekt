@@ -9,11 +9,7 @@ GameState::GameState()
 
 int GameState::run(sf::RenderWindow& window)
 {
-	Projectile lazer;
-	PowerUp powerUp;
-
-	objects.push_back(&lazer);
-	objects.push_back(&powerUp);
+	check = true;
 
 	window.setFramerateLimit(60);
 
@@ -83,9 +79,21 @@ void GameState::handle(sf::Event event)
 
 void GameState::update(const sf::Time& dt)
 {
-    player.update(dt);
+    std::vector<Object*> new_objects{};
+	if(check)
+	{
+	Bomb* bomb{new Bomb};
+	
+	new_objects.push_back(bomb);
+	check = false; 
+	}
+
+    player.update(dt, new_objects);
 	for (Object* object : objects)
-		object->update(dt);
+		object->update(dt, new_objects);
+
+	for (Object* object : new_objects)
+		objects.push_back(object);
 }
 
 void GameState::draw(sf::RenderWindow& window)

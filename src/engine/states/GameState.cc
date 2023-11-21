@@ -10,7 +10,7 @@ GameState::GameState()
 int GameState::run(sf::RenderWindow& window)
 {
 	
-	check = true;
+	tmp_first = true;
 
 	window.setFramerateLimit(60);
 
@@ -81,18 +81,33 @@ void GameState::handle(sf::Event event)
 void GameState::update(const sf::Time& dt)
 {
     std::vector<Object*> new_objects{};
-	if(check)
-	{
-	Bomb* bomb{new Bomb};
+
+	if(tmp_first)
+		{
+			Bomb* bomb{new Bomb};
 	
-	new_objects.push_back(bomb);
-	check = false; 
-	}
+			new_objects.push_back(bomb);
+			tmp_first = false; 
+		}
 
     player.update(dt, new_objects);
+
 	for (Object* object : objects)
 		object->update(dt, new_objects);
+	
 
+	for (int i = 0; i < objects.size(); i++)
+	{
+		if(objects.at(i)->m_Dead)
+		{
+			std::swap(objects.at(i), objects.back());
+         	delete objects.back();
+		 	objects.pop_back();
+		 	i--;
+		}
+	}
+	
+	
 	for (Object* object : new_objects)
 		objects.push_back(object);
 }

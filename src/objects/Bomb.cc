@@ -26,10 +26,18 @@ void Bomb::movement(const sf::Time& dt)
 	m_Speed.y = 0.0f;
 
 	move(m_Speed * 120.0f * dt.asSeconds());
+
+	if ( m_Sprite.getPosition().x < 0 )
+	{
+		m_Dead = true;
+	}
+
 }
 
 void Bomb::Collision(const Collidable& other, std::vector<Object*>& new_objects)
 {
 	Explosion* ex{new Explosion{m_Sprite.getPosition()}};
 	new_objects.push_back(ex);
+
+	m_Dead = true;
 }

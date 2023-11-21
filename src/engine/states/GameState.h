@@ -3,6 +3,7 @@
 #include "State.h"
 #include "objects/Player.h"
 #include "objects/Bomb.h"
+#include "objects/Explosion.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -20,7 +21,7 @@ public:
 private:
     Player player;
 
-    bool check;
+    bool tmp_first;
 
     std::vector<Object*> objects;
 };

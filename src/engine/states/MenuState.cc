@@ -90,8 +90,23 @@ void MenuState::draw(sf::RenderWindow& window)
 {
     window.clear(sf::Color::Black);
 
-    sf::RectangleShape shape{sf::Vector2f(100.f, 100.f)};
-    window.draw(shape);
+	sf::Font font;
+	font.loadFromFile("ShareTechMono-Regular.ttf");
+
+	sf::Text text;
+	text.setFont(font);
+
+	text.setString("press SPACE to start game");
+
+	text.setCharacterSize(24);
+
+	text. setFillColor(sf::Color::White);
+
+	window.draw(text);
+
+//Testkod för att rita något
+//    sf::RectangleShape shape{sf::Vector2f(100.f, 100.f)};
+//    window.draw(shape);
 
     window.display();
 }

@@ -1,5 +1,5 @@
 #include "GameState.h"
-
+#include "objects/PowerUp.h"
 #include <iostream>
 
 GameState::GameState()
@@ -117,6 +117,7 @@ void GameState::draw(sf::RenderWindow& window)
     window.clear(sf::Color::Black);
 
     window.draw(player);
+	window.draw(powerUp);
 
 	for (Object* object : objects)
 		window.draw(*object);

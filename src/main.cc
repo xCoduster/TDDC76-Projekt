@@ -27,5 +27,8 @@ int main(int argc, char* argv[])
 
     window.close();
 
+    for (State* state : states)
+        state->cleanup();
+
     return 0;
 }

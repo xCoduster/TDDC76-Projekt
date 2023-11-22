@@ -83,12 +83,12 @@ void GameState::update(const sf::Time& dt)
     std::vector<Object*> new_objects{};
 
 	if(tmp_first)
-		{
-			Bomb* bomb{new Bomb};
-	
-			new_objects.push_back(bomb);
-			tmp_first = false; 
-		}
+	{
+		Bomb* bomb{new Bomb};
+
+		new_objects.push_back(bomb);
+		tmp_first = false; 
+	}
 
     player.update(dt, new_objects);
 
@@ -117,10 +117,20 @@ void GameState::draw(sf::RenderWindow& window)
     window.clear(sf::Color::Black);
 
     window.draw(player);
-	window.draw(powerUp);
 
 	for (Object* object : objects)
 		window.draw(*object);
 
     window.display();
+}
+
+void GameState::cleanup()
+{
+	for (int i = 0; i < objects.size(); i++)
+	{
+		std::swap(objects.at(i), objects.back());
+       	delete objects.back();
+	 	objects.pop_back();
+	 	i--;
+	}
 }

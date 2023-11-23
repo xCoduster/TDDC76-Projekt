@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <SFML/Graphics.hpp>
 
 typedef std::shared_ptr<sf::Texture> TexturePtr;

@@ -1,12 +1,13 @@
 #pragma once
 
 #include "State.h"
+
 #include "objects/Player.h"
 #include "objects/Bomb.h"
 #include "objects/Explosion.h"
-
 #include "objects/Projectile.h"
 #include "objects/PowerUp.h"
+
 #include <SFML/Graphics.hpp>
 
 
@@ -21,11 +22,19 @@ public:
     virtual void update(const sf::Time& dt) override;
     virtual void draw(sf::RenderWindow& window) override;
 
+    void checkCollision();
+
     virtual void cleanup() override;
 private:
+<<<<<<< Updated upstream
     Player player;
 
     bool tmp_first;
 
     std::vector<Object*> objects;
+=======
+    Player* player;
+    std::vector<Object*> objects;
+    std::vector<Object*> new_objects;
+>>>>>>> Stashed changes
 };

@@ -1,17 +1,26 @@
 #include "GameState.h"
+
 #include "objects/PowerUp.h"
+
 #include <iostream>
 
 GameState::GameState()
 {
+	player = new Player;
+	new_objects.push_back(player);
 
+	PowerUp* powerUp{ new PowerUp };
+	new_objects.push_back(powerUp);
 }
 
 int GameState::run(sf::RenderWindow& window)
 {
+<<<<<<< Updated upstream
 	
 	tmp_first = true;
 
+=======
+>>>>>>> Stashed changes
 	window.setFramerateLimit(60);
 
     bool running = true;
@@ -80,6 +89,7 @@ void GameState::handle(sf::Event event)
 
 void GameState::update(const sf::Time& dt)
 {
+<<<<<<< Updated upstream
     std::vector<Object*> new_objects{};
 
 	if(tmp_first)
@@ -91,37 +101,62 @@ void GameState::update(const sf::Time& dt)
 	}
 
     player.update(dt, new_objects);
+=======
+	checkCollision();
+>>>>>>> Stashed changes
 
 	for (Object* object : objects)
 		object->update(dt, new_objects);
-	
 
 	for (int i = 0; i < objects.size(); i++)
 	{
-		if(objects.at(i)->m_Dead)
+		if (objects.at(i)->m_Dead)
 		{
 			std::swap(objects.at(i), objects.back());
-         	delete objects.back();
-		 	objects.pop_back();
-		 	i--;
+			delete objects.back();
+			objects.pop_back();
+			--i;
 		}
 	}
-	
-	
-	for (Object* object : new_objects)
-		objects.push_back(object);
+
+	for (int i = 0; i < new_objects.size(); i++)
+	{
+		objects.push_back(new_objects.at(i));
+		std::swap(new_objects.at(i), new_objects.back());
+		new_objects.pop_back();
+		--i;
+	}
 }
 
 void GameState::draw(sf::RenderWindow& window)
 {
     window.clear(sf::Color::Black);
 
-    window.draw(player);
-
 	for (Object* object : objects)
 		window.draw(*object);
 
     window.display();
+}
+
+void GameState::checkCollision()
+{
+	for (unsigned i{ 0 }; i < objects.size(); ++i)
+	{
+		for (unsigned j{ i + 1 }; j < objects.size(); ++j)
+		{
+			Collidable* collidable1{ dynamic_cast<Collidable*>(objects.at(i)) };
+			Collidable* collidable2{ dynamic_cast<Collidable*>(objects.at(j)) };
+
+			if (collidable1 != nullptr && collidable2 != nullptr)
+			{
+				if (collidable1->Collides(collidable2))
+				{
+					collidable1->Collision(collidable2, new_objects);
+					collidable2->Collision(collidable1, new_objects);
+				}
+			}
+		}
+	}
 }
 
 void GameState::cleanup()
@@ -131,6 +166,6 @@ void GameState::cleanup()
 		std::swap(objects.at(i), objects.back());
        	delete objects.back();
 	 	objects.pop_back();
-	 	i--;
+	 	--i;
 	}
 }

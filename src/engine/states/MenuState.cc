@@ -1,5 +1,6 @@
 #include "MenuState.h"
-
+#include <SFML/Graphics.hpp>
+#include <cmath>
 #include <iostream>
 
 MenuState::MenuState()
@@ -9,6 +10,7 @@ MenuState::MenuState()
 
 int MenuState::run(sf::RenderWindow& window)
 {
+	window.setFramerateLimit(60);
     bool running = true;
     unsigned int fps = 0;
     unsigned int ups = 0;
@@ -69,7 +71,7 @@ int MenuState::run(sf::RenderWindow& window)
 
 			// Every second
 
-			std::cout << "FPS: " << fps << ", UPS: " << ups << std::endl;
+			std::cout << "FPS: " << fps << ", UPS: " << ups << timer << std::endl;
 		}
 	}
 
@@ -83,30 +85,50 @@ void MenuState::handle(sf::Event event)
 
 void MenuState::update(const sf::Time& dt)
 {
-
+	
 }
 
 void MenuState::draw(sf::RenderWindow& window)
 {
-    window.clear(sf::Color::Black);
 
-	sf::Font font;
-	font.loadFromFile("ShareTechMono-Regular.ttf");
+	window.clear(sf::Color::Black);
 
-	sf::Text text;
-	text.setFont(font);
+// Draw instructions
+	sf::Font tech_font;
+	tech_font.loadFromFile("ShareTechMono-Regular.ttf");
 
-	text.setString("press SPACE to start game");
+	sf::Text instruction_text;
+	instruction_text.setFont(tech_font);
 
-	text.setCharacterSize(24);
+	instruction_text.setString("press SPACE to start game");
 
-	text. setFillColor(sf::Color::White);
+	instruction_text.setCharacterSize(24);
 
-	window.draw(text);
+	instruction_text.setFillColor(sf::Color::White);
 
-//Testkod för att rita något
-//    sf::RectangleShape shape{sf::Vector2f(100.f, 100.f)};
-//    window.draw(shape);
+	instruction_text.setOrigin(instruction_text.getLocalBounds().width/2.0f,instruction_text.getLocalBounds().height/2.0f);
+
+	instruction_text.setPosition(window.getView().getCenter().x, window.getView().getCenter().y + 20);
+
+	window.draw(instruction_text);
+
+// Draw title
+
+	sf::Text title_text;
+	title_text.setFont(tech_font);
+
+	title_text.setString("Space Craze");
+
+	title_text.setCharacterSize(65);
+
+	title_text.setFillColor(sf::Color::Yellow);
+
+	title_text.setOrigin(title_text.getLocalBounds().width/2.0f,title_text.getLocalBounds().height/2.0f);
+
+	title_text.setPosition(window.getView().getCenter().x, window.getView().getCenter().y -60);
+
+	window.draw(title_text);
+
 
     window.display();
 }

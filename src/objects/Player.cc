@@ -15,7 +15,7 @@ Player::Player()
 void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
     movement(dt);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && clock.getElapsedTime().asSeconds() > 0.3)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && clock.getElapsedTime().asSeconds() > 0.4)
 	{
 		if(active_powerUp == true)
 		{

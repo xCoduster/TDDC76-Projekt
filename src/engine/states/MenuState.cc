@@ -95,3 +95,8 @@ void MenuState::draw(sf::RenderWindow& window)
 
     window.display();
 }
+
+void MenuState::cleanup()
+{
+	
+}

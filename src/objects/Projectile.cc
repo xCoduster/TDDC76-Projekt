@@ -17,7 +17,12 @@ void Projectile::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 void Projectile::movement(const sf::Time& dt)
 {
     m_Speed.x = 1.0f;
-    move(m_Speed * 200.0f * dt.asSeconds());
+    move(m_Speed * 250.0f * dt.asSeconds());
+
+    if ( m_Sprite.getPosition().x > 640 )
+	{
+		m_Dead = true;
+	}
 }
 
 void Projectile::Collision(const Collidable& other, std::vector<Object*>& new_objects)

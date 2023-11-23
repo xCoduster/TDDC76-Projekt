@@ -23,7 +23,7 @@ file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS "src/*.h" "src/*.cc")
 include_directories("src")
 
 # -Wextra -pedantic -Weffc++ -Wold-style-cast -fmax-errors=3
-set_source_files_properties(${SOURCE_FILES} PROPERTIES COMPILE_OPTIONS "-std=c++17")
+set_source_files_properties(${SOURCE_FILES} PROPERTIES COMPILE_OPTIONS "-std=c++17;-Wextra;-pedantic;-Weffc++;-Wold-style-cast;-fmax-errors=3")
 
 add_executable(game ${SOURCE_FILES})
 

@@ -9,8 +9,6 @@ GameState::GameState()
 
 int GameState::run(sf::RenderWindow& window)
 {
-	
-	check = true;
 
 	window.setFramerateLimit(60);
 
@@ -82,7 +80,7 @@ void GameState::update(const sf::Time& dt)
 {
     std::vector<Object*> new_objects{};
 
-	if(check)
+	if(tmp_first)
 	{
 	PowerUp* powerUp{new PowerUp};
 	new_objects.push_back(powerUp);
@@ -93,7 +91,20 @@ void GameState::update(const sf::Time& dt)
 
 	for (Object* object : objects)
 		object->update(dt, new_objects);
+	
 
+	for (int i = 0; i < objects.size(); i++)
+	{
+		if(objects.at(i)->m_Dead)
+		{
+			std::swap(objects.at(i), objects.back());
+         	delete objects.back();
+		 	objects.pop_back();
+		 	i--;
+		}
+	}
+	
+	
 	for (Object* object : new_objects)
 		objects.push_back(object);
 }
@@ -108,4 +119,15 @@ void GameState::draw(sf::RenderWindow& window)
 		window.draw(*object);
 
     window.display();
+}
+
+void GameState::cleanup()
+{
+	for (int i = 0; i < objects.size(); i++)
+	{
+		std::swap(objects.at(i), objects.back());
+       	delete objects.back();
+	 	objects.pop_back();
+	 	i--;
+	}
 }

@@ -10,6 +10,8 @@ Bomb::Bomb()
 	float Y = 200.0f;
 	float X = 640.0f;
 
+    sf::Vector2u texture_size { m_Texture.getSize() };
+	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
 	m_Sprite.setPosition( X , Y);
 }
 
@@ -24,9 +26,18 @@ void Bomb::movement(const sf::Time& dt)
 	m_Speed.y = 0.0f;
 
 	move(m_Speed * 120.0f * dt.asSeconds());
+
+	if ( m_Sprite.getPosition().x < 0 )
+	{
+		m_Dead = true;
+	}
+
 }
 
 void Bomb::Collision(const Collidable& other, std::vector<Object*>& new_objects)
 {
-	std::cout << "Collison " << std::endl;
+	Explosion* ex{new Explosion{m_Sprite.getPosition()}};
+	new_objects.push_back(ex);
+
+	m_Dead = true;
 }

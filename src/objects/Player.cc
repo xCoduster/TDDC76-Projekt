@@ -4,6 +4,7 @@
 #include <iostream>
 
 Player::Player()
+	:m_t_lazer{}, m_t_powerUp{}
 {
 	m_Texture.loadFromFile("res/player.png");
 	m_Sprite.setTexture(m_Texture);
@@ -15,32 +16,12 @@ Player::Player()
 void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
     movement(dt);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && clock.getElapsedTime().asSeconds() > 0.4)
+	blast(new_objects);
+	if(sf::seconds(clock.getElapsedTime().asSeconds()) > m_t_powerUp + sf::seconds(10))
 	{
-		if(active_powerUp == true)
-		{
-			sf::Vector2f lazer_pos = m_Sprite.getPosition();
-			Projectile* lazer1{new Projectile(m_Sprite.getPosition())};
-			lazer_pos.y += 30;
-			Projectile* lazer2{new Projectile(lazer_pos)};
-			lazer_pos.y -= 60;
-			Projectile* lazer3{new Projectile(lazer_pos)};
-			new_objects.push_back(lazer1);
-			new_objects.push_back(lazer2);
-			new_objects.push_back(lazer3);
-		}
-		else
-		{	
-			Projectile* lazer{new Projectile(m_Sprite.getPosition())};
-			//cout << "lever fortfarande" << endl;
-			new_objects.push_back(lazer);
-		}
-		clock.restart();
+		active_powerUp = false;
 	}
-	//m_BoundingBox
 
-	//std::cout << m_Sprite.getGlobalBounds().left << std::endl;
-	
 }
 
 void Player::movement(const sf::Time& dt)
@@ -82,3 +63,28 @@ void Player::Collision(const Collidable& other,std::vector<Object*>& new_objects
 {
 	active_powerUp = true;
 } 
+
+void Player::blast(std::vector<Object*>& new_objects)
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && sf::seconds(clock.getElapsedTime().asSeconds()) > m_t_lazer)
+	{
+		m_t_lazer = sf::seconds(clock.getElapsedTime().asSeconds()) + sf::seconds(0.4f);
+		if(active_powerUp == true)
+		{
+			sf::Vector2f lazer_pos = m_Sprite.getPosition();
+			Projectile* lazer1{new Projectile(m_Sprite.getPosition())};
+			lazer_pos.y += 30;
+			Projectile* lazer2{new Projectile(lazer_pos)};
+			lazer_pos.y -= 60;
+			Projectile* lazer3{new Projectile(lazer_pos)};
+			new_objects.push_back(lazer1);
+			new_objects.push_back(lazer2);
+			new_objects.push_back(lazer3);
+		}
+		else
+		{	
+			Projectile* lazer{new Projectile(m_Sprite.getPosition())};
+			new_objects.push_back(lazer);
+		}
+	}
+}

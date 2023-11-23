@@ -15,12 +15,6 @@ GameState::GameState()
 
 int GameState::run(sf::RenderWindow& window)
 {
-<<<<<<< Updated upstream
-	
-	tmp_first = true;
-
-=======
->>>>>>> Stashed changes
 	window.setFramerateLimit(60);
 
     bool running = true;
@@ -89,21 +83,7 @@ void GameState::handle(sf::Event event)
 
 void GameState::update(const sf::Time& dt)
 {
-<<<<<<< Updated upstream
-    std::vector<Object*> new_objects{};
-
-	if(tmp_first)
-	{
-		Bomb* bomb{new Bomb};
-
-		new_objects.push_back(bomb);
-		tmp_first = false; 
-	}
-
-    player.update(dt, new_objects);
-=======
 	checkCollision();
->>>>>>> Stashed changes
 
 	for (Object* object : objects)
 		object->update(dt, new_objects);

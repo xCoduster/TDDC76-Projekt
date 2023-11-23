@@ -26,15 +26,7 @@ public:
 
     virtual void cleanup() override;
 private:
-<<<<<<< Updated upstream
-    Player player;
-
-    bool tmp_first;
-
-    std::vector<Object*> objects;
-=======
     Player* player;
     std::vector<Object*> objects;
     std::vector<Object*> new_objects;
->>>>>>> Stashed changes
 };

@@ -14,6 +14,8 @@ Player::Player()
 	m_Sprite.setTexture(m_Texture);
 	m_Sprite.setRotation(90);
 	sf::Vector2u texture_size { m_Texture.getSize() };
+
+	m_Sprite.setPosition(texture_size.x, 480 / 2);
 	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
 
 	m_Tag = Collision::Player;
@@ -23,7 +25,7 @@ void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
     movement(dt);
 	blast(new_objects);
-	if(sf::seconds(clock.getElapsedTime().asSeconds()) > m_t_powerUp + sf::seconds(10))
+	if (sf::seconds(clock.getElapsedTime().asSeconds()) > m_t_powerUp + sf::seconds(10))
 	{
 		active_powerUp = false;
 	}
@@ -32,10 +34,10 @@ void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 
 void Player::movement(const sf::Time& dt)
 {
-    m_Speed.x = 0.0f;
+	m_Speed.x = 0.0f;
 	m_Speed.y = 0.0f;
 
-	sf::Vector2f old_position { m_Sprite.getPosition() };
+	sf::Vector2f old_position{ m_Sprite.getPosition() };
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		m_Speed.x = -1.0f;
@@ -55,20 +57,26 @@ void Player::movement(const sf::Time& dt)
 			m_Speed *= 0.70710678f;
 
 		move(m_Speed * 150.0f * dt.asSeconds());
-		
 	}
 
-	if ( m_Sprite.getPosition().x < 0 || m_Sprite.getPosition().y < 0 || m_Sprite.getPosition().x > 640 || m_Sprite.getPosition().y > 480 )
-	{
-		m_Sprite.setPosition(old_position);
-	}
+	sf::Vector2f position{ m_Sprite.getPosition() };
+	sf::FloatRect boundingBox{ m_Sprite.getGlobalBounds() };
+
+	if (position.x - boundingBox.width / 2 < 0 || position.x + boundingBox.width / 2 > 640)
+		m_Sprite.setPosition(sf::Vector2f{ old_position.x, position.y });
+
+	if (position.y - boundingBox.height / 2 < 0 || position.y + boundingBox.height / 2 > 480)
+		m_Sprite.setPosition(sf::Vector2f{ position.x, old_position.y });
 
 }
 
 void Player::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
 	if (other->m_Tag & Collision::PowerUp)
+	{
 		active_powerUp = true;
+		m_t_powerUp = sf::seconds(clock.getElapsedTime().asSeconds());
+	}
 } 
 
 void Player::blast(std::vector<Object*>& new_objects)

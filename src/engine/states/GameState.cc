@@ -11,6 +11,9 @@ GameState::GameState()
 
 	PowerUp* powerUp{ new PowerUp };
 	new_objects.push_back(powerUp);
+
+	Bomb* bomb{ new Bomb };
+	new_objects.push_back(bomb);
 }
 
 int GameState::run(sf::RenderWindow& window)

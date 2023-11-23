@@ -1,10 +1,14 @@
 #include "Bomb.h"
 
+#include "engine/resource/TextureManager.h"
+
 #include <iostream>
 
 Bomb::Bomb()
 {
-	m_Texture.loadFromFile("res/tmp.png");
+	TextureManager& texMgr{ TextureManager::instance() };
+	m_Texture = *texMgr.load("res/tmp.png");
+
 	m_Sprite.setTexture(m_Texture);
 
 	float Y = 200.0f;
@@ -38,8 +42,11 @@ void Bomb::movement(const sf::Time& dt)
 
 void Bomb::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
-	Explosion* ex{new Explosion{m_Sprite.getPosition()}};
-	new_objects.push_back(ex);
+	if (other->m_Tag & Collision::Projectile)
+	{
+		Explosion* ex{ new Explosion{ m_Sprite.getPosition() } };
+		new_objects.push_back(ex);
 
-	m_Dead = true;
+		m_Dead = true;
+	}
 }

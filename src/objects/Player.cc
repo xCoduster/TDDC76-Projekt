@@ -1,13 +1,16 @@
 #include "Player.h"
 
 #include "Projectile.h"
+#include "engine/resource/TextureManager.h"
 
 #include <iostream>
 
 Player::Player()
 	: active_powerUp(false), m_t_lazer{}, m_t_powerUp{}
 {
-	m_Texture.loadFromFile("res/player.png");
+	TextureManager& texMgr{ TextureManager::instance() };
+	m_Texture = *texMgr.load("res/player.png");
+
 	m_Sprite.setTexture(m_Texture);
 	m_Sprite.setRotation(90);
 	sf::Vector2u texture_size { m_Texture.getSize() };

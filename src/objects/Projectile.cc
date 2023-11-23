@@ -1,8 +1,12 @@
 #include "Projectile.h"
 
+#include "engine/resource/TextureManager.h"
+
 Projectile::Projectile(sf::Vector2f cord)
 {
-    m_Texture.loadFromFile("res/lazer.png");
+    TextureManager& texMgr{ TextureManager::instance() };
+    m_Texture = *texMgr.load("res/lazer.png");
+
 	m_Sprite.setTexture(m_Texture);
     sf::Vector2u texture_size { m_Texture.getSize() };
     m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);

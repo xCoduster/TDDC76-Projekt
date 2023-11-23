@@ -71,7 +71,7 @@ int MenuState::run(sf::RenderWindow& window)
 
 			// Every second
 
-			std::cout << "FPS: " << fps << ", UPS: " << ups << timer << std::endl;
+			std::cout << "FPS: " << fps << ", UPS: " << ups << std::endl;
 		}
 	}
 

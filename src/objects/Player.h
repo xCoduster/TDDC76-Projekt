@@ -11,4 +11,6 @@ public:
     virtual void movement(const sf::Time& dt) override;
     virtual void Collision(const Collidable& other, std::vector<Object*>& new_objects) override;
     bool active_powerUp{false};
+
+    sf::Clock clock;
 };

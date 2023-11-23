@@ -10,13 +10,12 @@ Player::Player()
 	m_Sprite.setRotation(90);
 	sf::Vector2u texture_size { m_Texture.getSize() };
 	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
-
 }
 
 void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
     movement(dt);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && clock.getElapsedTime().asSeconds() > 0.3)
 	{
 		if(active_powerUp == true)
 		{
@@ -36,6 +35,7 @@ void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 			//cout << "lever fortfarande" << endl;
 			new_objects.push_back(lazer);
 		}
+		clock.restart();
 	}
 	//m_BoundingBox
 
@@ -80,5 +80,5 @@ void Player::movement(const sf::Time& dt)
 
 void Player::Collision(const Collidable& other,std::vector<Object*>& new_objects)
 {
-	
+	active_powerUp = true;
 } 

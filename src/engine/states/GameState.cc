@@ -84,12 +84,13 @@ void GameState::update(const sf::Time& dt)
 
 	if(check)
 	{
-	Bomb* bomb{new Bomb};
-	new_objects.push_back(bomb);
+	PowerUp* powerUp{new PowerUp};
+	new_objects.push_back(powerUp);
 	check = false; 
 	}
 
     player.update(dt, new_objects);
+
 	for (Object* object : objects)
 		object->update(dt, new_objects);
 
@@ -102,7 +103,6 @@ void GameState::draw(sf::RenderWindow& window)
     window.clear(sf::Color::Black);
 
     window.draw(player);
-	window.draw(powerUp);
 
 	for (Object* object : objects)
 		window.draw(*object);

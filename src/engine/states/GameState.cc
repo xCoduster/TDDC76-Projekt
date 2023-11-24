@@ -9,9 +9,6 @@ GameState::GameState()
 	player = new Player;
 	new_objects.push_back(player);
 
-	PowerUp* powerUp{ new PowerUp };
-	new_objects.push_back(powerUp);
-
 	Bomb* bomb{ new Bomb };
 	new_objects.push_back(bomb);
 }

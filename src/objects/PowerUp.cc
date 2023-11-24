@@ -5,6 +5,7 @@
 #include <iostream>
 
 PowerUp::PowerUp()
+    :lifeTime{}
 {
     TextureManager& texMgr{ TextureManager::instance() };
     m_Texture = *texMgr.load("res/powerUp.png");
@@ -19,7 +20,11 @@ PowerUp::PowerUp()
 
 void PowerUp::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
-
+    lifeTime += dt;
+    if (lifeTime > sf::seconds(10))
+    {   
+        m_Dead = true;        
+    }
 }
 
 void PowerUp::Collision(const Collidable* other, std::vector<Object*>& new_objects)

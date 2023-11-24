@@ -10,5 +10,5 @@ public:
     virtual void Collision(const Collidable* other, std::vector<Object*>& new_objects) override;
 
 private:
-    int lifeTime;
+    sf::Time lifeTime;
 };

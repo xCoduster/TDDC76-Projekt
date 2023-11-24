@@ -5,7 +5,12 @@
 class Object : public sf::Drawable
 {
 public:
+    Object()
+        : m_Dead(false)
+    {}
+
     virtual void update(const sf::Time& dt, std::vector<Object*>& new_objects ) = 0;
+
     void move(sf::Vector2f distance)
     {
         m_Sprite.move(distance);

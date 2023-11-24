@@ -9,5 +9,5 @@ public:
 
     virtual void update(const sf::Time&, std::vector<Object*>& new_objects) override;
    
-    virtual void Collision(const Collidable& other, std::vector<Object*>& new_objects) override;
+    virtual void Collision(const Collidable* other, std::vector<Object*>& new_objects) override;
 };

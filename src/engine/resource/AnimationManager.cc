@@ -1,21 +1,22 @@
 #include "AnimationManager.h"
 
-AnimationManager::AnimationManager(std::vector<sf::Texture> textures, float frameDuration)
+AnimationManager::AnimationManager()
 {
-    animTimer = 0;
-    currentFrame = 0;
-
-    frames = textures;
-    animSpeed = frameDuration;
 }
 
-void AnimationManager::update(const sf::Time& dt, sf::Sprite& sprite)
+bool AnimationManager::update(const sf::Time& dt, sf::Sprite& sprite,const std::vector<sf::Texture>& textures, const float frameDuration)
 {
    animTimer += dt.asSeconds();
-   if(animTimer>animSpeed)
+
+   if(animTimer>frameDuration)
    {
-        animTimer -= animSpeed;
         currentFrame++;
-        sprite.setTexture(frames.at(currentFrame));
+        if( currentFrame + 1 > textures.size())
+        {
+            return true;
+        }
+        animTimer -= frameDuration;
+        sprite.setTexture(textures.at(currentFrame));
    }
+   return false;
 }

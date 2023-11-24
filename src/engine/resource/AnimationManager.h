@@ -5,15 +5,11 @@
 class AnimationManager
 {
 public:
-    AnimationManager(std::vector<sf::Texture> textures, float frameDuration);
+    AnimationManager();
 
-    void update(const sf::Time& dt, sf::Sprite& sprite);
+    bool update(const sf::Time& dt, sf::Sprite& sprite,const std::vector<sf::Texture>& textures, const float frameDuration);
 
 private:
-    std::vector<sf::Texture> frames;
-
     int currentFrame;
     float animTimer;
-    float animSpeed;
-
 };

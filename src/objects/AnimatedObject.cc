@@ -1,22 +1,19 @@
-#include "AnimationManager.h"
+#include "AnimatedObject.h"
 
-AnimationManager::AnimationManager()
+
+void AnimatedObject::animUpdate(const sf::Time& dt)
 {
-}
+   m_animTimer += dt.asSeconds();
 
-bool AnimationManager::update(const sf::Time& dt, sf::Sprite& sprite,const std::vector<sf::Texture>& textures, const float frameDuration)
-{
-   animTimer += dt.asSeconds();
-
-   if(animTimer>frameDuration)
+   if(m_animTimer>m_frameDuration)
    {
-        currentFrame++;
-        if( currentFrame + 1 > textures.size())
+        m_currentFrame++;
+        if( m_currentFrame + 1 > m_frames.size())
         {
-            return true;
+            m_Dead = true;
+            return;
         }
-        animTimer -= frameDuration;
-        sprite.setTexture(textures.at(currentFrame));
+        m_animTimer -= m_frameDuration;
+        m_Sprite.setTexture(m_frames.at(m_currentFrame));
    }
-   return false;
 }

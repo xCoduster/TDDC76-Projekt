@@ -1,15 +1,17 @@
 #pragma once
 
+#include "MovingObject.h"
+
 #include <SFML/Graphics.hpp>
 
-class AnimationManager
+class AnimatedObject: public MovingObject
 {
-public:
-    AnimationManager();
 
-    bool update(const sf::Time& dt, sf::Sprite& sprite,const std::vector<sf::Texture>& textures, const float frameDuration);
+protected:
+    void animUpdate(const sf::Time& dt);
 
-private:
-    int currentFrame;
-    float animTimer;
+    int m_currentFrame;
+    float m_animTimer;
+    std::vector<sf::Texture> m_frames;
+    float m_frameDuration;
 };

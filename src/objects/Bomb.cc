@@ -49,4 +49,11 @@ void Bomb::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 
 		m_Dead = true;
 	}
+	if (other->m_Tag & Collision::Player)
+	{
+		Explosion* ex{ new Explosion{ m_Sprite.getPosition() } };
+		new_objects.push_back(ex);
+
+		m_Dead = true;
+	}
 }

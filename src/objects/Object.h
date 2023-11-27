@@ -9,7 +9,7 @@ public:
         : m_Dead(false)
     {}
 
-    virtual void update(const sf::Time& dt, std::vector<Object*>& new_objects ) = 0;
+    virtual void update(const sf::Time& dt, std::vector<Object*>& new_objects) = 0;
 
     void move(sf::Vector2f distance)
     {

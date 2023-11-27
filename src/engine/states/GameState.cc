@@ -91,7 +91,6 @@ void GameState::update(const sf::Time& dt)
 
 	for (Object* object : objects)
 		object->update(dt, new_objects);
-	
 
 	for (int i = 0; i < objects.size(); i++)
 	{

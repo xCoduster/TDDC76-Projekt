@@ -1,6 +1,7 @@
 #include "GameState.h"
 
 #include "objects/PowerUp.h"
+#include "util/Log.h"
 
 #include <iostream>
 
@@ -19,6 +20,8 @@ GameState::GameState()
 int GameState::run(sf::RenderWindow& window)
 {
 	window.setFramerateLimit(60);
+
+	m_View = window.getView();
 
     bool running = true;
     unsigned int fps = 0;
@@ -50,6 +53,18 @@ int GameState::run(sf::RenderWindow& window)
 				}
 			}
 
+			if (event.type == sf::Event::Resized)
+			{
+				sf::Vector2f size{ static_cast<float>(event.size.width), static_cast<float>(event.size.height) };
+
+				if (size.x / size.y > 4 / 3)
+					m_View.setViewport(sf::FloatRect((1 - size.y / size.x) / 2, 0, size.y / size.x, 1.0f));
+				else
+					m_View.setViewport(sf::FloatRect(0, (1 - size.x / size.y) / 2, 1.0f, size.x / size.y));
+				
+				window.setView(m_View);
+			}
+
 		}
 
 		sf::Time now = clock.getElapsedTime();
@@ -72,7 +87,7 @@ int GameState::run(sf::RenderWindow& window)
 
 			// Every second
 
-			std::cout << "FPS: " << fps << ", UPS: " << ups << std::endl;
+			LOG_INFO("FPS: " << fps << ", UPS: " << ups);
 		}
 	}
 

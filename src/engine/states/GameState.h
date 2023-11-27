@@ -26,4 +26,6 @@ private:
     Player* player;
     std::vector<Object*> objects;
     std::vector<Object*> new_objects;
+
+    sf::View m_View;
 };

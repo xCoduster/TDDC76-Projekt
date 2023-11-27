@@ -11,9 +11,10 @@ Explosion::Explosion(sf::Vector2f start_pos)
     m_currentFrame = 0;
     m_frameDuration = 0.1f;
 
+    TextureManager& texMgr{ TextureManager::instance() };
+    
     for (int i = 0; i < 8; i++)
     {
-        TextureManager& texMgr{ TextureManager::instance() };
 	     m_frames.push_back(*texMgr.load("res/explosion/ex-0"+ std::to_string(i) +".png"));
     }
 

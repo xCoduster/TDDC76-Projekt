@@ -13,11 +13,9 @@ protected:
     std::vector<sf::Sprite> m_sprites;
     std::vector<sf::Texture> m_images;
 private:
-    /*
     void draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
-        target.draw(sprite, states);
+        for (int i = 0; i < m_sprites.size(); i++)
+            target.draw(m_sprites.at(i), states);
     }
-    */
-    
 };

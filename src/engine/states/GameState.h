@@ -7,6 +7,7 @@
 #include "objects/Explosion.h"
 #include "objects/Projectile.h"
 #include "objects/PowerUp.h"
+#include "objects/GameBar.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -24,6 +25,7 @@ public:
     virtual void cleanup() override;
 private:
     Player* player;
+    GameBar gameBar;
     std::vector<Object*> objects;
     std::vector<Object*> new_objects;
 };

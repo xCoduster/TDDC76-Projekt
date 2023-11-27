@@ -120,6 +120,8 @@ void GameState::draw(sf::RenderWindow& window)
 	for (Object* object : objects)
 		window.draw(*object);
 
+	window.draw(gameBar);
+
     window.display();
 }
 

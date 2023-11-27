@@ -7,7 +7,7 @@
 Bomb::Bomb()
 {
 	TextureManager& texMgr{ TextureManager::instance() };
-	m_Texture = *texMgr.load("res/tmp.png");
+	m_Texture = *texMgr.load("res/bomb.png");
 
 	m_Sprite.setTexture(m_Texture);
 

@@ -14,8 +14,8 @@ Player::Player()
 	m_Sprite.setTexture(m_Texture);
 	sf::Vector2u texture_size { m_Texture.getSize() };
 
-	m_Sprite.setPosition(texture_size.x, 480 / 2);
 	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
+	m_Sprite.setPosition(texture_size.x, 480 / 2);
 
 	m_Tag = Collision::Player;
 }

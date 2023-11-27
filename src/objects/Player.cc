@@ -9,10 +9,9 @@ Player::Player()
 	: active_powerUp(false), m_t_lazer{}, m_t_powerUp{}
 {
 	TextureManager& texMgr{ TextureManager::instance() };
-	m_Texture = *texMgr.load("res/player.png");
+	m_Texture = *texMgr.load("res/player.v2.png");
 
 	m_Sprite.setTexture(m_Texture);
-	m_Sprite.setRotation(90);
 	sf::Vector2u texture_size { m_Texture.getSize() };
 
 	m_Sprite.setPosition(texture_size.x, 480 / 2);
@@ -24,13 +23,19 @@ Player::Player()
 void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
     movement(dt);
-	blast(dt, new_objects);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && m_t_lazer > sf::seconds(0.4))
+	{
+		blast(dt, new_objects);
+	}
+
+	m_t_lazer += dt;
 	m_t_powerUp += dt;
+
 	if (m_t_powerUp > sf::seconds(10))
 	{
 		active_powerUp = false;
 	}
-
 }
 
 void Player::movement(const sf::Time& dt)
@@ -82,26 +87,22 @@ void Player::Collision(const Collidable* other, std::vector<Object*>& new_object
 
 void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && m_t_lazer > sf::seconds(0.4))
+	m_t_lazer = sf::seconds(0);
+	if(active_powerUp == true)
 	{
-		m_t_lazer = sf::seconds(0);
-		if(active_powerUp == true)
-		{
-			sf::Vector2f lazer_pos = m_Sprite.getPosition();
-			Projectile* lazer1{new Projectile(m_Sprite.getPosition(), false)};
-			lazer_pos.y += 30;
-			Projectile* lazer2{new Projectile(lazer_pos, false)};
-			lazer_pos.y -= 60;
-			Projectile* lazer3{new Projectile(lazer_pos, false)};
-			new_objects.push_back(lazer1);
-			new_objects.push_back(lazer2);
-			new_objects.push_back(lazer3);
-		}
-		else
-		{	
-			Projectile* lazer{new Projectile(m_Sprite.getPosition(), false)};
-			new_objects.push_back(lazer);
-		}
+		sf::Vector2f lazer_pos = m_Sprite.getPosition();
+		Projectile* lazer1{new Projectile(m_Sprite.getPosition(), false)};
+		lazer_pos.y += 30;
+		Projectile* lazer2{new Projectile(lazer_pos, false)};
+		lazer_pos.y -= 60;
+		Projectile* lazer3{new Projectile(lazer_pos, false)};
+		new_objects.push_back(lazer1);
+		new_objects.push_back(lazer2);
+		new_objects.push_back(lazer3);
 	}
-	m_t_lazer += dt;
+	else
+	{	
+		Projectile* lazer{new Projectile(m_Sprite.getPosition(), false)};
+		new_objects.push_back(lazer);
+	}
 }

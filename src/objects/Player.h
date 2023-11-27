@@ -12,7 +12,6 @@ public:
     virtual void Collision(const Collidable* other, std::vector<Object*>& new_objects) override;
     void blast(const sf::Time& dt, std::vector<Object*>& new_objects);
     bool active_powerUp;
-
 private:
     sf::Time m_t_lazer;
     sf::Time m_t_powerUp;

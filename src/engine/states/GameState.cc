@@ -2,6 +2,8 @@
 
 #include "objects/PowerUp.h"
 
+#include "engine/resource/TextureManager.h"
+
 #include <iostream>
 
 GameState::GameState()
@@ -75,7 +77,6 @@ int GameState::run(sf::RenderWindow& window)
 			std::cout << "FPS: " << fps << ", UPS: " << ups << std::endl;
 		}
 	}
-
     return -1;
 }
 
@@ -109,6 +110,7 @@ void GameState::update(const sf::Time& dt)
 		new_objects.pop_back();
 		--i;
 	}
+
 }
 
 void GameState::draw(sf::RenderWindow& window)

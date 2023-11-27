@@ -8,8 +8,8 @@ GameState::GameState()
 {
 	player = new Player;
 	new_objects.push_back(player);
-
-	PowerUp* powerUp{ new PowerUp };
+	sf::Vector2f powerUp_cord {640/2, 480/2};
+	PowerUp* powerUp{ new PowerUp(powerUp_cord) };
 	new_objects.push_back(powerUp);
 
 	Bomb* bomb{ new Bomb };

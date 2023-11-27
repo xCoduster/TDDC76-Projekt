@@ -24,8 +24,9 @@ Player::Player()
 void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
     movement(dt);
-	blast(new_objects);
-	if (sf::seconds(clock.getElapsedTime().asSeconds()) > m_t_powerUp + sf::seconds(10))
+	blast(dt, new_objects);
+	m_t_powerUp += dt;
+	if (m_t_powerUp > sf::seconds(10))
 	{
 		active_powerUp = false;
 	}
@@ -75,31 +76,32 @@ void Player::Collision(const Collidable* other, std::vector<Object*>& new_object
 	if (other->m_Tag & Collision::PowerUp)
 	{
 		active_powerUp = true;
-		m_t_powerUp = sf::seconds(clock.getElapsedTime().asSeconds());
+		m_t_powerUp = sf::seconds(0);
 	}
 } 
 
-void Player::blast(std::vector<Object*>& new_objects)
+void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && sf::seconds(clock.getElapsedTime().asSeconds()) > m_t_lazer)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && m_t_lazer > sf::seconds(0.4))
 	{
-		m_t_lazer = sf::seconds(clock.getElapsedTime().asSeconds()) + sf::seconds(0.4f);
+		m_t_lazer = sf::seconds(0);
 		if(active_powerUp == true)
 		{
 			sf::Vector2f lazer_pos = m_Sprite.getPosition();
-			Projectile* lazer1{new Projectile(m_Sprite.getPosition())};
+			Projectile* lazer1{new Projectile(m_Sprite.getPosition(), false)};
 			lazer_pos.y += 30;
-			Projectile* lazer2{new Projectile(lazer_pos)};
+			Projectile* lazer2{new Projectile(lazer_pos, false)};
 			lazer_pos.y -= 60;
-			Projectile* lazer3{new Projectile(lazer_pos)};
+			Projectile* lazer3{new Projectile(lazer_pos, false)};
 			new_objects.push_back(lazer1);
 			new_objects.push_back(lazer2);
 			new_objects.push_back(lazer3);
 		}
 		else
 		{	
-			Projectile* lazer{new Projectile(m_Sprite.getPosition())};
+			Projectile* lazer{new Projectile(m_Sprite.getPosition(), false)};
 			new_objects.push_back(lazer);
 		}
 	}
+	m_t_lazer += dt;
 }

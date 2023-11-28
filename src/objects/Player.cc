@@ -1,8 +1,11 @@
 #include "Player.h"
 
 #include "Projectile.h"
+
 #include "engine/resource/TextureManager.h"
 #include "engine/resource/AudioManager.h"
+
+#include "util/Random.h"
 
 #include <iostream>
 
@@ -12,6 +15,8 @@ Player::Player()
 	AudioManager& audioMgr{ AudioManager::instance() };
 	m_hurtSound.setBuffer(*audioMgr.load("res/audio/hurt.wav"));
 	m_pickUpSound.setBuffer(*audioMgr.load("res/audio/powerup.wav"));
+	m_laserSound.setBuffer(*audioMgr.load("res/audio/laser.wav"));
+	m_laserSound.setVolume(75.0f);
 
 	TextureManager& texMgr{ TextureManager::instance() };
 	m_Texture = *texMgr.load("res/player.png");
@@ -117,6 +122,9 @@ void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 			Projectile* lazer{new Projectile(m_Sprite.getPosition(), false)};
 			new_objects.push_back(lazer);
 		}
+
+		m_laserSound.setPitch(1.0f + random(0, 15) / 10.0f);
+		m_laserSound.play();
 	}
 	m_t_lazer += dt;
 }

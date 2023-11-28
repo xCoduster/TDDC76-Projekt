@@ -26,6 +26,7 @@ GameState::GameState()
 
 	audioMgr.load("res/audio/explosion.wav");
 	audioMgr.load("res/audio/hurt.wav");
+	audioMgr.load("res/audio/laser.wav");
 	audioMgr.load("res/audio/powerup.wav");
 }
 

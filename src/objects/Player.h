@@ -25,5 +25,6 @@ private:
     sf::Time m_t_invincibility;
 
     sf::Sound m_hurtSound;
+    sf::Sound m_laserSound;
     sf::Sound m_pickUpSound;
 };

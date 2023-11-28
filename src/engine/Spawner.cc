@@ -7,13 +7,11 @@
 
 #include "objects/Bomb.h"
 #include "util/Log.h"
-
-int random(int min, int max);
+#include "util/Random.h"
 
 Spawner::Spawner(float spawnDelay, float waveDelay)
 	: m_timer{}, m_spawnDelay(spawnDelay), m_waveDelay(waveDelay)
 {
-
 }
 
 void Spawner::update(const sf::Time& dt, std::vector<Object*>& new_objects)
@@ -102,14 +100,4 @@ bool Spawner::readFile(const std::string& filePath)
 	}
 
 	return true;
-}
-
-int random(int min, int max)
-{
-	int range = max - min + 1;
-	
-	if (range == 0)
-		return 0;
-
-	return min + std::rand() % range;
 }

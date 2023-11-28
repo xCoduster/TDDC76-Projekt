@@ -131,7 +131,9 @@ void GameState::update(const sf::Time& dt)
 	for (Object* object : objects)
 		object->update(dt, new_objects);
 	
-	m_spawner.update(dt, new_objects);
+	
+	if (m_spawner.update(dt, new_objects))
+		m_spawner.readFile("res/waves.lvl");
 
 	for (int i = 0; i < objects.size(); i++)
 	{

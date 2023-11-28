@@ -3,6 +3,10 @@
 #include "engine/resource/TextureManager.h"
 #include "engine/resource/AudioManager.h"
 
+#include "Projectile.h"
+
+#include "util/Random.h"
+
 UFO::UFO()
 	: m_soundTimer{}
 {
@@ -60,15 +64,16 @@ void UFO::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 	{
 		movement(dt);
 		animUpdate(dt);
+		blast(dt, new_objects);
 	}
 }
 
 void UFO::movement(const sf::Time& dt)
 {
 	m_Speed.x = -1.0f;
-	m_Speed.y = 0.0f;
+	m_Speed.y = 1.f * sin(m_Sprite.getPosition().x / 10);
 
-	move(m_Speed * 100.0f * dt.asSeconds());
+	move(m_Speed * 75.0f * dt.asSeconds());
 		
 	if (m_Sprite.getPosition().x < 0)
 		m_Dead = true;
@@ -76,9 +81,12 @@ void UFO::movement(const sf::Time& dt)
 
 void UFO::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
-	if (other->m_Tag & Collision::Projectile)
+	if (other->m_Tag & Collision::PlayerProj)
 		m_Hitpoints -= 1;
 	
+	if (other->m_Tag & Collision::Explosion)
+		m_Hitpoints -= 1;
+
 	if (other->m_Tag == m_Tag)
 	{
 		if (m_Sprite.getPosition().y > other->m_Sprite.getPosition().y)
@@ -88,4 +96,23 @@ void UFO::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 		else
 			move(sf::Vector2f(0.0f, -10.0f));
 	}
+}
+
+void UFO::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
+{
+	if (m_laserTimer > sf::seconds(1.0f))
+	{
+		m_laserTimer = sf::seconds(0);
+		
+		if (random(1, 3) != 1)
+			return;
+
+		Projectile* laser{ new Projectile(sf::Vector2f{ m_Sprite.getPosition().x - 64.f, m_Sprite.getPosition().y }, true) };
+		new_objects.push_back(laser);
+
+		//m_laserSound.setPitch(1.0f + random(0, 15) / 10.0f);
+		//m_laserSound.play();
+	}
+
+	m_laserTimer += dt;
 }

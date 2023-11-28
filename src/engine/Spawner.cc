@@ -15,12 +15,12 @@ Spawner::Spawner(float spawnDelay, float waveDelay)
 {
 }
 
-void Spawner::update(const sf::Time& dt, std::vector<Object*>& new_objects)
+bool Spawner::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
 	m_timer += dt;
 
 	if (m_objects.empty())
-		return;
+		return true;
 
 	if (!m_objects.top().empty())
 	{
@@ -51,6 +51,8 @@ void Spawner::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 			m_timer = sf::Time::Zero;
 		}
 	}
+
+	return false;
 }
 
 bool Spawner::readFile(const std::string& filePath)

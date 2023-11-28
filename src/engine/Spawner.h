@@ -12,7 +12,7 @@ class Spawner
 public:
 	Spawner(float spawnDelay = 0.5f, float waveDelay = 3.0f);
 
-	void update(const sf::Time& dt, std::vector<Object*>& new_objects);
+	bool update(const sf::Time& dt, std::vector<Object*>& new_objects);
 
 	bool readFile(const std::string& filePath);
 

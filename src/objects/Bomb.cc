@@ -42,7 +42,7 @@ void Bomb::movement(const sf::Time& dt)
 
 void Bomb::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
-	if (other->m_Tag & Collision::Projectile)
+	if (other->m_Tag & Collision::PlayerProj)
 	{
 		Explosion* ex{ new Explosion{ m_Sprite.getPosition() } };
 		new_objects.push_back(ex);

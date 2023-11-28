@@ -59,6 +59,11 @@ void config(const std::string& filePath)
             words.push_back(word);
         
         if (words.at(0) == "seed")
-            std::srand(stoi(words.at(1)));
+        {
+            if (words.size() == 1)
+                std::srand(std::time(nullptr));
+            else
+                std::srand(stoi(words.at(1)));
+        }
     }
 }

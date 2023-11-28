@@ -7,6 +7,8 @@
 #include "objects/Explosion.h"
 #include "objects/Projectile.h"
 #include "objects/PowerUp.h"
+#include "objects/Star.h"
+
 #include "engine/Spawner.h"
 
 #include <SFML/Graphics.hpp>
@@ -27,6 +29,8 @@ private:
     Player* player;
     std::vector<Object*> objects;
     std::vector<Object*> new_objects;
+
+    std::vector<Star*> stars;
 
     Spawner m_spawner;
 

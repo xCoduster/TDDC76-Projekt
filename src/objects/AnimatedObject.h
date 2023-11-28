@@ -14,4 +14,5 @@ protected:
     float m_animTimer;
     std::vector<sf::Texture> m_frames;
     float m_frameDuration;
+    bool m_loop;
 };

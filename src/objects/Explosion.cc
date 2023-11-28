@@ -12,6 +12,7 @@ Explosion::Explosion(sf::Vector2f start_pos)
     m_animTimer = 0;
     m_currentFrame = 0;
     m_frameDuration = 0.06f;
+    m_loop = false;
 
     AudioManager& audioMgr{ AudioManager::instance() };
 

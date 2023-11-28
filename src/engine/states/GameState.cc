@@ -16,9 +16,6 @@ GameState::GameState()
 	PowerUp* powerUp{ new PowerUp(powerUp_cord) };
 	new_objects.push_back(powerUp);
 
-	//Bomb* bomb{ new Bomb };
-	//new_objects.push_back(bomb);
-
 	m_spawner.readFile("res/waves.lvl");
 
 	// Ladda in alla ljudfiler från start
@@ -28,14 +25,13 @@ GameState::GameState()
 	audioMgr.load("res/audio/hurt.wav");
 	audioMgr.load("res/audio/laser.wav");
 	audioMgr.load("res/audio/powerup.wav");
-
+	audioMgr.load("res/audio/ufo.wav");
 	
 	for (int i = 0; i < 120; i++)
 	{
 		Star* star{new Star};
 		stars.push_back(star);
 	}
-	
 }
 
 int GameState::run(sf::RenderWindow& window)
@@ -82,12 +78,13 @@ int GameState::run(sf::RenderWindow& window)
 				sf::Vector2f size{ static_cast<float>(event.size.width), static_cast<float>(event.size.height) };
 
 				if (size.x / size.y > 4 / 3)
-					m_View.setViewport(sf::FloatRect((1 - size.y / size.x) / 2, 0, size.y / size.x, 1.0f));
+					m_View.setViewport(sf::FloatRect((1 - (4.f / 3.f * size.y) / size.x) / 2, 0, (4.f / 3.f * size.y) / size.x, 1.0f));
 				else
-					m_View.setViewport(sf::FloatRect(0, (1 - size.x / size.y) / 2, 1.0f, size.x / size.y));
+					m_View.setViewport(sf::FloatRect(0, (1 - (3.f / 4.f * size.x) / size.y) / 2, 1.0f, (3.f / 4.f * size.x) / size.y));
 				
 				window.setView(m_View);
 			}
+
 
 		}
 
@@ -198,5 +195,13 @@ void GameState::cleanup()
        	delete objects.back();
 	 	objects.pop_back();
 	 	--i;
+	}
+
+	for (int i = 0; i < stars.size(); i++)
+	{
+		std::swap(stars.at(i), stars.back());
+		delete stars.back();
+		stars.pop_back();
+		--i;
 	}
 }

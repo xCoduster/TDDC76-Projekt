@@ -6,6 +6,7 @@
 #include <algorithm>
 
 #include "objects/Bomb.h"
+#include "objects/UFO.h"
 #include "util/Log.h"
 #include "util/Random.h"
 
@@ -90,6 +91,8 @@ bool Spawner::readFile(const std::string& filePath)
 					case 's':
 						break;
 					case 'u':
+						objects.push_back(new UFO{});
+						objects.back()->setPosition(sf::Vector2f(640 + random(0, 32), random(32, 448)));
 						break;
 					}
 				}

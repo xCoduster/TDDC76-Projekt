@@ -98,6 +98,9 @@ void Player::Collision(const Collidable* other, std::vector<Object*>& new_object
 
 	if (other->m_Tag & Collision::Explosion)
 		hurt();
+
+	if (other->m_Tag & Collision::Enemy)
+		hurt();
 } 
 
 void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)

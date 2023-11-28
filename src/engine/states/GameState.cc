@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+#include "engine/resource/AudioManager.h"
+
 GameState::GameState()
 	: m_spawner{ 0.5f, 3.0f }
 {
@@ -18,6 +20,13 @@ GameState::GameState()
 	//new_objects.push_back(bomb);
 
 	m_spawner.readFile("res/waves.lvl");
+
+	// Ladda in alla ljudfiler från start
+	AudioManager& audioMgr{ AudioManager::instance() };
+
+	audioMgr.load("res/audio/explosion.wav");
+	audioMgr.load("res/audio/hurt.wav");
+	audioMgr.load("res/audio/powerup.wav");
 }
 
 int GameState::run(sf::RenderWindow& window)
@@ -54,6 +63,9 @@ int GameState::run(sf::RenderWindow& window)
 					// Byt skärm till menyn
 					return 0;
 				}
+
+				if (event.key.code == sf::Keyboard::G)
+					player->m_godMode = !player->m_godMode;
 			}
 
 			if (event.type == sf::Event::Resized)

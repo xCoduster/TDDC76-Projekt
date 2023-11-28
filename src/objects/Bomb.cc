@@ -56,4 +56,14 @@ void Bomb::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 
 		m_Dead = true;
 	}
+
+	if (other->m_Tag == m_Tag)
+	{
+		if (m_Sprite.getPosition().y > other->m_Sprite.getPosition().y)
+		{
+			move(sf::Vector2f(0.0f, 10.0f));
+		}
+		else
+			move(sf::Vector2f(0.0f, -10.0f));
+	}
 }

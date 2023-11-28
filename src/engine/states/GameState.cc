@@ -6,6 +6,7 @@
 #include <iostream>
 
 GameState::GameState()
+	: m_spawner{ 0.5f, 3.0f }
 {
 	player = new Player;
 	new_objects.push_back(player);
@@ -13,8 +14,10 @@ GameState::GameState()
 	PowerUp* powerUp{ new PowerUp(powerUp_cord) };
 	new_objects.push_back(powerUp);
 
-	Bomb* bomb{ new Bomb };
-	new_objects.push_back(bomb);
+	//Bomb* bomb{ new Bomb };
+	//new_objects.push_back(bomb);
+
+	m_spawner.readFile("res/waves.lvl");
 }
 
 int GameState::run(sf::RenderWindow& window)
@@ -106,6 +109,7 @@ void GameState::update(const sf::Time& dt)
 	for (Object* object : objects)
 		object->update(dt, new_objects);
 	
+	m_spawner.update(dt, new_objects);
 
 	for (int i = 0; i < objects.size(); i++)
 	{

@@ -11,7 +11,7 @@ public:
 
     virtual void update(const sf::Time& dt, std::vector<Object*>& new_objects ) = 0;
 
-    void move(sf::Vector2f distance)
+    void move(const sf::Vector2f& distance)
     {
         m_Sprite.move(distance);
     }
@@ -19,6 +19,11 @@ public:
     void setSprite(sf::Sprite& sprite)
     {
         m_Sprite = sprite;
+    }
+
+    void setPosition(const sf::Vector2f& position)
+    {
+        m_Sprite.setPosition(position);
     }
 
     sf::Sprite m_Sprite;

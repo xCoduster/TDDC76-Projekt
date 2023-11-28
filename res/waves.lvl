@@ -1,0 +1,10 @@
+# Kommentarer börjar med '#'
+# Varje rad är en wave
+# b = Bomb
+# s = Seeker
+# u = UFO
+
+12 u;4 b;5 s
+3 u;3 b;3 s
+10 b
+5 b

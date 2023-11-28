@@ -7,13 +7,21 @@
 GameState::GameState()
 {
 	player = new Player;
-	new_objects.push_back(player);
+	objects.push_back(player);
 	sf::Vector2f powerUp_cord {640/2, 480/2};
 	PowerUp* powerUp{ new PowerUp(powerUp_cord) };
 	new_objects.push_back(powerUp);
 
 	Bomb* bomb{ new Bomb };
 	new_objects.push_back(bomb);
+
+	
+	for (int i = 0; i < 120; i++)
+	{
+		Star* star{new Star};
+		stars.push_back(star);
+	}
+	
 }
 
 int GameState::run(sf::RenderWindow& window)
@@ -86,6 +94,10 @@ void GameState::handle(sf::Event event)
 
 void GameState::update(const sf::Time& dt)
 {
+
+	for (Star* star : stars)
+		star->update(dt, new_objects);
+
 	checkCollision();
 
 	for (Object* object : objects)
@@ -115,6 +127,9 @@ void GameState::update(const sf::Time& dt)
 void GameState::draw(sf::RenderWindow& window)
 {
     window.clear(sf::Color::Black);
+
+	for (Star* star : stars)
+		window.draw(*star);
 
 	for (Object* object : objects)
 		window.draw(*object);

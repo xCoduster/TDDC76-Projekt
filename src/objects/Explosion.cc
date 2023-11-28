@@ -27,7 +27,7 @@ Explosion::Explosion(sf::Vector2f start_pos)
 
     m_Sprite.setScale(2.5f, 2.5f);
 
-    m_Tag = Collision::None;
+    m_Tag = Collision::Explosion;
 }
 
 void Explosion::movement(const sf::Time& dt)

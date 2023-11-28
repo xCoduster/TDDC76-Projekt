@@ -12,5 +12,6 @@ public:
 private:
     void initialize();
     sf::Vector2f m_Speed;
+    sf::Color m_Color;
 
 };

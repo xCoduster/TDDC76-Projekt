@@ -1,5 +1,7 @@
 #include "Star.h"
 
+#include <cstdlib>
+
 #include "engine/resource/TextureManager.h"
 
 Star::Star()
@@ -9,11 +11,16 @@ Star::Star()
 
 	m_Sprite.setTexture(m_Texture);
 
-	float Y = 200.0f;
-	float X = 640.0f;
-
-    sf::Vector2u texture_size { m_Texture.getSize() };
+	sf::Vector2u texture_size { m_Texture.getSize() };
 	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
+
+	m_Sprite.setScale(0.1f ,0.1f);
+	
+	initialize();
+
+	float X = rand() % 640;
+	float Y = rand() % 480;
+
 	m_Sprite.setPosition( X , Y);
 
 }
@@ -21,11 +28,33 @@ Star::Star()
 void Star::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
     move(m_Speed * 120.0f * dt.asSeconds());
+	sf::Vector2f position{ m_Sprite.getPosition() };
+	if (position.x < 0)
+		initialize();
 }
 
 void Star::initialize()
 {
-    m_Speed.x = -1.0f;
-	m_Speed.y = 0.0f;
+	float X = 642.0f;
+	float Y = rand() % 480;
 	
+	int type = std::rand() % 3;
+	switch(type)
+	{
+		case 0:
+			m_Speed.x = -0.05f;
+			m_Color = sf::Color(108,108,255,255);
+			break;
+		case 1:
+			m_Speed.x = -0.08f;
+			m_Color = sf::Color(158,255,158,255);
+			break;
+		case 2:
+			m_Speed.x = -0.12f;
+			m_Color = sf::Color(255,200,200,255);
+			break;
+
+	}
+	m_Sprite.setColor(m_Color);
+	m_Sprite.setPosition( X , Y);
 }

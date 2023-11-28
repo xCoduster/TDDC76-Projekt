@@ -7,6 +7,12 @@
 #include "engine/states/MenuState.h"
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <random>
+#include <vector>
+
+void config(const std::string& filePath);
 
 int main(int argc, char* argv[])
 {
@@ -14,6 +20,8 @@ int main(int argc, char* argv[])
     int state = 0;
     // TODO: Lägg till variabler på fönsterstorleken
     sf::RenderWindow window{sf::VideoMode(640, 480), "Space Craze", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize};
+
+    config("res/config.txt");
 
     MenuState menuState;
     states.push_back(&menuState);
@@ -31,4 +39,26 @@ int main(int argc, char* argv[])
         state->cleanup();
 
     return 0;
+}
+
+void config(const std::string& filePath)
+{
+    std::ifstream ifs{ filePath };
+    std::string line{};
+    std::string word{};
+
+    if (!ifs.is_open())
+        return;
+
+    while (std::getline(ifs, line))
+    {
+        std::istringstream iss{ line };
+        std::vector<std::string> words;
+
+        while (std::getline(iss, word, '='))
+            words.push_back(word);
+        
+        if (words.at(0) == "seed")
+            std::srand(stoi(words.at(1)));
+    }
 }

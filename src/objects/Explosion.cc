@@ -1,15 +1,24 @@
 #include "Explosion.h"
 
 #include "engine/resource/TextureManager.h"
+#include "engine/resource/AudioManager.h"
+
+#include "util/Random.h"
 
 #include <string>
-
 
 Explosion::Explosion(sf::Vector2f start_pos)
 {
     m_animTimer = 0;
     m_currentFrame = 0;
     m_frameDuration = 0.06f;
+
+    AudioManager& audioMgr{ AudioManager::instance() };
+
+    m_explosionSound.setBuffer(*audioMgr.load("res/audio/explosion.wav"));
+    m_explosionSound.setVolume(50.0f);
+    m_explosionSound.setPitch(1.5f + random(-3, 3) / 10.0f);
+    m_explosionSound.play();
 
     TextureManager& texMgr{ TextureManager::instance() };
     
@@ -28,7 +37,7 @@ Explosion::Explosion(sf::Vector2f start_pos)
 
     m_Sprite.setScale(2.5f, 2.5f);
 
-    m_Tag = Collision::None;
+    m_Tag = Collision::Explosion;
 }
 
 void Explosion::movement(const sf::Time& dt)

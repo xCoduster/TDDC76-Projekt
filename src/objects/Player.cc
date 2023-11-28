@@ -2,12 +2,17 @@
 
 #include "Projectile.h"
 #include "engine/resource/TextureManager.h"
+#include "engine/resource/AudioManager.h"
 
 #include <iostream>
 
 Player::Player()
-	: active_powerUp(false), m_t_lazer{}, m_t_powerUp{}
+	: active_powerUp(false), m_t_lazer{}, m_t_powerUp{}, m_t_invincibility{}, m_godMode(false)
 {
+	AudioManager& audioMgr{ AudioManager::instance() };
+	m_hurtSound.setBuffer(*audioMgr.load("res/audio/hurt.wav"));
+	m_pickUpSound.setBuffer(*audioMgr.load("res/audio/powerup.wav"));
+
 	TextureManager& texMgr{ TextureManager::instance() };
 	m_Texture = *texMgr.load("res/player.png");
 
@@ -19,18 +24,24 @@ Player::Player()
 	m_Sprite.setPosition(texture_size.x, 480 / 2);
 
 	m_Tag = Collision::Player;
+
+	m_Hitpoints = 10;
 }
 
 void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
     movement(dt);
 	blast(dt, new_objects);
+	
 	m_t_powerUp += dt;
 	if (m_t_powerUp > sf::seconds(10))
-	{
 		active_powerUp = false;
-	}
 
+	if (m_t_invincibility >= sf::seconds(0.0f))
+		m_t_invincibility -= dt;
+
+	if (m_Hitpoints <= 0 && !m_godMode)
+		m_Dead = true;
 }
 
 void Player::movement(const sf::Time& dt)
@@ -77,12 +88,16 @@ void Player::Collision(const Collidable* other, std::vector<Object*>& new_object
 	{
 		active_powerUp = true;
 		m_t_powerUp = sf::seconds(0);
+		m_pickUpSound.play();
 	}
+
+	if (other->m_Tag & Collision::Explosion)
+		hurt();
 } 
 
 void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && m_t_lazer > sf::seconds(0.4))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && m_t_lazer > sf::seconds(0.4f))
 	{
 		m_t_lazer = sf::seconds(0);
 		if(active_powerUp == true)
@@ -104,4 +119,17 @@ void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 		}
 	}
 	m_t_lazer += dt;
+}
+
+void Player::hurt(int amount)
+{
+	if (!m_godMode)
+	{
+		if (m_t_invincibility <= sf::seconds(0.0f))
+		{
+			m_t_invincibility = sf::seconds(1.0f);
+			m_Hitpoints -= 1;
+			m_hurtSound.play();
+		}
+	}
 }

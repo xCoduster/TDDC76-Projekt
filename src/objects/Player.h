@@ -2,6 +2,8 @@
 
 #include "MovingObject.h"
 
+#include <SFML/Audio.hpp>
+
 class Player : public MovingObject
 {
 public:
@@ -10,10 +12,18 @@ public:
     virtual void update(const sf::Time& dt, std::vector<Object*>& new_objects) override;
     virtual void movement(const sf::Time& dt) override;
     virtual void Collision(const Collidable* other, std::vector<Object*>& new_objects) override;
+
     void blast(const sf::Time& dt, std::vector<Object*>& new_objects);
+    void hurt(int amount = 1);
+
     bool active_powerUp;
 
+    bool m_godMode;
 private:
     sf::Time m_t_lazer;
     sf::Time m_t_powerUp;
+    sf::Time m_t_invincibility;
+
+    sf::Sound m_hurtSound;
+    sf::Sound m_pickUpSound;
 };

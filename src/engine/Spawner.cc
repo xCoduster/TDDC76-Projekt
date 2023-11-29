@@ -15,6 +15,21 @@ Spawner::Spawner(float spawnDelay, float waveDelay)
 {
 }
 
+Spawner::~Spawner()
+{
+	for (int i { 0 }; i < m_objects.size(); ++i)
+	{
+		for (int j { 0 }; j < m_objects.top().size(); ++j)
+		{
+			std::swap(m_objects.top().at(j), m_objects.top().back());
+			delete m_objects.top().back();
+			m_objects.top().pop_back();
+			--j;
+		}
+		m_objects.pop();
+	}
+}
+
 bool Spawner::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
 	m_timer += dt;
@@ -100,8 +115,9 @@ bool Spawner::readFile(const std::string& filePath)
 				}
 			}
 		}
-		
+
 		m_objects.push(objects);
+		objects.clear();
 	}
 
 	return true;

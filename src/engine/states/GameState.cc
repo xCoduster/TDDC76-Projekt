@@ -199,6 +199,14 @@ void GameState::cleanup()
 	 	--i;
 	}
 
+	for (int i = 0; i < new_objects.size(); i++)
+	{
+		std::swap(new_objects.at(i), new_objects.back());
+       	delete new_objects.back();
+	 	new_objects.pop_back();
+	 	--i;
+	}
+
 	for (int i = 0; i < stars.size(); i++)
 	{
 		std::swap(stars.at(i), stars.back());

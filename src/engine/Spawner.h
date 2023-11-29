@@ -3,7 +3,6 @@
 #include "objects/Object.h"
 
 #include <vector>
-#include <stack>
 
 #include <SFML/System/Clock.hpp>
 
@@ -17,8 +16,10 @@ public:
 
 	bool readFile(const std::string& filePath);
 
+	void cleanup();
+
 private:
-	std::stack<std::vector<Object*>> m_objects;
+	std::vector<std::vector<Object*>> m_objects;
 
 	sf::Time m_timer;
 

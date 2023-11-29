@@ -29,7 +29,7 @@ GameState::GameState()
 	
 	for (int i = 0; i < 120; i++)
 	{
-		Star* star{new Star};
+		Star* star{ new Star };
 		stars.push_back(star);
 	}
 }
@@ -214,4 +214,6 @@ void GameState::cleanup()
 		stars.pop_back();
 		--i;
 	}
+
+	m_spawner.cleanup();
 }

@@ -122,7 +122,7 @@ void MenuState::update(const sf::Time& dt)
 		m_state = State::Exit;
 
 	for (Star* star : stars)
-		star->update(dt, std::vector<Object*>{});
+		star->update(dt, objects);
 }
 
 void MenuState::draw()

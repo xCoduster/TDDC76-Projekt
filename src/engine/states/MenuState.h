@@ -28,4 +28,5 @@ private:
     Button m_exitButton;
 
     std::vector<Star*> stars;
+    std::vector<Object*> objects;
 };

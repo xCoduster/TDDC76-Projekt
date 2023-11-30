@@ -9,7 +9,7 @@
 MenuState::MenuState()
 	: m_playButton(), m_exitButton()
 {
-	tech_font.loadFromFile("res/fonts/ShareTechMono-Regular.ttf");
+	m_font.loadFromFile("res/fonts/ShareTechMono-Regular.ttf");
 
 	for (int i = 0; i < 120; i++)
 	{
@@ -23,7 +23,7 @@ int MenuState::run(std::shared_ptr<sf::RenderWindow> window)
 	m_window = window;
 	m_state = State::Menu;
 
-	title_text.setFont(tech_font);
+	title_text.setFont(m_font);
 	title_text.setString("Space Craze");
 	title_text.setCharacterSize(65);
 	title_text.setFillColor(sf::Color::Yellow);
@@ -32,15 +32,13 @@ int MenuState::run(std::shared_ptr<sf::RenderWindow> window)
 
 	m_playButton.setSize(sf::Vector2f{ 200.f, 50.f });
 	m_playButton.setColor(sf::Color(0x939393ff), sf::Color(0xadadadff), sf::Color(0xcececeff));
-	m_playButton.setText("Play", tech_font);
+	m_playButton.setText("Play", m_font);
 	m_playButton.setPosition(sf::Vector2f{ m_window->getView().getCenter().x, 200.f });
 
 	m_exitButton.setSize(sf::Vector2f{ 200.f, 50.f });
 	m_exitButton.setColor(sf::Color(0x939393ff), sf::Color(0xadadadff), sf::Color(0xcececeff));
-	m_exitButton.setText("Exit", tech_font);
+	m_exitButton.setText("Exit", m_font);
 	m_exitButton.setPosition(sf::Vector2f{ m_window->getView().getCenter().x, 260.f });
-
-	m_window->setFramerateLimit(60);
 
 	m_view = m_window->getView();
 

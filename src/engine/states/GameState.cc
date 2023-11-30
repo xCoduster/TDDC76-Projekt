@@ -41,8 +41,6 @@ int GameState::run(std::shared_ptr<sf::RenderWindow> window)
 	m_window = window;
 	m_state = State::Game;
 
-	m_window->setFramerateLimit(60);
-
 	m_view = m_window->getView();
 
     bool running = true;
@@ -68,11 +66,8 @@ int GameState::run(std::shared_ptr<sf::RenderWindow> window)
 
             if (event.type == sf::Event::KeyPressed)
 			{
-				if (event.key.code == sf::Keyboard::Space)
-				{
-					// Byt skärm till menyn
-					m_state = State::Menu;
-				}
+				if (event.key.code == sf::Keyboard::Escape)
+					m_state = State::Pause;					// Byt skärm till pausemenyn
 
 				if (event.key.code == sf::Keyboard::G)
 					player->m_godMode = !player->m_godMode;
@@ -82,8 +77,6 @@ int GameState::run(std::shared_ptr<sf::RenderWindow> window)
 			{
 				resize(event.size, *window);
 			}
-
-
 		}
 
 		sf::Time now = clock.getElapsedTime();
@@ -111,7 +104,6 @@ int GameState::run(std::shared_ptr<sf::RenderWindow> window)
 
 		if (m_state != State::Game)
 			return m_state;
-
 	}
 
 	// Bör inte komma hit

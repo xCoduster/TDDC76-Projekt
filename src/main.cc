@@ -5,6 +5,7 @@
 #include "engine/states/State.h"
 #include "engine/states/GameState.h"
 #include "engine/states/MenuState.h"
+#include "engine/states/PauseState.h"
 
 #include <iostream>
 #include <fstream>
@@ -23,12 +24,16 @@ int main(int argc, char* argv[])
     std::shared_ptr<sf::RenderWindow> window{ std::make_shared<sf::RenderWindow>(sf::VideoMode(640, 480), 
         "Space Craze", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize)};
 
+    window->setFramerateLimit(60);
+
     config("res/config.txt");
 
     MenuState menuState;
     states.push_back(&menuState);
     GameState gameState;
     states.push_back(&gameState);
+    PauseState pauseState;
+    states.push_back(&pauseState);
 
     while (state != State::Exit)
     {

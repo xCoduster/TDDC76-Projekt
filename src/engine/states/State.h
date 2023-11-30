@@ -31,7 +31,8 @@ public:
     {
         Exit = -1,
         Menu,
-        Game
+        Game,
+        Pause
     };
 
 protected:

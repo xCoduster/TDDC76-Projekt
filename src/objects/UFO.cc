@@ -23,16 +23,8 @@ UFO::UFO()
 	m_deathSound.setVolume(50.0f);
 	//m_deathSound.setPitch(1.5f + random(-3, 3) / 10.0f);
 
-	TextureManager& texMgr{ TextureManager::instance() };
-
-	for (int i = 0; i < 3; ++i)
-	{
-		m_frames.push_back(*texMgr.load("res/ufo/ufo-0" + std::to_string(i) + ".png"));
-	}
-
-	m_Texture = m_frames.at(m_currentFrame);
-
-	m_Sprite.setTexture(m_Texture);
+	m_Path = "res/ufo/ufo-0";
+	loadFrames(3);
 
 	float Y = 200.0f;
 	float X = 640.0f;

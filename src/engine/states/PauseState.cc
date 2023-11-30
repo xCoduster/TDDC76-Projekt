@@ -118,7 +118,7 @@ void PauseState::draw()
 {
 	m_window->clear(sf::Color::Black);
 
-	//m_window->draw(m_gameSprite);
+	m_window->draw(m_gameSprite);
 	m_window->draw(m_continueButton);
 	m_window->draw(m_menuButton);
 

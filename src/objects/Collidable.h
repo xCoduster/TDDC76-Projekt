@@ -24,6 +24,8 @@ namespace Collision
         UFO = 1 << 3,
         Seeker = 1 << 4,
         PowerUp = 1 << 5,
-        Projectile = 1 << 6
+        PlayerProj = 1 << 6,
+        EnemyProj = 1 << 7,
+        Explosion = 1 << 8
     };
 }

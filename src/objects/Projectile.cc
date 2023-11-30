@@ -13,7 +13,10 @@ Projectile::Projectile(sf::Vector2f cord, bool isenemy)
     m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
     m_Sprite.setPosition(cord.x + texture_size.x, cord.y);
 
-    m_Tag = Collision::Projectile;
+    if (isenemy)
+        m_Tag = Collision::EnemyProj;
+    else
+        m_Tag = Collision::PlayerProj;
 } 
 
 void Projectile::update(const sf::Time& dt, std::vector<Object*>& new_objects)
@@ -45,6 +48,14 @@ void Projectile::movement(const sf::Time& dt)
 
 void Projectile::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
-    if (other->m_Tag & Collision::Enemy)
-        m_Dead = true;
+    if (isenemy)
+    {
+        if (other->m_Tag & Collision::Player)
+            m_Dead = true;
+    }
+    else
+    {
+        if (other->m_Tag & Collision::Enemy)
+            m_Dead = true;
+    }
 }

@@ -1,0 +1,2 @@
+# Space Craze config
+seed=0

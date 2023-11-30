@@ -9,7 +9,7 @@ set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_USE_RELATIVE_PATHS TRUE)
 
 # Välj vilka delar av SFML som ska användas.
-set(SFML_MODULES network graphics window system)
+set(SFML_MODULES network graphics window system audio)
 
 # Lägg till lämpliga bibliotek till kompileringen. Man kan använda 'find_package ',
 # men det kräver att SFML är installerat på ett annat sätt.

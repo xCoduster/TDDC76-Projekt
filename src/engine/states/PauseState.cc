@@ -57,7 +57,7 @@ int PauseState::run(std::shared_ptr<sf::RenderWindow> window)
 			if (event.type == sf::Event::KeyPressed)
 			{
 				if (event.key.code == sf::Keyboard::Escape)
-					m_state = State::Game;					// Byt skärm till spelet
+					m_state = State::Game;					// Byt skï¿½rm till spelet
 			}
 		}
 
@@ -105,7 +105,7 @@ void PauseState::handle(sf::Event event)
 
 void PauseState::update(const sf::Time& dt)
 {
-	sf::Vector2i mousePos{ sf::Mouse::getPosition(*m_window) };
+	sf::Vector2f mousePos{ m_window->mapPixelToCoords(sf::Mouse::getPosition(*m_window)) };
 
 	if (m_continueButton.update(mousePos))
 		m_state = State::Game;

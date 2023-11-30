@@ -35,11 +35,9 @@ void Button::setColor(const sf::Color& color, const sf::Color& hoverColor, const
 	m_activeColor = activeColor;
 }
 
-bool Button::update(const sf::Vector2i& mousePos)
+bool Button::update(const sf::Vector2f& mousePos)
 {
-	m_mousePos = sf::Vector2f(mousePos);
-
-	if (m_rect.getGlobalBounds().contains(m_mousePos))
+	if (m_rect.getGlobalBounds().contains(mousePos))
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 		{

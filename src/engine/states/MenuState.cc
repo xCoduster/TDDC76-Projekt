@@ -113,7 +113,7 @@ void MenuState::handle(sf::Event event)
 
 void MenuState::update(const sf::Time& dt)
 {
-	sf::Vector2i mousePos{ sf::Mouse::getPosition(*m_window) };
+	sf::Vector2f mousePos{ m_window->mapPixelToCoords(sf::Mouse::getPosition(*m_window)) };
 
 	if (m_playButton.update(mousePos))
 		m_state = State::Game;

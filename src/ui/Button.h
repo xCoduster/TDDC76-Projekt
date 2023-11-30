@@ -12,7 +12,7 @@ public:
 	void setText(const std::string& text, const sf::Font& font, const sf::Color& color = sf::Color::White);
 	void setColor(const sf::Color& color, const sf::Color& hoverColor, const sf::Color& activeColor);
 
-	bool update(const sf::Vector2i& mousePos);
+	bool update(const sf::Vector2f& mousePos);
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -29,6 +29,4 @@ private:
 	sf::Color m_color;
 	sf::Color m_hoverColor;
 	sf::Color m_activeColor;
-
-	sf::Vector2f m_mousePos;
 };

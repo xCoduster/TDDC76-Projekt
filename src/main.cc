@@ -11,15 +11,17 @@
 #include <sstream>
 #include <random>
 #include <vector>
+#include <memory>
 
 void config(const std::string& filePath);
 
 int main(int argc, char* argv[])
 {
     std::vector<State*> states;
-    int state = 0;
+    int state = State::Menu;
     // TODO: Lägg till variabler på fönsterstorleken
-    sf::RenderWindow window{sf::VideoMode(640, 480), "Space Craze", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize};
+    std::shared_ptr<sf::RenderWindow> window{ std::make_shared<sf::RenderWindow>(sf::VideoMode(640, 480), 
+        "Space Craze", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize)};
 
     config("res/config.txt");
 
@@ -28,12 +30,12 @@ int main(int argc, char* argv[])
     GameState gameState;
     states.push_back(&gameState);
 
-    while (state >= 0)
+    while (state != State::Exit)
     {
         state = states[state]->run(window);
     }
 
-    window.close();
+    window->close();
 
     for (State* state : states)
         state->cleanup();

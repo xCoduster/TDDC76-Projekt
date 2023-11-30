@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <memory>
+#include <iostream>
 
 class State
 {
@@ -17,7 +18,7 @@ public:
     {
         sf::Vector2f size{ static_cast<float>(event.width), static_cast<float>(event.height) };
 
-        if (size.x / size.y > 4 / 3)
+        if (size.x / size.y > 4.f / 3.f)
             m_view.setViewport(sf::FloatRect((1 - (4.f / 3.f * size.y) / size.x) / 2, 0, (4.f / 3.f * size.y) / size.x, 1.0f));
         else
             m_view.setViewport(sf::FloatRect(0, (1 - (3.f / 4.f * size.x) / size.y) / 2, 1.0f, (3.f / 4.f * size.x) / size.y));

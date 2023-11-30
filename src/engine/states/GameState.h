@@ -8,6 +8,7 @@
 #include "objects/Projectile.h"
 #include "objects/PowerUp.h"
 #include "objects/Star.h"
+#include "objects/Seeker.h"
 
 #include "engine/Spawner.h"
 

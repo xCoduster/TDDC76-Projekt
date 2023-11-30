@@ -14,7 +14,7 @@ public:
 
 	bool update(const sf::Time& dt, std::vector<Object*>& new_objects);
 
-	bool readFile(const std::string& filePath);
+	bool readFile(const std::string& filePath, Object* playerObject);
 
 	void cleanup();
 

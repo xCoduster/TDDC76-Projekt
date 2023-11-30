@@ -19,10 +19,9 @@ Player::Player()
 	m_laserSound.setVolume(75.0f);
 
 	TextureManager& texMgr{ TextureManager::instance() };
-	m_Texture = *texMgr.load("res/player.png");
+	m_Texture = *texMgr.load("res/player.v2.png");
 
 	m_Sprite.setTexture(m_Texture);
-	m_Sprite.setRotation(90);
 	sf::Vector2u texture_size { m_Texture.getSize() };
 
 	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
@@ -39,6 +38,7 @@ void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 	blast(dt, new_objects);
 	
 	m_t_powerUp += dt;
+
 	if (m_t_powerUp > sf::seconds(10))
 		active_powerUp = false;
 

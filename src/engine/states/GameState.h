@@ -9,6 +9,7 @@
 #include "objects/PowerUp.h"
 #include "objects/Star.h"
 #include "objects/Seeker.h"
+#include "objects/GameBar.h"
 
 #include "engine/Spawner.h"
 
@@ -28,6 +29,7 @@ public:
     virtual void cleanup() override;
 private:
     Player* player;
+    GameBar* gameBar;
     std::vector<Object*> objects;
     std::vector<Object*> new_objects;
 

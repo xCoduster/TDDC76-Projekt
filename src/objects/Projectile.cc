@@ -6,7 +6,7 @@ Projectile::Projectile(sf::Vector2f cord, bool isenemy)
     :isenemy{isenemy}
 {
     TextureManager& texMgr{ TextureManager::instance() };
-    m_Texture = *texMgr.load("res/lazer.png");
+    m_Texture = *texMgr.load("res/lazer.v2.png");
 
 	m_Sprite.setTexture(m_Texture);
     sf::Vector2u texture_size { m_Texture.getSize() };

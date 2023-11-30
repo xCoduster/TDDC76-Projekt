@@ -3,6 +3,8 @@
 #include "objects/PowerUp.h"
 #include "util/Log.h"
 
+#include "engine/resource/TextureManager.h"
+
 #include <iostream>
 
 #include "engine/resource/AudioManager.h"
@@ -34,6 +36,8 @@ GameState::GameState()
 		Star* star{ new Star };
 		stars.push_back(star);
 	}
+
+	gameBar = new GameBar(player);
 }
 
 int GameState::run(std::shared_ptr<sf::RenderWindow> window)
@@ -148,6 +152,9 @@ void GameState::update(const sf::Time& dt)
 		new_objects.pop_back();
 		--i;
 	}
+
+	gameBar -> update();
+
 }
 
 void GameState::draw()
@@ -159,6 +166,8 @@ void GameState::draw()
 
 	for (Object* object : objects)
 		m_window->draw(*object);
+
+	m_window->draw(*gameBar);
 
     m_window->display();
 }

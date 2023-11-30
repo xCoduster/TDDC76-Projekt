@@ -10,6 +10,8 @@
 GameState::GameState()
 	: m_spawner{ 0.5f, 3.0f }
 {
+	m_state = State::Game;
+
 	player = new Player;
 	objects.push_back(player);
 	sf::Vector2f powerUp_cord {640/2, 480/2};
@@ -34,11 +36,14 @@ GameState::GameState()
 	}
 }
 
-int GameState::run(sf::RenderWindow& window)
+int GameState::run(std::shared_ptr<sf::RenderWindow> window)
 {
-	window.setFramerateLimit(60);
+	m_window = window;
+	m_state = State::Game;
 
-	m_View = window.getView();
+	m_window->setFramerateLimit(60);
+
+	m_view = m_window->getView();
 
     bool running = true;
     unsigned int fps = 0;
@@ -56,17 +61,17 @@ int GameState::run(sf::RenderWindow& window)
 	while (running)
 	{
 		sf::Event event;
-		while (window.pollEvent(event))
+		while (m_window->pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
-				return -1;
+				m_state = State::Exit;
 
             if (event.type == sf::Event::KeyPressed)
 			{
 				if (event.key.code == sf::Keyboard::Space)
 				{
 					// Byt skärm till menyn
-					return 0;
+					m_state = State::Menu;
 				}
 
 				if (event.key.code == sf::Keyboard::G)
@@ -75,14 +80,7 @@ int GameState::run(sf::RenderWindow& window)
 
 			if (event.type == sf::Event::Resized)
 			{
-				sf::Vector2f size{ static_cast<float>(event.size.width), static_cast<float>(event.size.height) };
-
-				if (size.x / size.y > 4 / 3)
-					m_View.setViewport(sf::FloatRect((1 - (4.f / 3.f * size.y) / size.x) / 2, 0, (4.f / 3.f * size.y) / size.x, 1.0f));
-				else
-					m_View.setViewport(sf::FloatRect(0, (1 - (3.f / 4.f * size.x) / size.y) / 2, 1.0f, (3.f / 4.f * size.x) / size.y));
-				
-				window.setView(m_View);
+				resize(event.size, *window);
 			}
 
 
@@ -95,7 +93,7 @@ int GameState::run(sf::RenderWindow& window)
         update(dt);
 		updates++;
 		
-		draw(window);
+		draw();
 		frames++;
 
 		if (clock.getElapsedTime().asSeconds() - timer > 1.0f)
@@ -110,9 +108,14 @@ int GameState::run(sf::RenderWindow& window)
 
 			LOG_INFO("FPS: " << fps << ", UPS: " << ups);
 		}
+
+		if (m_state != State::Game)
+			return m_state;
+
 	}
 
-    return -1;
+	// Bör inte komma hit
+    return State::Exit;
 }
 
 void GameState::handle(sf::Event event)
@@ -155,17 +158,17 @@ void GameState::update(const sf::Time& dt)
 	}
 }
 
-void GameState::draw(sf::RenderWindow& window)
+void GameState::draw()
 {
-    window.clear(sf::Color::Black);
+    m_window->clear(sf::Color::Black);
 
 	for (Star* star : stars)
-		window.draw(*star);
+		m_window->draw(*star);
 
 	for (Object* object : objects)
-		window.draw(*object);
+		m_window->draw(*object);
 
-    window.display();
+    m_window->display();
 }
 
 void GameState::checkCollision()

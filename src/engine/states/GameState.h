@@ -17,10 +17,10 @@ class GameState : public State
 {
 public:
     GameState();
-    virtual int run(sf::RenderWindow& window) override;
+    virtual int run(std::shared_ptr<sf::RenderWindow> window) override;
     virtual void handle(sf::Event event) override;
     virtual void update(const sf::Time& dt) override;
-    virtual void draw(sf::RenderWindow& window) override;
+    virtual void draw() override;
 
     void checkCollision();
 
@@ -33,6 +33,4 @@ private:
     std::vector<Star*> stars;
 
     Spawner m_spawner;
-
-    sf::View m_View;
 };

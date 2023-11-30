@@ -16,7 +16,7 @@ GameState::GameState()
 	PowerUp* powerUp{ new PowerUp(powerUp_cord) };
 	new_objects.push_back(powerUp);
 
-	m_spawner.readFile("res/waves.lvl");
+	m_spawner.readFile("res/waves.lvl",objects.at(0));
 
 	// Ladda in alla ljudfiler från start
 	AudioManager& audioMgr{ AudioManager::instance() };
@@ -133,7 +133,7 @@ void GameState::update(const sf::Time& dt)
 	
 	
 	if (m_spawner.update(dt, new_objects))
-		m_spawner.readFile("res/waves.lvl");
+		m_spawner.readFile("res/waves.lvl",objects.at(0));
 
 	for (int i = 0; i < objects.size(); i++)
 	{

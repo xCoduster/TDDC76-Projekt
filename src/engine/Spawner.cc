@@ -7,6 +7,7 @@
 
 #include "objects/Bomb.h"
 #include "objects/UFO.h"
+#include "objects/Seeker.h"
 #include "util/Log.h"
 #include "util/Random.h"
 
@@ -61,7 +62,7 @@ bool Spawner::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 	return false;
 }
 
-bool Spawner::readFile(const std::string& filePath)
+bool Spawner::readFile(const std::string& filePath, Object* playerObject)
 {
 	std::ifstream ifs{ filePath };
 
@@ -97,6 +98,8 @@ bool Spawner::readFile(const std::string& filePath)
 						objects.back()->setPosition(sf::Vector2f(640 + random(0, 32), random(32, 448)));
 						break;
 					case 's':
+						objects.push_back(new Seeker{playerObject});
+						objects.back()->setPosition(sf::Vector2f(640 + random(0, 32), random(32, 448)));
 						break;
 					case 'u':
 						objects.push_back(new UFO{});

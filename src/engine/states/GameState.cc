@@ -2,7 +2,7 @@
 
 #include "engine/resource/AudioManager.h"
 #include "engine/resource/TextureManager.h"
-#include "objects/EnemyProjectile.h"
+#include "objects/enemies/Boss.h"
 
 #include "util/Log.h"
 
@@ -15,6 +15,10 @@ GameState::GameState()
 
 	player = new Player;
 	objects.push_back(player);
+
+	Boss* boss = new Boss();
+	objects.push_back(boss);
+
 
 	m_spawner.readFile("res/waves.lvl", player);
 
@@ -135,7 +139,7 @@ void GameState::update(const sf::Time& dt)
 		if (objects.at(i)->m_Dead)
 		{
 			if (objects.at(i)->m_addScore)
-				m_gameBar->addScore(1111);
+				m_gameBar->addScore(10);
 
 			std::swap(objects.at(i), objects.back());
 			delete objects.back();

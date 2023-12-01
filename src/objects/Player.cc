@@ -114,7 +114,7 @@ void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 		if(active_powerUp == true)
 		{
 			sf::Vector2f lazer_pos = m_Sprite.getPosition();
-			Projectile* lazer1{new Projectile(m_Sprite.getPosition(), false)};
+			Projectile* lazer1{new Projectile(lazer_pos, false)};
 			lazer_pos.y += 30;
 			Projectile* lazer2{new Projectile(lazer_pos, false)};
 			lazer_pos.y -= 60;

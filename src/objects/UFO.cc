@@ -6,6 +6,7 @@
 #include "Projectile.h"
 
 #include "util/Random.h"
+#include <cmath>
 
 UFO::UFO()
 	: m_soundTimer{}

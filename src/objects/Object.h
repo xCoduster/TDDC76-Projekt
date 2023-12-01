@@ -6,7 +6,7 @@ class Object : public sf::Drawable
 {
 public:
     Object()
-        : m_Dead(false)
+        : m_Dead{false}, m_addScore{ false }
     {}
 
     virtual void update(const sf::Time& dt, std::vector<Object*>& new_objects) = 0;
@@ -28,6 +28,7 @@ public:
 
     sf::Sprite m_Sprite;
     bool m_Dead;
+    bool m_addScore;
 
 protected:
     sf::Texture m_Texture;

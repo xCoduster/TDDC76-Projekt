@@ -133,6 +133,9 @@ void GameState::update(const sf::Time& dt)
 	{
 		if (objects.at(i)->m_Dead)
 		{
+			if (objects.at(i)->m_addScore)
+				m_gameBar->addScore(1111);
+
 			std::swap(objects.at(i), objects.back());
 			delete objects.back();
 			objects.pop_back();

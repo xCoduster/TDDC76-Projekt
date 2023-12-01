@@ -5,7 +5,7 @@
 #include <iostream>
 
 GameBar::GameBar(Player* player)
-    :m_sprites{}, m_images{}
+    : m_sprites{}, m_images{}, scoreVal{0}
 {
     TextureManager& texMgr{ TextureManager::instance() };
     m_images.push_back(*texMgr.load("res/player.v2.png"));
@@ -15,7 +15,7 @@ GameBar::GameBar(Player* player)
     sprite.setPosition(10.0f, 10.0f);
     m_sprites.push_back(sprite);
 
-    font.loadFromFile("res/PixeloidSansBold.ttf");
+    font.loadFromFile("res/fonts/PixeloidSansBold.ttf");
     life.setFont(font);
     life_pink.setFont(font);
     life_blue.setFont(font);
@@ -43,17 +43,17 @@ GameBar::GameBar(Player* player)
     score_pink.setFont(font);
     score_blue.setFont(font);
 
-    score.setString(Hp);
+    score.setString("0000");
     score.setCharacterSize(50.0f);
     score.setFillColor(sf::Color::White);
     score.setPosition(450.0f, 10.0f);
 
-    score_pink.setString(Hp);
+    score_pink.setString("0000");
     score_pink.setCharacterSize(50.0f);
     score_pink.setFillColor(sf::Color::Magenta);
     score_pink.setPosition(448.0f, 8.0f);
 
-    score_blue.setString(Hp);
+    score_blue.setString("0000");
     score_blue.setCharacterSize(50.0f);
     score_blue.setFillColor(sf::Color::Cyan);
     score_blue.setPosition(452.0f, 12.0f);    
@@ -61,22 +61,30 @@ GameBar::GameBar(Player* player)
 
 void GameBar::update()
 {
-    
     Hp = std::to_string(player_pointer -> m_Hitpoints);
     life.setString(Hp);
     life_pink.setString(Hp); 
     life_blue.setString(Hp);  
+}
 
-    std::string temp {};
+void GameBar::addScore(int score)
+{
+    scoreVal += score;
+    
+    if (scoreVal >= 10000)
+        scoreVal -= 10000;
 
-    for (int i = 0; i < 4 - Hp.length(); i++)
+    scoreStr = std::to_string(scoreVal);
+
+    std::string temp{};
+
+    for (int i{ 0 }; i < 4 - scoreStr.length(); i++)
     {
-        temp +="0";
+        temp += "0";
     }
 
-    temp += Hp;
-    score.setString(temp);
+    temp += scoreStr;
+    this->score.setString(temp);
     score_pink.setString(temp);
     score_blue.setString(temp);
-
 }

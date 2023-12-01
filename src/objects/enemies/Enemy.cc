@@ -31,7 +31,10 @@ void Enemy::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 		else
 		{
 			if (m_deathSound.getStatus() == sf::SoundSource::Stopped)
+			{
 				m_Dead = true;
+				m_addScore = true;
+			}
 		}
 		m_soundTimer += dt;
 	}

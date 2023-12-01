@@ -9,8 +9,11 @@ class GameBar : public sf::Drawable
 {
 public:
     GameBar(Player* player);
+
     void update();
-protected:
+    void addScore(int score);
+
+private:
     std::vector<sf::Sprite> m_sprites;
     std::vector<sf::Texture> m_images;
     sf::Font font;
@@ -26,6 +29,8 @@ protected:
     Player* player_pointer;
 
     std::string Hp;
+    std::string scoreStr;
+    int scoreVal;
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const
     {

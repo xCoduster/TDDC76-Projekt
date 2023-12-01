@@ -23,7 +23,7 @@ void Boss::movement(const sf::Time& dt)
 
 }
 
-void Boss::Collision(const Collidable* other, std::vector<Object*>& new_objects)
+bool Boss::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
 
 }

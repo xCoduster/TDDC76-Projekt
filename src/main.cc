@@ -5,21 +5,26 @@
 #include "engine/states/State.h"
 #include "engine/states/GameState.h"
 #include "engine/states/MenuState.h"
+#include "engine/states/PauseState.h"
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <random>
 #include <vector>
+#include <memory>
 
 void config(const std::string& filePath);
 
 int main(int argc, char* argv[])
 {
     std::vector<State*> states;
-    int state = 0;
+    int state = State::Menu;
     // TODO: Lägg till variabler på fönsterstorleken
-    sf::RenderWindow window{sf::VideoMode(640, 480), "Space Craze", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize};
+    std::shared_ptr<sf::RenderWindow> window{ std::make_shared<sf::RenderWindow>(sf::VideoMode(640, 480), 
+        "Space Craze", sf::Style::Titlebar | sf::Style::Close)};
+
+    window->setFramerateLimit(60);
 
     config("res/config.txt");
 
@@ -27,13 +32,15 @@ int main(int argc, char* argv[])
     states.push_back(&menuState);
     GameState gameState;
     states.push_back(&gameState);
+    PauseState pauseState;
+    states.push_back(&pauseState);
 
-    while (state >= 0)
+    while (state != State::Exit)
     {
         state = states[state]->run(window);
     }
 
-    window.close();
+    window->close();
 
     for (State* state : states)
         state->cleanup();

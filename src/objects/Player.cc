@@ -19,10 +19,9 @@ Player::Player()
 	m_laserSound.setVolume(75.0f);
 
 	TextureManager& texMgr{ TextureManager::instance() };
-	m_Texture = *texMgr.load("res/player.png");
+	m_Texture = *texMgr.load("res/player.v2.png");
 
 	m_Sprite.setTexture(m_Texture);
-	m_Sprite.setRotation(90);
 	sf::Vector2u texture_size { m_Texture.getSize() };
 
 	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
@@ -30,23 +29,28 @@ Player::Player()
 
 	m_Tag = Collision::Player;
 
-	m_Hitpoints = 10;
+	m_Hitpoints = 3;
 }
 
 void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
-    movement(dt);
-	blast(dt, new_objects);
-	
 	m_t_powerUp += dt;
+
 	if (m_t_powerUp > sf::seconds(10))
 		active_powerUp = false;
 
 	if (m_t_invincibility >= sf::seconds(0.0f))
 		m_t_invincibility -= dt;
 
-	if (m_Hitpoints <= 0 && !m_godMode)
-		m_Dead = true;
+	if (m_Hitpoints > 0)
+	{
+		movement(dt);
+		blast(dt, new_objects);
+	}
+	else
+	{
+		m_Sprite.setColor(sf::Color{ 0 });
+	}
 }
 
 void Player::movement(const sf::Time& dt)
@@ -87,23 +91,25 @@ void Player::movement(const sf::Time& dt)
 
 }
 
-void Player::Collision(const Collidable* other, std::vector<Object*>& new_objects)
+bool Player::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
+	if (m_Hitpoints <= 0)
+		return false;
+
 	if (other->m_Tag & Collision::PowerUp)
 	{
 		active_powerUp = true;
 		m_t_powerUp = sf::seconds(0);
 		m_pickUpSound.play();
+
+		return true;
 	}
 
-	if (other->m_Tag & Collision::Explosion)
+	if (other->m_Tag & (Collision::Explosion | Collision::Enemy | Collision::EnemyProj))
+	{
 		hurt();
-
-	if (other->m_Tag & Collision::Enemy)
-		hurt();
-
-	if (other->m_Tag & Collision::EnemyProj)
-		hurt();
+		return true;
+	}
 } 
 
 void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
@@ -114,18 +120,18 @@ void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 		if(active_powerUp == true)
 		{
 			sf::Vector2f lazer_pos = m_Sprite.getPosition();
-			Projectile* lazer1{new Projectile(lazer_pos, false)};
+			Projectile* lazer1{ new Projectile(m_Sprite.getPosition()) };
 			lazer_pos.y += 30;
-			Projectile* lazer2{new Projectile(lazer_pos, false)};
+			Projectile* lazer2{ new Projectile(lazer_pos) };
 			lazer_pos.y -= 60;
-			Projectile* lazer3{new Projectile(lazer_pos, false)};
+			Projectile* lazer3{ new Projectile(lazer_pos) };
 			new_objects.push_back(lazer1);
 			new_objects.push_back(lazer2);
 			new_objects.push_back(lazer3);
 		}
 		else
 		{	
-			Projectile* lazer{new Projectile(m_Sprite.getPosition(), false)};
+			Projectile* lazer{ new Projectile(m_Sprite.getPosition()) };
 			new_objects.push_back(lazer);
 		}
 
@@ -146,4 +152,9 @@ void Player::hurt(int amount)
 			m_hurtSound.play();
 		}
 	}
+}
+
+sf::Vector2f Player::getPosition()
+{
+ return m_Sprite.getPosition();
 }

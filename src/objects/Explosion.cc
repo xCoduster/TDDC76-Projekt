@@ -21,16 +21,8 @@ Explosion::Explosion(sf::Vector2f start_pos)
     m_explosionSound.setPitch(1.5f + random(-3, 3) / 10.0f);
     m_explosionSound.play();
 
-    TextureManager& texMgr{ TextureManager::instance() };
-    
-    for (int i = 0; i < 8; i++)
-    {
-	     m_frames.push_back(*texMgr.load("res/explosion/ex-0"+ std::to_string(i) +".png"));
-    }
-
-    m_Texture = m_frames.at(m_currentFrame);
-
-	m_Sprite.setTexture(m_Texture);
+    m_Path = "res/explosion/ex-0";
+    loadFrames(8);
 
     sf::Vector2u texture_size {m_Texture.getSize() };
     m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
@@ -60,7 +52,7 @@ void Explosion::update(const sf::Time& dt, std::vector<Object*>& new_objects)
     movement(dt);
 }
 
-void Explosion::Collision(const Collidable* other, std::vector<Object*>& new_objects)
+bool Explosion::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
-    
+    return false;
 }

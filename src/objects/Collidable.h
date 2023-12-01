@@ -8,7 +8,7 @@ class Collidable : public Object
 {
 public:
     bool Collides(const Collidable* other);
-    virtual void Collision(const Collidable* other, std::vector<Object*>& new_objects) = 0;
+    virtual bool Collision(const Collidable* other, std::vector<Object*>& new_objects) = 0;
     
     unsigned int m_Tag;
 };

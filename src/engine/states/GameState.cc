@@ -1,22 +1,22 @@
 #include "GameState.h"
 
-#include "objects/PowerUp.h"
+#include "engine/resource/AudioManager.h"
+#include "engine/resource/TextureManager.h"
+#include "objects/EnemyProjectile.h"
+
 #include "util/Log.h"
 
 #include <iostream>
 
-#include "engine/resource/AudioManager.h"
-
 GameState::GameState()
 	: m_spawner{ 0.5f, 3.0f }
 {
+	m_state = State::Game;
+
 	player = new Player;
 	objects.push_back(player);
-	sf::Vector2f powerUp_cord {640/2, 480/2};
-	PowerUp* powerUp{ new PowerUp(powerUp_cord) };
-	new_objects.push_back(powerUp);
 
-	m_spawner.readFile("res/waves.lvl");
+	m_spawner.readFile("res/waves.lvl", player);
 
 	// Ladda in alla ljudfiler från start
 	AudioManager& audioMgr{ AudioManager::instance() };
@@ -29,16 +29,19 @@ GameState::GameState()
 	
 	for (int i = 0; i < 120; i++)
 	{
-		Star* star{new Star};
+		Star* star{ new Star };
 		stars.push_back(star);
 	}
+
+	m_gameBar = new GameBar(player);
 }
 
-int GameState::run(sf::RenderWindow& window)
+int GameState::run(std::shared_ptr<sf::RenderWindow> window)
 {
-	window.setFramerateLimit(60);
+	m_window = window;
+	m_state = State::Game;
 
-	m_View = window.getView();
+	m_view = m_window->getView();
 
     bool running = true;
     unsigned int fps = 0;
@@ -56,18 +59,15 @@ int GameState::run(sf::RenderWindow& window)
 	while (running)
 	{
 		sf::Event event;
-		while (window.pollEvent(event))
+		while (m_window->pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
-				return -1;
+				m_state = State::Exit;
 
             if (event.type == sf::Event::KeyPressed)
 			{
-				if (event.key.code == sf::Keyboard::Space)
-				{
-					// Byt skärm till menyn
-					return 0;
-				}
+				if (event.key.code == sf::Keyboard::Escape)
+					m_state = State::Pause;					// Byt skärm till pausemenyn
 
 				if (event.key.code == sf::Keyboard::G)
 					player->m_godMode = !player->m_godMode;
@@ -75,17 +75,8 @@ int GameState::run(sf::RenderWindow& window)
 
 			if (event.type == sf::Event::Resized)
 			{
-				sf::Vector2f size{ static_cast<float>(event.size.width), static_cast<float>(event.size.height) };
-
-				if (size.x / size.y > 4 / 3)
-					m_View.setViewport(sf::FloatRect((1 - (4.f / 3.f * size.y) / size.x) / 2, 0, (4.f / 3.f * size.y) / size.x, 1.0f));
-				else
-					m_View.setViewport(sf::FloatRect(0, (1 - (3.f / 4.f * size.x) / size.y) / 2, 1.0f, (3.f / 4.f * size.x) / size.y));
-				
-				window.setView(m_View);
+				resize(event.size, *window);
 			}
-
-
 		}
 
 		sf::Time now = clock.getElapsedTime();
@@ -95,7 +86,7 @@ int GameState::run(sf::RenderWindow& window)
         update(dt);
 		updates++;
 		
-		draw(window);
+		draw();
 		frames++;
 
 		if (clock.getElapsedTime().asSeconds() - timer > 1.0f)
@@ -110,9 +101,13 @@ int GameState::run(sf::RenderWindow& window)
 
 			LOG_INFO("FPS: " << fps << ", UPS: " << ups);
 		}
+
+		if (m_state != State::Game)
+			return m_state;
 	}
 
-    return -1;
+	// Bör inte komma hit
+    return State::Exit;
 }
 
 void GameState::handle(sf::Event event)
@@ -133,12 +128,15 @@ void GameState::update(const sf::Time& dt)
 	
 	
 	if (m_spawner.update(dt, new_objects))
-		m_spawner.readFile("res/waves.lvl");
+		m_spawner.readFile("res/waves.lvl", player);
 
 	for (int i = 0; i < objects.size(); i++)
 	{
 		if (objects.at(i)->m_Dead)
 		{
+			if (objects.at(i)->m_addScore)
+				m_gameBar->addScore(1111);
+
 			std::swap(objects.at(i), objects.back());
 			delete objects.back();
 			objects.pop_back();
@@ -153,19 +151,24 @@ void GameState::update(const sf::Time& dt)
 		new_objects.pop_back();
 		--i;
 	}
+
+	m_gameBar->update();
+
 }
 
-void GameState::draw(sf::RenderWindow& window)
+void GameState::draw()
 {
-    window.clear(sf::Color::Black);
+    m_window->clear(sf::Color::Black);
 
 	for (Star* star : stars)
-		window.draw(*star);
+		m_window->draw(*star);
 
 	for (Object* object : objects)
-		window.draw(*object);
+		m_window->draw(*object);
 
-    window.display();
+	m_window->draw(*m_gameBar);
+
+    m_window->display();
 }
 
 void GameState::checkCollision()
@@ -199,6 +202,14 @@ void GameState::cleanup()
 	 	--i;
 	}
 
+	for (int i = 0; i < new_objects.size(); i++)
+	{
+		std::swap(new_objects.at(i), new_objects.back());
+       	delete new_objects.back();
+	 	new_objects.pop_back();
+	 	--i;
+	}
+
 	for (int i = 0; i < stars.size(); i++)
 	{
 		std::swap(stars.at(i), stars.back());
@@ -206,4 +217,7 @@ void GameState::cleanup()
 		stars.pop_back();
 		--i;
 	}
+
+	m_spawner.cleanup();
+	delete m_gameBar;
 }

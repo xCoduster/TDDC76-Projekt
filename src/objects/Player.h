@@ -11,10 +11,11 @@ public:
 
     virtual void update(const sf::Time& dt, std::vector<Object*>& new_objects) override;
     virtual void movement(const sf::Time& dt) override;
-    virtual void Collision(const Collidable* other, std::vector<Object*>& new_objects) override;
+    virtual bool Collision(const Collidable* other, std::vector<Object*>& new_objects) override;
 
     void blast(const sf::Time& dt, std::vector<Object*>& new_objects);
     void hurt(int amount = 1);
+    sf::Vector2f getPosition();
 
     bool active_powerUp;
 

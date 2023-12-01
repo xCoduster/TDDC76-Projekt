@@ -1,16 +1,15 @@
 #pragma once
 
 #include "State.h"
-#include "objects/Star.h"
 
 #include "ui/Button.h"
 
 #include <SFML/Graphics.hpp>
 
-class MenuState : public State
+class PauseState : public State
 {
 public:
-    MenuState();
+    PauseState();
 
     virtual int run(std::shared_ptr<sf::RenderWindow> window) override;
 
@@ -22,11 +21,10 @@ public:
 private:
     sf::Font m_font;
 
-    sf::Text title_text;
+    Button m_continueButton;
+    Button m_menuButton;
 
-    Button m_playButton;
-    Button m_exitButton;
-
-    std::vector<Star*> stars;
-    std::vector<Object*> objects;
+    sf::Texture m_gameTex;
+    sf::RenderTexture m_test, m_test2;
+    sf::Sprite m_gameSprite;
 };

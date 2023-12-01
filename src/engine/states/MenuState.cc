@@ -1,16 +1,47 @@
 #include "MenuState.h"
+
 #include <SFML/Graphics.hpp>
-#include <cmath>
+
 #include <iostream>
 
-MenuState::MenuState()
-{
+#include "util/Log.h"
 
+MenuState::MenuState()
+	: m_playButton(), m_exitButton()
+{
+	m_font.loadFromFile("res/fonts/ShareTechMono-Regular.ttf");
+
+	for (int i = 0; i < 120; i++)
+	{
+		Star* star{ new Star };
+		stars.push_back(star);
+	}
 }
 
-int MenuState::run(sf::RenderWindow& window)
+int MenuState::run(std::shared_ptr<sf::RenderWindow> window)
 {
-	window.setFramerateLimit(60);
+	m_window = window;
+	m_state = State::Menu;
+
+	title_text.setFont(m_font);
+	title_text.setString("Space Craze");
+	title_text.setCharacterSize(65);
+	title_text.setFillColor(sf::Color::Yellow);
+	title_text.setOrigin(title_text.getLocalBounds().width / 2.0f, title_text.getLocalBounds().height / 2.0f);
+	title_text.setPosition(m_window->getView().getCenter().x, 80);
+
+	m_playButton.setSize(sf::Vector2f{ 200.f, 50.f });
+	m_playButton.setColor(sf::Color(0x939393ff), sf::Color(0xadadadff), sf::Color(0xcececeff));
+	m_playButton.setText("Play", m_font);
+	m_playButton.setPosition(sf::Vector2f{ m_window->getView().getCenter().x, 200.f });
+
+	m_exitButton.setSize(sf::Vector2f{ 200.f, 50.f });
+	m_exitButton.setColor(sf::Color(0x939393ff), sf::Color(0xadadadff), sf::Color(0xcececeff));
+	m_exitButton.setText("Exit", m_font);
+	m_exitButton.setPosition(sf::Vector2f{ m_window->getView().getCenter().x, 260.f });
+
+	m_view = m_window->getView();
+
     bool running = true;
     unsigned int fps = 0;
     unsigned int ups = 0;
@@ -28,19 +59,13 @@ int MenuState::run(sf::RenderWindow& window)
 	while (running)
 	{
 		sf::Event event;
-		while (window.pollEvent(event))
+		while (m_window->pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
-				return -1;
+				m_state = State::Exit;
 
-			if (event.type == sf::Event::KeyPressed)
-			{
-				if (event.key.code == sf::Keyboard::Space)
-				{
-					return 1;
-				}
-			}
-
+			if (event.type == sf::Event::Resized)
+				resize(event.size, *window);
 		}
 
 		sf::Time now = clock.getElapsedTime();
@@ -58,7 +83,7 @@ int MenuState::run(sf::RenderWindow& window)
 		}
 
 		
-		draw(window);
+		draw();
 		frames++;
 
 		if (clock.getElapsedTime().asSeconds() - timer > 1.0f)
@@ -71,11 +96,14 @@ int MenuState::run(sf::RenderWindow& window)
 
 			// Every second
 
-			std::cout << "FPS: " << fps << ", UPS: " << ups << std::endl;
+			LOG_INFO("FPS: " << fps << ", UPS: " << ups);
 		}
+
+		if (m_state != State::Menu)
+			return m_state;
 	}
 
-    return -1;
+    return State::Exit;
 }
 
 void MenuState::handle(sf::Event event)
@@ -85,55 +113,39 @@ void MenuState::handle(sf::Event event)
 
 void MenuState::update(const sf::Time& dt)
 {
-	
+	sf::Vector2f mousePos{ m_window->mapPixelToCoords(sf::Mouse::getPosition(*m_window)) };
+
+	if (m_playButton.update(mousePos))
+		m_state = State::Game;
+
+	if (m_exitButton.update(mousePos))
+		m_state = State::Exit;
+
+	for (Star* star : stars)
+		star->update(dt, objects);
 }
 
-void MenuState::draw(sf::RenderWindow& window)
+void MenuState::draw()
 {
+	m_window->clear(sf::Color::Black);
 
-	window.clear(sf::Color::Black);
+	for (Star* star : stars)
+		m_window->draw(*star);
 
-// Draw instructions
-	sf::Font tech_font;
-	tech_font.loadFromFile("ShareTechMono-Regular.ttf");
+	m_window->draw(title_text);
+	m_window->draw(m_playButton);
+	m_window->draw(m_exitButton);
 
-	sf::Text instruction_text;
-	instruction_text.setFont(tech_font);
-
-	instruction_text.setString("press SPACE to start game");
-
-	instruction_text.setCharacterSize(24);
-
-	instruction_text.setFillColor(sf::Color::White);
-
-	instruction_text.setOrigin(instruction_text.getLocalBounds().width/2.0f,instruction_text.getLocalBounds().height/2.0f);
-
-	instruction_text.setPosition(window.getView().getCenter().x, window.getView().getCenter().y + 20);
-
-	window.draw(instruction_text);
-
-// Draw title
-
-	sf::Text title_text;
-	title_text.setFont(tech_font);
-
-	title_text.setString("Space Craze");
-
-	title_text.setCharacterSize(65);
-
-	title_text.setFillColor(sf::Color::Yellow);
-
-	title_text.setOrigin(title_text.getLocalBounds().width/2.0f,title_text.getLocalBounds().height/2.0f);
-
-	title_text.setPosition(window.getView().getCenter().x, window.getView().getCenter().y -60);
-
-	window.draw(title_text);
-
-
-    window.display();
+	m_window->display();
 }
 
 void MenuState::cleanup()
 {
-	
+	for (int i = 0; i < stars.size(); i++)
+	{
+		std::swap(stars.at(i), stars.back());
+		delete stars.back();
+		stars.pop_back();
+		--i;
+	}
 }

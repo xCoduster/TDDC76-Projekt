@@ -1,6 +1,7 @@
 #pragma once
 
 #include "objects/Object.h"
+#include "objects/Player.h"
 
 #include <vector>
 
@@ -14,7 +15,7 @@ public:
 
 	bool update(const sf::Time& dt, std::vector<Object*>& new_objects);
 
-	bool readFile(const std::string& filePath, Object* playerObject);
+	bool readFile(const std::string& filePath, Player* playerObject);
 
 	void cleanup();
 

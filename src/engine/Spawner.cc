@@ -6,8 +6,8 @@
 #include <algorithm>
 
 #include "objects/Bomb.h"
-#include "objects/UFO.h"
-#include "objects/Seeker.h"
+#include "objects/enemies/UFO.h"
+#include "objects/enemies/Seeker.h"
 #include "util/Log.h"
 #include "util/Random.h"
 
@@ -62,7 +62,7 @@ bool Spawner::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 	return false;
 }
 
-bool Spawner::readFile(const std::string& filePath, Object* playerObject)
+bool Spawner::readFile(const std::string& filePath, Player* playerObject)
 {
 	std::ifstream ifs{ filePath };
 

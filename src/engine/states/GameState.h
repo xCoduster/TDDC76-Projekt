@@ -3,12 +3,7 @@
 #include "State.h"
 
 #include "objects/Player.h"
-#include "objects/Bomb.h"
-#include "objects/Explosion.h"
-#include "objects/Projectile.h"
-#include "objects/PowerUp.h"
 #include "objects/Star.h"
-#include "objects/Seeker.h"
 #include "objects/GameBar.h"
 
 #include "engine/Spawner.h"
@@ -29,7 +24,7 @@ public:
     virtual void cleanup() override;
 private:
     Player* player;
-    GameBar* gameBar;
+    GameBar* m_gameBar;
     std::vector<Object*> objects;
     std::vector<Object*> new_objects;
 

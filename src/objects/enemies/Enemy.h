@@ -1,16 +1,21 @@
 #pragma once
 
-#include "MovingObject.h"
+#include "objects/AnimatedObject.h"
 
-class Projectile : public MovingObject
+#include <SFML/Audio.hpp>
+
+#include <vector>
+
+class Enemy : public AnimatedObject
 {
 public:
-    Projectile(sf::Vector2f cord, bool isenemy);
+    Enemy();
 
     virtual void update(const sf::Time& dt, std::vector<Object*>& new_objects) override;
     virtual bool Collision(const Collidable* other, std::vector<Object*>& new_objects) override;
-    virtual void movement(const sf::Time& dt) override;
 
 private:
-    bool isenemy;
+    sf::Sound m_deathSound;
+
+    sf::Time m_soundTimer;
 };

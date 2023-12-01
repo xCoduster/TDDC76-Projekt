@@ -1,13 +1,11 @@
 #include "GameState.h"
 
-#include "objects/PowerUp.h"
-#include "util/Log.h"
-
+#include "engine/resource/AudioManager.h"
 #include "engine/resource/TextureManager.h"
 
-#include <iostream>
+#include "util/Log.h"
 
-#include "engine/resource/AudioManager.h"
+#include <iostream>
 
 GameState::GameState()
 	: m_spawner{ 0.5f, 3.0f }
@@ -16,11 +14,8 @@ GameState::GameState()
 
 	player = new Player;
 	objects.push_back(player);
-	sf::Vector2f powerUp_cord {640/2, 480/2};
-	PowerUp* powerUp{ new PowerUp(powerUp_cord) };
-	new_objects.push_back(powerUp);
 
-	m_spawner.readFile("res/waves.lvl",objects.at(0));
+	m_spawner.readFile("res/waves.lvl", player);
 
 	// Ladda in alla ljudfiler från start
 	AudioManager& audioMgr{ AudioManager::instance() };
@@ -37,7 +32,7 @@ GameState::GameState()
 		stars.push_back(star);
 	}
 
-	gameBar = new GameBar(player);
+	m_gameBar = new GameBar(player);
 }
 
 int GameState::run(std::shared_ptr<sf::RenderWindow> window)
@@ -132,7 +127,7 @@ void GameState::update(const sf::Time& dt)
 	
 	
 	if (m_spawner.update(dt, new_objects))
-		m_spawner.readFile("res/waves.lvl",objects.at(0));
+		m_spawner.readFile("res/waves.lvl", player);
 
 	for (int i = 0; i < objects.size(); i++)
 	{
@@ -153,7 +148,7 @@ void GameState::update(const sf::Time& dt)
 		--i;
 	}
 
-	gameBar -> update();
+	m_gameBar->update();
 
 }
 
@@ -167,7 +162,7 @@ void GameState::draw()
 	for (Object* object : objects)
 		m_window->draw(*object);
 
-	m_window->draw(*gameBar);
+	m_window->draw(*m_gameBar);
 
     m_window->display();
 }
@@ -220,4 +215,5 @@ void GameState::cleanup()
 	}
 
 	m_spawner.cleanup();
+	delete m_gameBar;
 }

@@ -52,7 +52,7 @@ void Explosion::update(const sf::Time& dt, std::vector<Object*>& new_objects)
     movement(dt);
 }
 
-void Explosion::Collision(const Collidable* other, std::vector<Object*>& new_objects)
+bool Explosion::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
-    
+    return false;
 }

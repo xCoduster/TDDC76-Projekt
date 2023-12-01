@@ -3,58 +3,37 @@
 #include "engine/resource/TextureManager.h"
 #include "engine/resource/AudioManager.h"
 
-#include "Projectile.h"
+#include "objects/Projectile.h"
+#include "objects/PowerUp.h"
 
 #include "util/Random.h"
 
 #include <cmath>
 
 UFO::UFO()
-	: m_soundTimer{}
+	: Enemy{}
 {
 	m_animTimer = 0;
 	m_currentFrame = 0;
 	m_frameDuration = 0.1f;
 	m_loop = true;
 
-	AudioManager& audioMgr{ AudioManager::instance() };
-
-	m_deathSound.setBuffer(*audioMgr.load("res/audio/ufo.wav"));
-	m_deathSound.setVolume(50.0f);
-	//m_deathSound.setPitch(1.5f + random(-3, 3) / 10.0f);
-
 	m_Path = "res/ufo/ufo-0";
 	loadFrames(3);
 
-	float Y = 200.0f;
-	float X = 640.0f;
-
 	sf::Vector2u texture_size{ m_Texture.getSize() };
 	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
-	m_Sprite.setPosition(X, Y);
 
-	m_Tag = Collision::Enemy | Collision::UFO;
+	m_Tag |= Collision::UFO;
 
 	m_Hitpoints = 1;
 }
 
 void UFO::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
-	if (m_Hitpoints <= 0)
-	{
-		if (m_soundTimer == sf::Time::Zero)
-		{
-			m_deathSound.play();
-			m_Sprite.setColor(sf::Color(0, 0, 0, 0));
-		}
-		else
-		{
-			if (m_deathSound.getStatus() == sf::SoundSource::Stopped)
-				m_Dead = true;
-		}
-		m_soundTimer += dt;
-	}
-	else
+	Enemy::update(dt, new_objects);
+
+	if (m_Hitpoints > 0)
 	{
 		movement(dt);
 		animUpdate(dt);
@@ -68,28 +47,14 @@ void UFO::movement(const sf::Time& dt)
 	m_Speed.y = 1.f * sin(m_Sprite.getPosition().x / 10);
 
 	move(m_Speed * 75.0f * dt.asSeconds());
-		
-	if (m_Sprite.getPosition().x < 0)
-		m_Dead = true;
 }
 
-void UFO::Collision(const Collidable* other, std::vector<Object*>& new_objects)
+bool UFO::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
-	if (other->m_Tag & Collision::PlayerProj)
-		m_Hitpoints -= 1;
+	if (Enemy::Collision(other, new_objects))
+		return true;
 	
-	if (other->m_Tag & Collision::Explosion)
-		m_Hitpoints -= 1;
-
-	if (other->m_Tag == m_Tag)
-	{
-		if (m_Sprite.getPosition().y > other->m_Sprite.getPosition().y)
-		{
-			move(sf::Vector2f(0.0f, 10.0f));
-		}
-		else
-			move(sf::Vector2f(0.0f, -10.0f));
-	}
+	return false;
 }
 
 void UFO::blast(const sf::Time& dt, std::vector<Object*>& new_objects)

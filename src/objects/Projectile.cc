@@ -46,16 +46,26 @@ void Projectile::movement(const sf::Time& dt)
 
 }
 
-void Projectile::Collision(const Collidable* other, std::vector<Object*>& new_objects)
+bool Projectile::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
     if (isenemy)
     {
         if (other->m_Tag & Collision::Player)
+        {
             m_Dead = true;
+
+            return true;
+        }
     }
     else
     {
         if (other->m_Tag & Collision::Enemy)
+        {
             m_Dead = true;
+
+            return true;
+        }
     }
+
+    return false;
 }

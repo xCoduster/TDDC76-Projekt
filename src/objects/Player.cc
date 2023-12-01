@@ -29,14 +29,11 @@ Player::Player()
 
 	m_Tag = Collision::Player;
 
-	m_Hitpoints = 10;
+	m_Hitpoints = 3;
 }
 
 void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
-    movement(dt);
-	blast(dt, new_objects);
-	
 	m_t_powerUp += dt;
 
 	if (m_t_powerUp > sf::seconds(10))
@@ -45,8 +42,15 @@ void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 	if (m_t_invincibility >= sf::seconds(0.0f))
 		m_t_invincibility -= dt;
 
-	if (m_Hitpoints <= 0 && !m_godMode)
-		m_Dead = true;
+	if (m_Hitpoints > 0)
+	{
+		movement(dt);
+		blast(dt, new_objects);
+	}
+	else
+	{
+		m_Sprite.setColor(sf::Color{ 0 });
+	}
 }
 
 void Player::movement(const sf::Time& dt)
@@ -87,23 +91,25 @@ void Player::movement(const sf::Time& dt)
 
 }
 
-void Player::Collision(const Collidable* other, std::vector<Object*>& new_objects)
+bool Player::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
+	if (m_Hitpoints <= 0)
+		return false;
+
 	if (other->m_Tag & Collision::PowerUp)
 	{
 		active_powerUp = true;
 		m_t_powerUp = sf::seconds(0);
 		m_pickUpSound.play();
+
+		return true;
 	}
 
-	if (other->m_Tag & Collision::Explosion)
+	if (other->m_Tag & (Collision::Explosion | Collision::Enemy | Collision::EnemyProj))
+	{
 		hurt();
-
-	if (other->m_Tag & Collision::Enemy)
-		hurt();
-
-	if (other->m_Tag & Collision::EnemyProj)
-		hurt();
+		return true;
+	}
 } 
 
 void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)

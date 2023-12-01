@@ -22,6 +22,7 @@ public:
     void checkCollision();
 
     virtual void cleanup() override;
+    void reset();
 private:
     Player* player;
     GameBar* m_gameBar;
@@ -31,4 +32,8 @@ private:
     std::vector<Star*> stars;
 
     Spawner m_spawner;
+
+    std::string input;
+    sf::Text output;
+    sf::Font m_font;
 };

@@ -37,6 +37,9 @@ int main(int argc, char* argv[])
 
     while (state != State::Exit)
     {
+        if (state == State::Menu)
+            gameState.reset();
+
         state = states[state]->run(window);
     }
 

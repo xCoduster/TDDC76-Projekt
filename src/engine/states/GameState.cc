@@ -10,12 +10,17 @@
 GameState::GameState()
 	: m_spawner{ 0.5f, 3.0f }
 {
-	m_state = State::Game;
-
 	player = new Player;
-	objects.push_back(player);
 
 	m_spawner.readFile("res/waves.lvl", player);
+
+	for (int i = 0; i < 120; i++)
+	{
+		Star* star{ new Star };
+		stars.push_back(star);
+	}
+
+	m_gameBar = new GameBar(player);
 
 	// Ladda in alla ljudfiler från start
 	AudioManager& audioMgr{ AudioManager::instance() };
@@ -26,13 +31,13 @@ GameState::GameState()
 	audioMgr.load("res/audio/powerup.wav");
 	audioMgr.load("res/audio/ufo.wav");
 	
-	for (int i = 0; i < 120; i++)
-	{
-		Star* star{ new Star };
-		stars.push_back(star);
-	}
+	m_font.loadFromFile("res/fonts/ShareTechMono-Regular.ttf");
 
-	m_gameBar = new GameBar(player);
+	output.setFont(m_font);
+	output.setString("");
+	output.setCharacterSize(40);
+	output.setOrigin(output.getLocalBounds().width / 2.0f, output.getLocalBounds().height / 2.0f);
+	output.setPosition(100, 200);
 }
 
 int GameState::run(std::shared_ptr<sf::RenderWindow> window)
@@ -70,6 +75,28 @@ int GameState::run(std::shared_ptr<sf::RenderWindow> window)
 
 				if (event.key.code == sf::Keyboard::G)
 					player->m_godMode = !player->m_godMode;
+
+				if (event.key.code == sf::Keyboard::Backspace)
+				{
+					if (!input.empty())
+					{
+						input.pop_back();
+						output.setString(input);
+					}
+				}
+
+			}
+
+			if (event.type == sf::Event::TextEntered)
+			{
+				sf::Uint32 unicode = event.text.unicode;
+
+				if (unicode >= 0x20 && unicode <= 0x7e)
+				{
+					input += static_cast<char>(unicode);
+					output.setFillColor(sf::Color::White);
+					output.setString(input);
+				}
 			}
 
 			if (event.type == sf::Event::Resized)
@@ -116,11 +143,12 @@ void GameState::handle(sf::Event event)
 
 void GameState::update(const sf::Time& dt)
 {
-
 	for (Star* star : stars)
 		star->update(dt, new_objects);
 
 	checkCollision();
+
+	player->update(dt, new_objects);
 
 	for (Object* object : objects)
 		object->update(dt, new_objects);
@@ -134,13 +162,18 @@ void GameState::update(const sf::Time& dt)
 		if (objects.at(i)->m_Dead)
 		{
 			if (objects.at(i)->m_addScore)
-				m_gameBar->addScore(1111);
+				m_gameBar->addScore(1);
 
 			std::swap(objects.at(i), objects.back());
 			delete objects.back();
 			objects.pop_back();
 			--i;
 		}
+	}
+
+	if (player->m_Dead)
+	{
+
 	}
 
 	for (int i = 0; i < new_objects.size(); i++)
@@ -165,13 +198,19 @@ void GameState::draw()
 	for (Object* object : objects)
 		m_window->draw(*object);
 
+	m_window->draw(*player);
+
 	m_window->draw(*m_gameBar);
+
+	//m_window->draw(output);
 
     m_window->display();
 }
 
 void GameState::checkCollision()
 {
+	objects.push_back(player);
+
 	for (unsigned i{ 0 }; i < objects.size(); ++i)
 	{
 		for (unsigned j{ i + 1 }; j < objects.size(); ++j)
@@ -189,6 +228,8 @@ void GameState::checkCollision()
 			}
 		}
 	}
+
+	objects.pop_back();
 }
 
 void GameState::cleanup()
@@ -200,6 +241,7 @@ void GameState::cleanup()
 	 	objects.pop_back();
 	 	--i;
 	}
+
 
 	for (int i = 0; i < new_objects.size(); i++)
 	{
@@ -218,5 +260,24 @@ void GameState::cleanup()
 	}
 
 	m_spawner.cleanup();
+	
 	delete m_gameBar;
+	delete player;
+}
+
+void GameState::reset()
+{
+	cleanup();
+
+	player = new Player;
+
+	m_spawner.readFile("res/waves.lvl", player);
+
+	for (int i = 0; i < 120; i++)
+	{
+		Star* star{ new Star };
+		stars.push_back(star);
+	}
+
+	m_gameBar = new GameBar(player);
 }

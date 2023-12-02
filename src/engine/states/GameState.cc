@@ -4,11 +4,14 @@
 #include "engine/resource/TextureManager.h"
 
 #include "util/Log.h"
+#include "util/Util.h"
 
 #include <iostream>
+#include <fstream>
+#include <string>
 
 GameState::GameState()
-	: m_spawner{ 0.5f, 3.0f }
+	: m_spawner{ 0.5f, 3.0f }, m_nameInput{}, m_score{ 0 }, m_gameOver{ false }
 {
 	player = new Player;
 
@@ -33,11 +36,18 @@ GameState::GameState()
 	
 	m_font.loadFromFile("res/fonts/ShareTechMono-Regular.ttf");
 
-	output.setFont(m_font);
-	output.setString("");
-	output.setCharacterSize(40);
-	output.setOrigin(output.getLocalBounds().width / 2.0f, output.getLocalBounds().height / 2.0f);
-	output.setPosition(100, 200);
+	m_textBox.setFont(m_font);
+	m_textBox.setString("");
+	m_textBox.setCharacterSize(40);
+	m_textBox.setOrigin(m_textBox.getLocalBounds().width / 2.0f, m_textBox.getLocalBounds().height / 2.0f);
+	m_textBox.setPosition(640 / 2, 480 / 2);
+
+	m_gameOverText.setFont(m_font);
+	m_gameOverText.setString("  Game over! Skriv in ditt\nnamn och spara ditt resultat");
+	m_gameOverText.setCharacterSize(38);
+	m_gameOverText.setColor(sf::Color::Yellow);
+	m_gameOverText.setOrigin(m_gameOverText.getLocalBounds().width / 2.0f, m_gameOverText.getLocalBounds().height / 2.0f);
+	m_gameOverText.setPosition(640 / 2, 100 );
 }
 
 int GameState::run(std::shared_ptr<sf::RenderWindow> window)
@@ -65,44 +75,7 @@ int GameState::run(std::shared_ptr<sf::RenderWindow> window)
 		sf::Event event;
 		while (m_window->pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
-				m_state = State::Exit;
-
-            if (event.type == sf::Event::KeyPressed)
-			{
-				if (event.key.code == sf::Keyboard::Escape)
-					m_state = State::Pause;					// Byt skärm till pausemenyn
-
-				if (event.key.code == sf::Keyboard::G)
-					player->m_godMode = !player->m_godMode;
-
-				if (event.key.code == sf::Keyboard::Backspace)
-				{
-					if (!input.empty())
-					{
-						input.pop_back();
-						output.setString(input);
-					}
-				}
-
-			}
-
-			if (event.type == sf::Event::TextEntered)
-			{
-				sf::Uint32 unicode = event.text.unicode;
-
-				if (unicode >= 0x20 && unicode <= 0x7e)
-				{
-					input += static_cast<char>(unicode);
-					output.setFillColor(sf::Color::White);
-					output.setString(input);
-				}
-			}
-
-			if (event.type == sf::Event::Resized)
-			{
-				resize(event.size, *window);
-			}
+			handle(event);
 		}
 
 		sf::Time now = clock.getElapsedTime();
@@ -138,7 +111,57 @@ int GameState::run(std::shared_ptr<sf::RenderWindow> window)
 
 void GameState::handle(sf::Event event)
 {
+	if (event.type == sf::Event::Closed)
+		m_state = State::Exit;
 
+	if (event.type == sf::Event::KeyPressed)
+	{
+		if (event.key.code == sf::Keyboard::Escape)
+			m_state = State::Pause;					// Byt skärm till pausemenyn
+
+		if (event.key.code == sf::Keyboard::G)
+			player->m_godMode = !player->m_godMode;
+
+		if (m_gameOver)
+		{
+			if (event.key.code == sf::Keyboard::Backspace)
+			{
+				if (!m_nameInput.empty())
+				{
+					m_nameInput.pop_back();
+					m_textBox.setString(m_nameInput);
+					m_textBox.setOrigin(m_textBox.getLocalBounds().width / 2.0f, m_textBox.getLocalBounds().height / 2.0f);
+				}
+			}
+
+			if (event.key.code == sf::Keyboard::Enter)
+			{
+				saveScore();
+				m_state = State::Menu;
+			}
+		}
+
+	}
+
+	if (m_gameOver)
+	{
+		if (event.type == sf::Event::TextEntered)
+		{
+			sf::Uint32 unicode = event.text.unicode;
+
+			if (unicode >= 0x20 && unicode <= 0x7e)
+			{
+				m_nameInput += static_cast<char>(unicode);
+				m_textBox.setString(m_nameInput);
+				m_textBox.setOrigin(m_textBox.getLocalBounds().width / 2.0f, m_textBox.getLocalBounds().height / 2.0f);
+			}
+		}
+	}
+
+	if (event.type == sf::Event::Resized)
+	{
+		resize(event.size, *m_window);
+	}
 }
 
 void GameState::update(const sf::Time& dt)
@@ -162,7 +185,10 @@ void GameState::update(const sf::Time& dt)
 		if (objects.at(i)->m_Dead)
 		{
 			if (objects.at(i)->m_addScore)
-				m_gameBar->addScore(1);
+			{
+				m_score += 1;
+				m_gameBar->showScore(m_score);
+			}
 
 			std::swap(objects.at(i), objects.back());
 			delete objects.back();
@@ -173,7 +199,7 @@ void GameState::update(const sf::Time& dt)
 
 	if (player->m_Dead)
 	{
-
+		m_gameOver = true;
 	}
 
 	for (int i = 0; i < new_objects.size(); i++)
@@ -202,7 +228,11 @@ void GameState::draw()
 
 	m_window->draw(*m_gameBar);
 
-	//m_window->draw(output);
+	if (m_gameOver)
+	{
+		m_window->draw(m_textBox);
+		m_window->draw(m_gameOverText);
+	}
 
     m_window->display();
 }
@@ -230,6 +260,27 @@ void GameState::checkCollision()
 	}
 
 	objects.pop_back();
+}
+
+void GameState::saveScore()
+{
+	std::vector<std::pair<std::string, int>> scores{ readScore("highscore.csv") };
+	
+	scores.push_back(std::make_pair(m_nameInput, m_score));
+	std::sort(scores.begin(), scores.end(), compareScore);
+	
+	std::ofstream outFile{ "highscore.csv", std::ios::trunc };
+
+	for (int i{ 0 }; i < 5; ++i)
+	{
+		if (i >= scores.size())
+			break;
+
+		int index = scores.size() - 1 - i;
+
+		outFile << scores[index].first << "," << scores[index].second << std::endl;
+	}
+
 }
 
 void GameState::cleanup()
@@ -280,4 +331,9 @@ void GameState::reset()
 	}
 
 	m_gameBar = new GameBar(player);
+
+	m_score = 0;
+	m_nameInput = "";
+	m_textBox.setString(m_nameInput);
+	m_gameOver = false;
 }

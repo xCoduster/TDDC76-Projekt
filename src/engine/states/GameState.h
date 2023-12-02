@@ -21,6 +21,8 @@ public:
 
     void checkCollision();
 
+    void saveScore();
+
     virtual void cleanup() override;
     void reset();
 private:
@@ -33,7 +35,11 @@ private:
 
     Spawner m_spawner;
 
-    std::string input;
-    sf::Text output;
     sf::Font m_font;
+    std::string m_nameInput;
+    sf::Text m_textBox;
+    sf::Text m_gameOverText;
+
+    int m_score;
+    bool m_gameOver;
 };

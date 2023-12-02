@@ -3,7 +3,7 @@
 #include "engine/resource/TextureManager.h"
 #include "engine/resource/AudioManager.h"
 
-#include "util/Random.h"
+#include "util/Util.h"
 
 #include <string>
 

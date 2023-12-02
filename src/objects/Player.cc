@@ -5,7 +5,7 @@
 #include "engine/resource/TextureManager.h"
 #include "engine/resource/AudioManager.h"
 
-#include "util/Random.h"
+#include "util/Util.h"
 
 #include <iostream>
 
@@ -50,6 +50,7 @@ void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 	else
 	{
 		m_Sprite.setColor(sf::Color{ 0 });
+		m_Dead = true;
 	}
 }
 
@@ -114,7 +115,7 @@ bool Player::Collision(const Collidable* other, std::vector<Object*>& new_object
 
 void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && m_t_lazer > sf::seconds(0.4f))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_t_lazer > sf::seconds(0.4f))
 	{
 		m_t_lazer = sf::seconds(0);
 		if(active_powerUp == true)

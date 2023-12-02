@@ -11,7 +11,7 @@ public:
     GameBar(Player* player);
 
     void update();
-    void addScore(int score);
+    void showScore(int score);
 
 private:
     std::vector<sf::Sprite> m_sprites;
@@ -30,7 +30,6 @@ private:
 
     std::string Hp;
     std::string scoreStr;
-    int scoreVal;
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const
     {

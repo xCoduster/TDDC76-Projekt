@@ -5,7 +5,7 @@
 #include <iostream>
 
 GameBar::GameBar(Player* player)
-    : m_sprites{}, m_images{}, scoreVal{0}
+    : m_sprites{}, m_images{}
 {
     TextureManager& texMgr{ TextureManager::instance() };
     m_images.push_back(*texMgr.load("res/player.v2.png"));
@@ -67,14 +67,12 @@ void GameBar::update()
     life_blue.setString(Hp);  
 }
 
-void GameBar::addScore(int score)
+void GameBar::showScore(int score)
 {
-    scoreVal += score;
-    
-    if (scoreVal >= 10000)
-        scoreVal -= 10000;
+    if (score >= 10000)
+        score -= 10000;
 
-    scoreStr = std::to_string(scoreVal);
+    scoreStr = std::to_string(score);
 
     std::string temp{};
 

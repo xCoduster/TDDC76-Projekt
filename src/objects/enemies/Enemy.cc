@@ -3,7 +3,7 @@
 #include "engine/resource/AudioManager.h"
 #include "objects/PowerUp.h"
 
-#include "util/Random.h"
+#include "util/Util.h"
 
 Enemy::Enemy()
 	: m_soundTimer{}

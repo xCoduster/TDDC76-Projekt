@@ -6,7 +6,7 @@
 #include "objects/Projectile.h"
 #include "objects/PowerUp.h"
 
-#include "util/Random.h"
+#include "util/Util.h"
 
 #include <cmath>
 

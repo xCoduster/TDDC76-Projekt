@@ -9,7 +9,7 @@
 #include "objects/enemies/UFO.h"
 #include "objects/enemies/Seeker.h"
 #include "util/Log.h"
-#include "util/Random.h"
+#include "util/Util.h"
 
 Spawner::Spawner(float spawnDelay, float waveDelay)
 	: m_timer{}, m_spawnDelay(spawnDelay), m_waveDelay(waveDelay)

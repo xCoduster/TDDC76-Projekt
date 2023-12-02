@@ -48,17 +48,7 @@ int PauseState::run(std::shared_ptr<sf::RenderWindow> window)
 		sf::Event event;
 		while (m_window->pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
-				m_state = State::Exit;
-
-			if (event.type == sf::Event::Resized)
-				resize(event.size, *window);
-
-			if (event.type == sf::Event::KeyPressed)
-			{
-				if (event.key.code == sf::Keyboard::Escape)
-					m_state = State::Game;					// Byt sk�rm till spelet
-			}
+			handle(event);
 		}
 
 		sf::Time now = clock.getElapsedTime();
@@ -100,7 +90,17 @@ int PauseState::run(std::shared_ptr<sf::RenderWindow> window)
 
 void PauseState::handle(sf::Event event)
 {
+	if (event.type == sf::Event::Closed)
+		m_state = State::Exit;
 
+	if (event.type == sf::Event::Resized)
+		resize(event.size, *m_window);
+
+	if (event.type == sf::Event::KeyPressed)
+	{
+		if (event.key.code == sf::Keyboard::Escape)
+			m_state = State::Game;					// Byt skärm till spelet
+	}
 }
 
 void PauseState::update(const sf::Time& dt)

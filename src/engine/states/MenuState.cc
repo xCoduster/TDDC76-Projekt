@@ -61,11 +61,7 @@ int MenuState::run(std::shared_ptr<sf::RenderWindow> window)
 		sf::Event event;
 		while (m_window->pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
-				m_state = State::Exit;
-
-			if (event.type == sf::Event::Resized)
-				resize(event.size, *window);
+			handle(event);
 		}
 
 		sf::Time now = clock.getElapsedTime();
@@ -108,7 +104,11 @@ int MenuState::run(std::shared_ptr<sf::RenderWindow> window)
 
 void MenuState::handle(sf::Event event)
 {
+	if (event.type == sf::Event::Closed)
+		m_state = State::Exit;
 
+	if (event.type == sf::Event::Resized)
+		resize(event.size, *m_window);
 }
 
 void MenuState::update(const sf::Time& dt)

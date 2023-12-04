@@ -7,7 +7,7 @@
 #include "util/Log.h"
 
 MenuState::MenuState()
-	: m_playButton(), m_exitButton()
+	: m_playButton(), m_exitButton(), title_text(), stars(), objects(), m_font()
 {
 	m_font.loadFromFile("res/fonts/ShareTechMono-Regular.ttf");
 
@@ -141,7 +141,7 @@ void MenuState::draw()
 
 void MenuState::cleanup()
 {
-	for (int i = 0; i < stars.size(); i++)
+	for (int i = 0; i < static_cast<int>(stars.size()); i++)
 	{
 		std::swap(stars.at(i), stars.back());
 		delete stars.back();

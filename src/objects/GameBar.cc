@@ -5,7 +5,8 @@
 #include <iostream>
 
 GameBar::GameBar(Player* player)
-    : m_sprites{}, m_images{}
+    : m_sprites{}, m_images{}, scoreStr{ "" }, Hp{ "" }, player_pointer{ player }, 
+    score_blue{}, score_pink{}, score{}, life_blue{}, life_pink{}, life{}, font{}
 {
     TextureManager& texMgr{ TextureManager::instance() };
     m_images.push_back(*texMgr.load("res/player.v2.png"));
@@ -20,9 +21,7 @@ GameBar::GameBar(Player* player)
     life_pink.setFont(font);
     life_blue.setFont(font);
 
-    player_pointer = player;
-
-    Hp = std::to_string(player_pointer -> m_Hitpoints);
+    Hp = std::to_string(player_pointer->m_Hitpoints);
     
     life.setString(Hp);
     life.setCharacterSize(50.0f);
@@ -61,7 +60,7 @@ GameBar::GameBar(Player* player)
 
 void GameBar::update()
 {
-    Hp = std::to_string(player_pointer -> m_Hitpoints);
+    Hp = std::to_string(player_pointer->m_Hitpoints);
     life.setString(Hp);
     life_pink.setString(Hp); 
     life_blue.setString(Hp);  
@@ -76,7 +75,7 @@ void GameBar::showScore(int score)
 
     std::string temp{};
 
-    for (int i{ 0 }; i < 4 - scoreStr.length(); i++)
+    for (int i{ 0 }; i < 4 - static_cast<int>(scoreStr.length()); i++)
     {
         temp += "0";
     }

@@ -3,7 +3,7 @@
 #include "util/Log.h"
 
 PauseState::PauseState()
-	: m_gameTex(), m_gameSprite(), m_continueButton(), m_menuButton()
+	: m_gameTex(), m_gameSprite(), m_continueButton(), m_menuButton(), m_font()
 {
 	m_gameTex.create(640, 480);
 

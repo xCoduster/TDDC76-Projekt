@@ -15,3 +15,8 @@ AudioPtr AudioManager::load(const std::string& filePath)
 
     return buffer;
 }
+
+AudioManager::AudioManager()
+    : buffers{}
+{
+}

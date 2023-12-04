@@ -11,5 +11,9 @@ public:
 
     int m_Hitpoints;
 protected:
+    MovingObject()
+        : Collidable{}, m_Speed{}, m_Hitpoints{ 1 }
+    {}
+
     sf::Vector2f m_Speed;
 };

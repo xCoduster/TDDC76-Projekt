@@ -9,6 +9,9 @@ class GameBar : public sf::Drawable
 {
 public:
     GameBar(Player* player);
+    
+    GameBar(const GameBar&) = delete;
+    GameBar operator=(const GameBar&) = delete;
 
     void update();
     void showScore(int score);
@@ -33,7 +36,7 @@ private:
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
-        for (int i = 0; i < m_sprites.size(); i++)
+        for (int i { 0 }; i < static_cast<int>(m_sprites.size()); ++i)
             target.draw(m_sprites.at(i), states);
         
         target.draw(life_pink, states);
@@ -43,6 +46,5 @@ private:
         target.draw(score_pink, states);
         target.draw(score_blue, states);
         target.draw(score, states);
-
     }
 };

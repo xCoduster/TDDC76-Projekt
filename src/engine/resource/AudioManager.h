@@ -19,5 +19,7 @@ public:
 	AudioPtr load(const std::string& filePath);
 
 private:
+	AudioManager();
+
 	std::map<std::string, AudioPtr> buffers;
 };

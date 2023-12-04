@@ -8,6 +8,8 @@
 class State
 {
 public:
+    virtual ~State() = default;
+
     virtual int run(std::shared_ptr<sf::RenderWindow> window) = 0;
 
     virtual void handle(sf::Event event) = 0;
@@ -42,4 +44,6 @@ protected:
     std::shared_ptr<sf::RenderWindow> m_window;
 
     int m_state;
+
+    State() : m_view{}, m_window{ nullptr }, m_state{ State::Exit } {}
 };

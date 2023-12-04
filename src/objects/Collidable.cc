@@ -7,3 +7,8 @@ bool Collidable::Collides(const Collidable* other)
 
     return false;
 }
+
+Collidable::Collidable()
+    : m_Tag{ Collision::None }
+{
+}

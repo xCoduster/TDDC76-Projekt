@@ -15,3 +15,8 @@ TexturePtr TextureManager::load(const std::string& filePath)
 
     return texture;
 }
+
+TextureManager::TextureManager()
+    : textures{}
+{
+}

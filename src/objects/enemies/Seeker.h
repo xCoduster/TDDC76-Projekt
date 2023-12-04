@@ -9,6 +9,9 @@ class Seeker : public Enemy
 public:
     Seeker(Player* player);
 
+    Seeker(const Seeker&) = delete;
+    Seeker operator=(const Seeker&) = delete;
+
     virtual void update(const sf::Time& dt, std::vector<Object*>& new_objects) override;
     virtual void movement(const sf::Time& dt) override;
     virtual bool Collision(const Collidable* other, std::vector<Object*>& new_objects) override;

@@ -11,6 +11,8 @@ public:
     virtual bool Collision(const Collidable* other, std::vector<Object*>& new_objects) = 0;
     
     unsigned int m_Tag;
+protected:
+    Collidable();
 };
 
 namespace Collision

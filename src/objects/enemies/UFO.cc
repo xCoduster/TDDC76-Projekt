@@ -11,7 +11,7 @@
 #include <cmath>
 
 UFO::UFO()
-	: Enemy{}
+	: Enemy{}, m_laserTimer{}
 {
 	m_animTimer = 0;
 	m_currentFrame = 0;

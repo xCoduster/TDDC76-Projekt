@@ -10,7 +10,9 @@
 #include <iostream>
 
 Player::Player()
-	: active_powerUp(false), m_t_lazer{}, m_t_powerUp{}, m_t_invincibility{}, m_godMode(false)
+	: active_powerUp{ false }, m_t_lazer{}, m_t_powerUp{}, 
+	m_t_invincibility{}, m_godMode{ false }, m_pickUpSound{}, 
+	m_laserSound{}, m_hurtSound{}
 {
 	AudioManager& audioMgr{ AudioManager::instance() };
 	m_hurtSound.setBuffer(*audioMgr.load("res/audio/hurt.wav"));
@@ -111,6 +113,8 @@ bool Player::Collision(const Collidable* other, std::vector<Object*>& new_object
 		hurt();
 		return true;
 	}
+
+	return false;
 } 
 
 void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)

@@ -3,7 +3,7 @@
 #include "util/Log.h"
 
 Button::Button()
-	: m_rect(), m_text(), m_held(false)
+	: m_rect(), m_text(), m_held(false), m_activeColor{}, m_hoverColor{}, m_color{}
 {
 	m_text.setString("");
 }

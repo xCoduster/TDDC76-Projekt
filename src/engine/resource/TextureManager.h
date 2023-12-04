@@ -17,5 +17,7 @@ public:
 	TexturePtr load(const std::string& filePath);
 
 private:
+	TextureManager();
+
 	std::map<std::string, TexturePtr> textures;
 };

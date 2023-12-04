@@ -14,6 +14,10 @@ class GameState : public State
 {
 public:
     GameState();
+
+    GameState(const GameState&) = delete;
+    GameState operator=(const GameState&) = delete;
+
     virtual int run(std::shared_ptr<sf::RenderWindow> window) override;
     virtual void handle(sf::Event event) override;
     virtual void update(const sf::Time& dt) override;

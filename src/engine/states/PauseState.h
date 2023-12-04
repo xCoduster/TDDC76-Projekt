@@ -25,6 +25,5 @@ private:
     Button m_menuButton;
 
     sf::Texture m_gameTex;
-    sf::RenderTexture m_test, m_test2;
     sf::Sprite m_gameSprite;
 };

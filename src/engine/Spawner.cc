@@ -12,7 +12,7 @@
 #include "util/Util.h"
 
 Spawner::Spawner(float spawnDelay, float waveDelay)
-	: m_timer{}, m_spawnDelay(spawnDelay), m_waveDelay(waveDelay)
+	: m_timer{}, m_spawnDelay(spawnDelay), m_waveDelay(waveDelay), m_objects{}
 {
 }
 
@@ -70,7 +70,7 @@ bool Spawner::readFile(const std::string& filePath, Player* playerObject)
 	std::string word{};
 
 	char type{};
-	unsigned int amount{};
+	int amount{};
 
 	if (!ifs.is_open())
 		return false;
@@ -122,9 +122,9 @@ bool Spawner::readFile(const std::string& filePath, Player* playerObject)
 
 void Spawner::cleanup()
 {
-	for (int i{ 0 }; i < m_objects.size(); ++i)
+	for (int i{ 0 }; i < static_cast<int>(m_objects.size()); ++i)
 	{
-		for (int j{ 0 }; j < m_objects.at(i).size(); ++j)
+		for (int j{ 0 }; j < static_cast<int>(m_objects.at(i).size()); ++j)
 		{
 			std::swap(m_objects.at(i).at(j), m_objects.at(i).back());
 			delete m_objects.at(i).back();

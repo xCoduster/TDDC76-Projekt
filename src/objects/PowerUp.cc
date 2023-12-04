@@ -34,4 +34,6 @@ bool PowerUp::Collision(const Collidable* other, std::vector<Object*>& new_objec
         m_Dead = true;
         return true;
     }
+
+    return false;
 }

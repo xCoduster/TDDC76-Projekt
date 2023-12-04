@@ -7,8 +7,8 @@
 
 class AnimatedObject: public MovingObject
 {
-
 protected:
+    AnimatedObject();
     void animUpdate(const sf::Time& dt);
     void loadFrames(int amountOfFrames);
 

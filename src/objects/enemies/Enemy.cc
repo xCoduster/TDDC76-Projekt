@@ -6,7 +6,7 @@
 #include "util/Util.h"
 
 Enemy::Enemy()
-	: m_soundTimer{}
+	: m_soundTimer{}, m_deathSound{}
 {
 	AudioManager& audioMgr{ AudioManager::instance() };
 

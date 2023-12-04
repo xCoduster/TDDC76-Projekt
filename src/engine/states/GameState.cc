@@ -11,7 +11,8 @@
 #include <string>
 
 GameState::GameState()
-	: m_spawner{ 0.5f, 3.0f }, m_nameInput{}, m_score{ 0 }, m_gameOver{ false }
+	: m_spawner{ 0.5f, 3.0f }, m_nameInput{}, m_score{ 0 }, m_gameOver{ false }, m_gameOverText{}, m_textBox{}, m_font{}, 
+	stars{}, new_objects{}, objects{}, m_gameBar{ nullptr }, player{ nullptr }
 {
 	player = new Player;
 
@@ -45,7 +46,7 @@ GameState::GameState()
 	m_gameOverText.setFont(m_font);
 	m_gameOverText.setString("  Game over! Skriv in ditt\nnamn och spara ditt resultat");
 	m_gameOverText.setCharacterSize(38);
-	m_gameOverText.setColor(sf::Color::Yellow);
+	m_gameOverText.setFillColor(sf::Color::Yellow);
 	m_gameOverText.setOrigin(m_gameOverText.getLocalBounds().width / 2.0f, m_gameOverText.getLocalBounds().height / 2.0f);
 	m_gameOverText.setPosition(640 / 2, 100 );
 }
@@ -180,7 +181,7 @@ void GameState::update(const sf::Time& dt)
 	if (m_spawner.update(dt, new_objects))
 		m_spawner.readFile("res/waves.lvl", player);
 
-	for (int i = 0; i < objects.size(); i++)
+	for (int i = 0; i < static_cast<int>(objects.size()); i++)
 	{
 		if (objects.at(i)->m_Dead)
 		{
@@ -202,7 +203,7 @@ void GameState::update(const sf::Time& dt)
 		m_gameOver = true;
 	}
 
-	for (int i = 0; i < new_objects.size(); i++)
+	for (int i = 0; i < static_cast<int>(new_objects.size()); i++)
 	{
 		objects.push_back(new_objects.at(i));
 		std::swap(new_objects.at(i), new_objects.back());
@@ -273,7 +274,7 @@ void GameState::saveScore()
 
 	for (int i{ 0 }; i < 5; ++i)
 	{
-		if (i >= scores.size())
+		if (i >= static_cast<int>(scores.size()))
 			break;
 
 		int index = scores.size() - 1 - i;
@@ -285,7 +286,7 @@ void GameState::saveScore()
 
 void GameState::cleanup()
 {
-	for (int i = 0; i < objects.size(); i++)
+	for (int i = 0; i < static_cast<int>(objects.size()); i++)
 	{
 		std::swap(objects.at(i), objects.back());
        	delete objects.back();
@@ -294,7 +295,7 @@ void GameState::cleanup()
 	}
 
 
-	for (int i = 0; i < new_objects.size(); i++)
+	for (int i = 0; i < static_cast<int>(new_objects.size()); i++)
 	{
 		std::swap(new_objects.at(i), new_objects.back());
        	delete new_objects.back();
@@ -302,7 +303,7 @@ void GameState::cleanup()
 	 	--i;
 	}
 
-	for (int i = 0; i < stars.size(); i++)
+	for (int i = 0; i < static_cast<int>(stars.size()); i++)
 	{
 		std::swap(stars.at(i), stars.back());
 		delete stars.back();

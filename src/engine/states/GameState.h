@@ -27,8 +27,9 @@ public:
 
     void saveScore();
 
-    virtual void cleanup() override;
+    void init();
     void reset();
+    virtual void cleanup() override;
 private:
     Player* player;
     GameBar* m_gameBar;
@@ -45,5 +46,6 @@ private:
     sf::Text m_gameOverText;
 
     int m_score;
+    bool m_bossFight;
     bool m_gameOver;
 };

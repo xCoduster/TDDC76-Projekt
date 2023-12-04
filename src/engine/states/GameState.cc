@@ -12,24 +12,9 @@
 #include <string>
 
 GameState::GameState()
-	: m_spawner{ 0.5f, 3.0f }, m_nameInput{}, m_score{ 0 }, m_gameOver{ false }, m_gameOverText{}, m_textBox{}, m_font{}, 
-	stars{}, new_objects{}, objects{}, m_gameBar{ nullptr }, player{ nullptr }
+	: m_spawner{ 1.0f, 5.0f }, m_nameInput{}, m_score{ 0 }, m_gameOver{ false }, m_gameOverText{}, m_textBox{}, m_font{},
+	stars{}, new_objects{}, objects{}, m_gameBar{ nullptr }, player{ nullptr }, m_bossFight{ false }
 {
-	player = new Player;
-
-	Boss* boss = new Boss();
-	objects.push_back(boss);
-
-	m_spawner.readFile("res/waves.lvl", player);
-
-	for (int i = 0; i < 120; i++)
-	{
-		Star* star{ new Star };
-		stars.push_back(star);
-	}
-
-	m_gameBar = new GameBar(player);
-
 	// Ladda in alla ljudfiler från start
 	AudioManager& audioMgr{ AudioManager::instance() };
 
@@ -53,6 +38,8 @@ GameState::GameState()
 	m_gameOverText.setFillColor(sf::Color::Yellow);
 	m_gameOverText.setOrigin(m_gameOverText.getLocalBounds().width / 2.0f, m_gameOverText.getLocalBounds().height / 2.0f);
 	m_gameOverText.setPosition(640 / 2, 100 );
+
+	init();
 }
 
 int GameState::run(std::shared_ptr<sf::RenderWindow> window)
@@ -181,9 +168,8 @@ void GameState::update(const sf::Time& dt)
 	for (Object* object : objects)
 		object->update(dt, new_objects);
 	
-	
-	//if (m_spawner.update(dt, new_objects))
-	//	m_spawner.readFile("res/waves.lvl", player);
+	if (m_spawner.update(dt, new_objects, m_bossFight))
+		m_spawner.readFile("res/waves.lvl", player);
 
 	for (int i = 0; i < static_cast<int>(objects.size()); i++)
 	{
@@ -193,6 +179,12 @@ void GameState::update(const sf::Time& dt)
 			{
 				m_score += 1;
 				m_gameBar->showScore(m_score);
+			}
+
+			if (dynamic_cast<Boss*>(objects.at(i)) != nullptr)		// Kolla om bossen är död
+			{
+				m_spawner.readFile("res/waves.lvl", player);
+				m_bossFight = false;
 			}
 
 			std::swap(objects.at(i), objects.back());
@@ -214,6 +206,23 @@ void GameState::update(const sf::Time& dt)
 		new_objects.pop_back();
 		--i;
 	}
+
+	if (!m_bossFight && m_score % 20 == 0 && m_score != 0)		// Spawna en boss om spelaren har nått multiplar av 20 poäng
+	{
+		for (int i = 0; i < static_cast<int>(objects.size()); i++)
+		{
+			std::swap(objects.at(i), objects.back());
+			delete objects.back();
+			objects.pop_back();
+			--i;
+		}
+	
+		objects.push_back(new Boss{});
+		m_bossFight = true;
+	}
+
+	if (m_spawner.update(dt, new_objects, m_bossFight))
+		m_spawner.readFile("res/waves.lvl", player);
 
 	m_gameBar->update();
 
@@ -288,6 +297,26 @@ void GameState::saveScore()
 
 }
 
+void GameState::init()
+{
+	player = new Player;
+
+	m_spawner.readFile("res/waves.lvl", player);
+
+	for (int i = 0; i < 120; i++)
+	{
+		Star* star{ new Star };
+		stars.push_back(star);
+	}
+
+	m_gameBar = new GameBar(player);
+
+	m_score = 0;
+	m_nameInput = "";
+	m_textBox.setString(m_nameInput);
+	m_gameOver = false;
+}
+
 void GameState::cleanup()
 {
 	for (int i = 0; i < static_cast<int>(objects.size()); i++)
@@ -324,24 +353,5 @@ void GameState::cleanup()
 void GameState::reset()
 {
 	cleanup();
-
-	player = new Player;
-
-	Boss* boss = new Boss();
-	objects.push_back(boss);
-
-	m_spawner.readFile("res/waves.lvl", player);
-
-	for (int i = 0; i < 120; i++)
-	{
-		Star* star{ new Star };
-		stars.push_back(star);
-	}
-
-	m_gameBar = new GameBar(player);
-
-	m_score = 0;
-	m_nameInput = "";
-	m_textBox.setString(m_nameInput);
-	m_gameOver = false;
+	init();
 }

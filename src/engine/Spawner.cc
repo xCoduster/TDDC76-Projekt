@@ -6,13 +6,14 @@
 #include <algorithm>
 
 #include "objects/Bomb.h"
+#include "objects/enemies/Boss.h"
 #include "objects/enemies/UFO.h"
 #include "objects/enemies/Seeker.h"
 #include "util/Log.h"
 #include "util/Util.h"
 
 Spawner::Spawner(float spawnDelay, float waveDelay)
-	: m_timer{}, m_spawnDelay(spawnDelay), m_waveDelay(waveDelay), m_objects{}
+	: m_timer{}, m_spawnDelay(spawnDelay), m_waveDelay(waveDelay), m_objects{}, m_boss{ nullptr }
 {
 }
 
@@ -21,9 +22,15 @@ Spawner::~Spawner()
 	cleanup();
 }
 
-bool Spawner::update(const sf::Time& dt, std::vector<Object*>& new_objects)
+bool Spawner::update(const sf::Time& dt, std::vector<Object*>& new_objects, bool bossFight)
 {
 	m_timer += dt;
+
+	if (bossFight)
+	{
+		cleanup();
+		return false;
+	}
 
 	if (m_objects.empty())
 		return true;

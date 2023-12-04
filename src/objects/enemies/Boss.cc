@@ -67,7 +67,10 @@ void Boss::set_phase()
 	{
 		case firstPhase:
 			if (m_Sprite.getPosition().x < 550)
+			{
+				fire_rate = 0.6f;
 				bossPhase = secondPhase;
+			}
 			break;
 		case secondPhase:
 			if (m_Hitpoints <= 2)
@@ -75,7 +78,17 @@ void Boss::set_phase()
 			break;
 		case thirdPhase:
 			if (m_Sprite.getPosition().x < 320)
+			{
+				fire_rate = 0.2f;
 				bossPhase = fourthPhase;
+			}
+			break;
+		case fourthPhase:
+			if(m_Hitpoints <= 1)
+			{
+				fire_rate = 0.4f;
+				bossPhase = fifthPhase;
+			}
 			break;
 	}
 }
@@ -89,7 +102,7 @@ bool Boss::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 
 void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
-	if(m_t_lazer.asSeconds() > 0.6f)
+	if(m_t_lazer.asSeconds() > fire_rate)
 	{
 		m_t_lazer = sf::seconds(0);
 		sf::Vector2f lazer_pos = m_Sprite.getPosition();
@@ -101,22 +114,36 @@ void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 		{
 			case secondPhase:
 			{
-				EnemyProjectile* lazer1{ new EnemyProjectile(m_Sprite.getPosition(), pi)};
-				lazer_pos.y += 30; 
-				EnemyProjectile* lazer2{ new EnemyProjectile(lazer_pos, 5 * pi / 6) };
-				lazer_pos.y -= 60;
-				EnemyProjectile* lazer3{ new EnemyProjectile(lazer_pos, - 5 * pi / 6) };
-				new_objects.push_back(lazer1);
-				new_objects.push_back(lazer2);
-				new_objects.push_back(lazer3);
+				lazer_pos.y += 30;
+				for(int i {0}; i < 3; i++)
+				{
+					lazer_pos.y -= 30.0f*i;
+					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, 5 * pi / 6 + i * pi / 6) };
+					new_objects.push_back(lazer);
+				}
 			}
 				break;
 			case fourthPhase:
 			{
-				sf::Vector2f enhetscirkeln = {3.0*radius*cos(phi), 3.0*radius*sin(phi)};
-				lazer_pos = (m_Sprite.getPosition() + enhetscirkeln);
-				EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, phi) };
-				new_objects.push_back(lazer);
+				for(int i {0}; i < 4; i++)
+				{
+					sf::Vector2f enhetscirkeln = {3.0*radius*cos(phi + (i*pi/2)), 3.0*radius*sin(phi + (i*pi/2))};
+					lazer_pos = (m_Sprite.getPosition() + enhetscirkeln);
+					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, phi + (i*pi/2)) };
+					new_objects.push_back(lazer);
+				}
+				phi += pi*dt.asSeconds();
+			}
+				break;
+			case fifthPhase:
+			{
+				for(int i {0}; i < 4; i++)
+				{
+					sf::Vector2f enhetscirkeln = {3.0*radius*cos(phi + (i*pi/2)), 3.0*radius*sin(phi + (i*pi/2))};
+					lazer_pos = (m_Sprite.getPosition() + enhetscirkeln);
+					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, phi + (i*pi/2)) };
+					new_objects.push_back(lazer);
+				}
 				phi++;
 			}
 				break;

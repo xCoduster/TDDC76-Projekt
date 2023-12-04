@@ -19,6 +19,7 @@ private:
     sf::Time m_soundTimer;
     sf::Time m_laserTimer;
     sf::Time m_t_lazer;
+    float fire_rate;
     float angle;
     float phi {};
     void set_phase(); 
@@ -27,7 +28,8 @@ enum BossPhase
         firstPhase,
         secondPhase,
         thirdPhase,
-        fourthPhase
+        fourthPhase,
+        fifthPhase
     };
     BossPhase bossPhase; 
 };

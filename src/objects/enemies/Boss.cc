@@ -108,28 +108,28 @@ void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 		sf::Vector2f lazer_pos = m_Sprite.getPosition();
 		sf::Vector2u texture_size { m_Texture.getSize() };
 		float radius = texture_size.x / 2;
-		float pi = 3.14;
+		float pi = 3.14f;
 		
 		switch(bossPhase)
 		{
 			case secondPhase:
 			{
-				lazer_pos.y += 30;
-				for(int i {0}; i < 3; i++)
+				lazer_pos.y += 30.f;
+				for(int i { 0 }; i < 3; i++)
 				{
-					lazer_pos.y -= 30.0f*i;
-					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, 5 * pi / 6 + i * pi / 6) };
+					lazer_pos.y -= 30.f*i;
+					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, 5.f * pi / 6.f + i * pi / 6.f) };
 					new_objects.push_back(lazer);
 				}
 			}
 				break;
 			case fourthPhase:
 			{
-				for(int i {0}; i < 4; i++)
+				for(int i { 0 }; i < 4; i++)
 				{
-					sf::Vector2f enhetscirkeln = {3.0*radius*cos(phi + (i*pi/2)), 3.0*radius*sin(phi + (i*pi/2))};
+					sf::Vector2f enhetscirkeln{ 3.f * radius * cos(phi + (i * pi / 2.f)), 3.f * radius * sin(phi + (i * pi / 2.f)) };
 					lazer_pos = (m_Sprite.getPosition() + enhetscirkeln);
-					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, phi + (i*pi/2)) };
+					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, phi + (i * pi / 2.f)) };
 					new_objects.push_back(lazer);
 				}
 				phi += pi*dt.asSeconds();
@@ -137,11 +137,11 @@ void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 				break;
 			case fifthPhase:
 			{
-				for(int i {0}; i < 4; i++)
+				for(int i { 0 }; i < 4; i++)
 				{
-					sf::Vector2f enhetscirkeln = {3.0*radius*cos(phi + (i*pi/2)), 3.0*radius*sin(phi + (i*pi/2))};
+					sf::Vector2f enhetscirkeln{ 3.f * radius * cos(phi + (i * pi / 2.f)), 3.f * radius * sin(phi + (i * pi / 2.f)) };
 					lazer_pos = (m_Sprite.getPosition() + enhetscirkeln);
-					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, phi + (i*pi/2)) };
+					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, phi + (i * pi / 2.f)) };
 					new_objects.push_back(lazer);
 				}
 				phi++;

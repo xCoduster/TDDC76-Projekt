@@ -22,15 +22,9 @@ Spawner::~Spawner()
 	cleanup();
 }
 
-bool Spawner::update(const sf::Time& dt, std::vector<Object*>& new_objects, bool bossFight)
+bool Spawner::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
 	m_timer += dt;
-
-	if (bossFight)
-	{
-		cleanup();
-		return false;
-	}
 
 	if (m_objects.empty())
 		return true;

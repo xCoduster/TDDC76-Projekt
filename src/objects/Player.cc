@@ -31,7 +31,7 @@ Player::Player()
 
 	m_Tag = Collision::Player;
 
-	m_Hitpoints = 3;
+	m_Hitpoints = 5;
 }
 
 void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)

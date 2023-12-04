@@ -168,9 +168,6 @@ void GameState::update(const sf::Time& dt)
 	for (Object* object : objects)
 		object->update(dt, new_objects);
 	
-	if (m_spawner.update(dt, new_objects, m_bossFight))
-		m_spawner.readFile("res/waves.lvl", player);
-
 	for (int i = 0; i < static_cast<int>(objects.size()); i++)
 	{
 		if (objects.at(i)->m_Dead)
@@ -183,8 +180,8 @@ void GameState::update(const sf::Time& dt)
 
 			if (dynamic_cast<Boss*>(objects.at(i)) != nullptr)		// Kolla om bossen är död
 			{
-				m_spawner.readFile("res/waves.lvl", player);
 				m_bossFight = false;
+				player->m_Hitpoints += 1;
 			}
 
 			std::swap(objects.at(i), objects.back());
@@ -221,8 +218,11 @@ void GameState::update(const sf::Time& dt)
 		m_bossFight = true;
 	}
 
-	if (m_spawner.update(dt, new_objects, m_bossFight))
-		m_spawner.readFile("res/waves.lvl", player);
+	if (!m_bossFight)
+	{
+		if (m_spawner.update(dt, new_objects))
+			m_spawner.readFile("res/waves.lvl", player);
+	}
 
 	m_gameBar->update();
 

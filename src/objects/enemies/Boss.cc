@@ -23,7 +23,7 @@ Boss::Boss()
 
 	m_Tag = Collision::Enemy;
 
-	m_Hitpoints = 3;
+	m_Hitpoints = 9;
 
 	m_Speed.x = -1.0f;
 	m_Speed.y = 0.0f;
@@ -73,7 +73,7 @@ void Boss::set_phase()
 			}
 			break;
 		case secondPhase:
-			if (m_Hitpoints <= 2)
+			if (m_Hitpoints <= 6)
 				bossPhase = thirdPhase;
 			break;
 		case thirdPhase:
@@ -84,7 +84,7 @@ void Boss::set_phase()
 			}
 			break;
 		case fourthPhase:
-			if(m_Hitpoints <= 1)
+			if(m_Hitpoints <= 3)
 			{
 				fire_rate = 0.4f;
 				bossPhase = fifthPhase;

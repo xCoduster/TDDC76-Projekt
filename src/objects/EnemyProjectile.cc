@@ -6,7 +6,7 @@
 EnemyProjectile::EnemyProjectile(sf::Vector2f cord, float angle)
 {
     TextureManager& texMgr{ TextureManager::instance() };
-    m_Texture = *texMgr.load("res/lazer.v2.png");
+    m_Texture = *texMgr.load("res/plasma.png");
 
 	m_Sprite.setTexture(m_Texture);
     sf::Vector2u texture_size { m_Texture.getSize() };

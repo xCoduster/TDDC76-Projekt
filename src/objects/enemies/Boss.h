@@ -20,4 +20,15 @@ private:
     sf::Time m_laserTimer;
     sf::Time m_t_lazer;
     float angle;
+    float phi {};
+    void set_phase(); 
+enum BossPhase
+    {
+        firstPhase,
+        secondPhase,
+        thirdPhase,
+        fourthPhase
+    };
+    BossPhase bossPhase; 
 };
+ 

@@ -2,6 +2,7 @@
 
 #include "engine/resource/AudioManager.h"
 #include "engine/resource/TextureManager.h"
+#include "objects/enemies/Boss.h"
 
 #include "util/Log.h"
 #include "util/Util.h"
@@ -15,6 +16,9 @@ GameState::GameState()
 	stars{}, new_objects{}, objects{}, m_gameBar{ nullptr }, player{ nullptr }
 {
 	player = new Player;
+
+	Boss* boss = new Boss();
+	objects.push_back(boss);
 
 	m_spawner.readFile("res/waves.lvl", player);
 
@@ -178,8 +182,8 @@ void GameState::update(const sf::Time& dt)
 		object->update(dt, new_objects);
 	
 	
-	if (m_spawner.update(dt, new_objects))
-		m_spawner.readFile("res/waves.lvl", player);
+	//if (m_spawner.update(dt, new_objects))
+	//	m_spawner.readFile("res/waves.lvl", player);
 
 	for (int i = 0; i < static_cast<int>(objects.size()); i++)
 	{
@@ -322,6 +326,9 @@ void GameState::reset()
 	cleanup();
 
 	player = new Player;
+
+	Boss* boss = new Boss();
+	objects.push_back(boss);
 
 	m_spawner.readFile("res/waves.lvl", player);
 

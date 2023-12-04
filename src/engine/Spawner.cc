@@ -13,7 +13,7 @@
 #include "util/Util.h"
 
 Spawner::Spawner(float spawnDelay, float waveDelay)
-	: m_timer{}, m_spawnDelay(spawnDelay), m_waveDelay(waveDelay), m_objects{}, m_boss{ nullptr }
+	: m_timer{}, m_spawnDelay(spawnDelay), m_waveDelay(waveDelay), m_objects{}
 {
 }
 

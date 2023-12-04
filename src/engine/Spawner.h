@@ -23,8 +23,6 @@ public:
 private:
 	std::vector<std::vector<Object*>> m_objects;
 
-	Boss* m_boss;
-
 	sf::Time m_timer;
 
 	float m_spawnDelay;

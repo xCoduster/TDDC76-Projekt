@@ -22,8 +22,9 @@ private:
     float fire_rate;
     float angle;
     float phi {};
-    void set_phase(); 
-enum BossPhase
+    void set_phase();
+
+    enum class BossPhase
     {
         firstPhase,
         secondPhase,
@@ -31,6 +32,7 @@ enum BossPhase
         fourthPhase,
         fifthPhase
     };
+
     BossPhase bossPhase; 
 };
  

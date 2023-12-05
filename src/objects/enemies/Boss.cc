@@ -9,10 +9,10 @@
 #include <cmath>
 
 Boss::Boss()
-	: m_soundTimer{}, angle{0}, m_t_lazer {}
+	: m_soundTimer{}, angle{ 0 }, m_t_lazer{}
 {
 	TextureManager& texMgr{ TextureManager::instance() };
-	m_Texture = *texMgr.load("res/bomb.png");
+	m_Texture = *texMgr.load("res/boss.png");
 
 	m_Sprite.setTexture(m_Texture);
 
@@ -27,7 +27,7 @@ Boss::Boss()
 
 	m_Speed.x = -1.0f;
 	m_Speed.y = 0.0f;
-	bossPhase = firstPhase; 
+	bossPhase = BossPhase::firstPhase; 
 }
 
 void Boss::update(const sf::Time& dt, std::vector<Object*>& new_objects)
@@ -42,16 +42,16 @@ void Boss::movement(const sf::Time& dt)
 {	
 	switch(bossPhase)
 	{
-		case firstPhase:
+		case BossPhase::firstPhase:
 			move(m_Speed * 120.0f * dt.asSeconds());
 			break;
-		case secondPhase:
+		case BossPhase::secondPhase:
 			m_Speed.x = 0.0f;
 			m_Speed.y = cos(angle);
 			angle += 0.0157f;
 			move(m_Speed * 180.0f * dt.asSeconds());
 			break;
-		case thirdPhase:
+		case BossPhase::thirdPhase:
 			sf::Vector2f center {320.0f, 240.0f};
 		    sf::Vector2f difVec =  center - m_Sprite.getPosition();
 			float vecSize = sqrt(difVec.x*difVec.x+ difVec.y*difVec.y);
@@ -65,29 +65,29 @@ void Boss::set_phase()
 {
 	switch(bossPhase)
 	{
-		case firstPhase:
+		case BossPhase::firstPhase:
 			if (m_Sprite.getPosition().x < 550)
 			{
 				fire_rate = 0.6f;
-				bossPhase = secondPhase;
+				bossPhase = BossPhase::secondPhase;
 			}
 			break;
-		case secondPhase:
+		case BossPhase::secondPhase:
 			if (m_Hitpoints <= 6)
-				bossPhase = thirdPhase;
+				bossPhase = BossPhase::thirdPhase;
 			break;
-		case thirdPhase:
+		case BossPhase::thirdPhase:
 			if (m_Sprite.getPosition().x < 320)
 			{
 				fire_rate = 0.2f;
-				bossPhase = fourthPhase;
+				bossPhase = BossPhase::fourthPhase;
 			}
 			break;
-		case fourthPhase:
+		case BossPhase::fourthPhase:
 			if(m_Hitpoints <= 3)
 			{
 				fire_rate = 0.4f;
-				bossPhase = fifthPhase;
+				bossPhase = BossPhase::fifthPhase;
 			}
 			break;
 	}
@@ -112,7 +112,7 @@ void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 		
 		switch(bossPhase)
 		{
-			case secondPhase:
+			case BossPhase::secondPhase:
 			{
 				lazer_pos.y += 30.f;
 				for(int i { 0 }; i < 3; i++)
@@ -123,7 +123,7 @@ void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 				}
 			}
 				break;
-			case fourthPhase:
+			case BossPhase::fourthPhase:
 			{
 				for(int i { 0 }; i < 4; i++)
 				{
@@ -135,7 +135,7 @@ void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 				phi += pi*dt.asSeconds();
 			}
 				break;
-			case fifthPhase:
+			case BossPhase::fifthPhase:
 			{
 				for(int i { 0 }; i < 4; i++)
 				{

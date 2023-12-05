@@ -106,12 +106,21 @@ void MenuState::handle(sf::Event event)
 
 	if (event.type == sf::Event::Resized)
 		resize(event.size, *m_window);
+
+	if (event.type == sf::Event::KeyPressed)
+	{
+		if (m_toggleScore)
+		{
+			if (event.key.code == sf::Keyboard::Escape)
+				m_toggleScore = false;
+		}
+	}
 }
 
 void MenuState::update(const sf::Time& dt)
 {
 	sf::Vector2f mousePos{ m_window->mapPixelToCoords(sf::Mouse::getPosition(*m_window)) };
-
+	
 	if (!m_toggleScore)
 	{
 		if (m_buttons.at(0).update(mousePos))

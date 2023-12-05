@@ -7,6 +7,9 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <vector>
+#include <utility>
+
 class MenuState : public State
 {
 public:
@@ -18,15 +21,20 @@ public:
     virtual void update(const sf::Time& dt) override;
     virtual void draw() override;
 
+    virtual void init() override;
     virtual void cleanup() override;
 private:
     sf::Font m_font;
 
-    sf::Text title_text;
+    sf::Text m_titleText;
+    sf::Text m_scoreText;
+    sf::Text m_scoreList;
 
-    Button m_playButton;
-    Button m_exitButton;
+    bool m_toggleScore;
 
-    std::vector<Star*> stars;
-    std::vector<Object*> objects;
+    std::vector<Star*> m_stars;
+    std::vector<Object*> m_objects;
+    std::vector<Button> m_buttons;
+
+    std::vector<std::pair<std::string, int>> m_scores;
 };

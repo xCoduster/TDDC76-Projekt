@@ -8,6 +8,8 @@ PauseState::PauseState()
 	m_gameTex.create(640, 480);
 
 	m_font.loadFromFile("res/fonts/ShareTechMono-Regular.ttf");
+
+	init();
 }
 
 int PauseState::run(std::shared_ptr<sf::RenderWindow> window)
@@ -18,16 +20,6 @@ int PauseState::run(std::shared_ptr<sf::RenderWindow> window)
 
 	m_gameTex.update(*m_window);
 	m_gameSprite.setTexture(m_gameTex);
-
-	m_continueButton.setSize(sf::Vector2f{ 200.f, 50.f });
-	m_continueButton.setColor(sf::Color(0x939393ff), sf::Color(0xadadadff), sf::Color(0xcececeff));
-	m_continueButton.setText("Continue", m_font);
-	m_continueButton.setPosition(sf::Vector2f{ m_window->getView().getCenter().x, 200.f });
-
-	m_menuButton.setSize(sf::Vector2f{ 200.f, 50.f });
-	m_menuButton.setColor(sf::Color(0x939393ff), sf::Color(0xadadadff), sf::Color(0xcececeff));
-	m_menuButton.setText("Exit to menu", m_font);
-	m_menuButton.setPosition(sf::Vector2f{ m_window->getView().getCenter().x, 260.f });
 
 	bool running = true;
 	unsigned int fps = 0;
@@ -123,6 +115,19 @@ void PauseState::draw()
 	m_window->draw(m_menuButton);
 
 	m_window->display();
+}
+
+void PauseState::init()
+{
+	m_continueButton.setSize(sf::Vector2f{ 200.f, 50.f });
+	m_continueButton.setColor(sf::Color(0x939393ff), sf::Color(0xadadadff), sf::Color(0xcececeff));
+	m_continueButton.setText("Continue", m_font);
+	m_continueButton.setPosition(sf::Vector2f{ 640.f / 2.f, 200.f });
+
+	m_menuButton.setSize(sf::Vector2f{ 200.f, 50.f });
+	m_menuButton.setColor(sf::Color(0x939393ff), sf::Color(0xadadadff), sf::Color(0xcececeff));
+	m_menuButton.setText("Exit to menu", m_font);
+	m_menuButton.setPosition(sf::Vector2f{ 640.f / 2.f, 260.f });
 }
 
 void PauseState::cleanup()

@@ -17,6 +17,7 @@ public:
     virtual void update(const sf::Time& dt) override;
     virtual void draw() override;
 
+    virtual void init() override;
     virtual void cleanup() override;
 private:
     sf::Font m_font;

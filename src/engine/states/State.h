@@ -28,6 +28,7 @@ public:
         window.setView(m_view);
     }
 
+    virtual void init() = 0;
     virtual void cleanup() = 0;
 
     enum

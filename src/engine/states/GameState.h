@@ -27,7 +27,7 @@ public:
 
     void saveScore();
 
-    void init();
+    virtual void init() override;
     void reset();
     virtual void cleanup() override;
 private:

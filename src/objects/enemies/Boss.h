@@ -21,7 +21,7 @@ private:
     sf::Time m_t_lazer;
     float fire_rate;
     float angle;
-    float phi {};
+    float phi;
     void set_phase();
 
     enum class BossPhase

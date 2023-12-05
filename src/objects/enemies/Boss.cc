@@ -127,7 +127,7 @@ void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 			{
 				for(int i { 0 }; i < 4; i++)
 				{
-					sf::Vector2f enhetscirkeln{ 3.f * radius * cos(phi + (i * pi / 2.f)), 3.f * radius * sin(phi + (i * pi / 2.f)) };
+					sf::Vector2f enhetscirkeln{ 3.f * radius * std::cos(phi + (i * pi / 2.f)), 3.f * radius * std::sin(phi + (i * pi / 2.f)) };
 					lazer_pos = (m_Sprite.getPosition() + enhetscirkeln);
 					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, phi + (i * pi / 2.f)) };
 					new_objects.push_back(lazer);
@@ -139,7 +139,7 @@ void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 			{
 				for(int i { 0 }; i < 4; i++)
 				{
-					sf::Vector2f enhetscirkeln{ 3.f * radius * cos(phi + (i * pi / 2.f)), 3.f * radius * sin(phi + (i * pi / 2.f)) };
+					sf::Vector2f enhetscirkeln{ 3.f * radius * std::cos(phi + (i * pi / 2.f)), 3.f * radius * std::sin(phi + (i * pi / 2.f)) };
 					lazer_pos = (m_Sprite.getPosition() + enhetscirkeln);
 					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, phi + (i * pi / 2.f)) };
 					new_objects.push_back(lazer);

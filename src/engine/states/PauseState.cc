@@ -2,8 +2,6 @@
 
 #include "util/Log.h"
 
-#include <intrin.h>
-
 PauseState::PauseState()
 	: m_gameTex(), m_gameSprite(), m_continueButton(), m_menuButton(), m_font(), m_windowView()
 {

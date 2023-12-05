@@ -152,7 +152,8 @@ void GameState::handle(sf::Event event)
 
 	if (event.type == sf::Event::Resized)
 	{
-		resize(event.size, *m_window);
+		resize(event.size, m_view);
+		m_window->setView(m_view);
 	}
 }
 

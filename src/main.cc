@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
     int state = State::Menu;
     // TODO: Lägg till variabler på fönsterstorleken
     std::shared_ptr<sf::RenderWindow> window{ std::make_shared<sf::RenderWindow>(sf::VideoMode(640, 480), 
-        "Space Craze", sf::Style::Titlebar | sf::Style::Close)};
+        "Space Craze", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize)};
 
     window->setFramerateLimit(60);
 

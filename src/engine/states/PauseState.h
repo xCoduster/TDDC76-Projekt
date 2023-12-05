@@ -20,6 +20,8 @@ public:
     virtual void init() override;
     virtual void cleanup() override;
 private:
+    void resizeTexture();
+
     sf::Font m_font;
 
     Button m_continueButton;
@@ -27,4 +29,6 @@ private:
 
     sf::Texture m_gameTex;
     sf::Sprite m_gameSprite;
+
+    sf::View m_windowView;
 };

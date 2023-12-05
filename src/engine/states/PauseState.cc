@@ -2,11 +2,11 @@
 
 #include "util/Log.h"
 
-PauseState::PauseState()
-	: m_gameTex(), m_gameSprite(), m_continueButton(), m_menuButton(), m_font()
-{
-	m_gameTex.create(640, 480);
+#include <intrin.h>
 
+PauseState::PauseState()
+	: m_gameTex(), m_gameSprite(), m_continueButton(), m_menuButton(), m_font(), m_windowView()
+{
 	m_font.loadFromFile("res/fonts/ShareTechMono-Regular.ttf");
 
 	init();
@@ -15,11 +15,10 @@ PauseState::PauseState()
 int PauseState::run(std::shared_ptr<sf::RenderWindow> window)
 {
 	m_window = window;
-	m_state = State::Pause;
 	m_view = m_window->getView();
+	m_state = State::Pause;
 
-	m_gameTex.update(*m_window);
-	m_gameSprite.setTexture(m_gameTex);
+	resizeTexture();
 
 	bool running = true;
 	unsigned int fps = 0;
@@ -74,7 +73,10 @@ int PauseState::run(std::shared_ptr<sf::RenderWindow> window)
 		}
 
 		if (m_state != State::Pause)
+		{
+			m_window->setView(m_view);
 			return m_state;
+		}
 	}
 
 	return State::Exit;
@@ -86,7 +88,10 @@ void PauseState::handle(sf::Event event)
 		m_state = State::Exit;
 
 	if (event.type == sf::Event::Resized)
-		resize(event.size, *m_window);
+	{
+		resize(event.size, m_view);
+		resize(event.size, m_windowView);
+	}
 
 	if (event.type == sf::Event::KeyPressed)
 	{
@@ -110,7 +115,12 @@ void PauseState::draw()
 {
 	m_window->clear(sf::Color::Black);
 
+	m_window->setView(m_windowView);
+
 	m_window->draw(m_gameSprite);
+
+	m_window->setView(m_view);
+
 	m_window->draw(m_continueButton);
 	m_window->draw(m_menuButton);
 
@@ -133,4 +143,17 @@ void PauseState::init()
 void PauseState::cleanup()
 {
 
+}
+
+void PauseState::resizeTexture()
+{
+	sf::Vector2u size{ m_window->getSize() };
+
+	m_windowView.reset(sf::FloatRect(0.f, 0.f, size.x, size.y));
+	m_windowView.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
+
+	m_gameTex.create(size.x, size.y);
+
+	m_gameTex.update(*m_window);
+	m_gameSprite.setTexture(m_gameTex, true);
 }

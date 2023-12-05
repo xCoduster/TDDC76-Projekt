@@ -105,7 +105,10 @@ void MenuState::handle(sf::Event event)
 		m_state = State::Exit;
 
 	if (event.type == sf::Event::Resized)
-		resize(event.size, *m_window);
+	{
+		resize(event.size, m_view);
+		m_window->setView(m_view);
+	}
 
 	if (event.type == sf::Event::KeyPressed)
 	{

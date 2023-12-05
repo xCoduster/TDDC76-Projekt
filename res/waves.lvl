@@ -4,7 +4,7 @@
 # s = Seeker
 # u = UFO
 
-10 u;1 b
+10 u;1 b;3 s
 2 s;1 b
 6 u;2 s
 6 u;2 b;1 s

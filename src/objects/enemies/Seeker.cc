@@ -9,11 +9,13 @@ Seeker::Seeker(Player* player)
 	: Enemy{}, m_playerPtr(player)
 {
 	TextureManager& texMgr{ TextureManager::instance() };
-	m_Texture = *texMgr.load("res/tmp.png");
+	m_Texture = *texMgr.load("res/asteroid2.png");
 
 	m_Sprite.setTexture(m_Texture);
 	sf::Vector2u texture_size { m_Texture.getSize() };
 	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
+
+	m_Sprite.setScale(1.5f, 1.5f);
 
 	m_Tag |= Collision::Seeker;
 

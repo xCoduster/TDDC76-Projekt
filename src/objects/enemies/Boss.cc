@@ -9,7 +9,7 @@
 #include <cmath>
 
 Boss::Boss()
-	: Enemy{}, m_soundTimer{}, angle{ 0 }, m_t_lazer{}
+	: Enemy{}, m_soundTimer{}, angle{ 0 }, m_t_lazer{}, phi{}
 {
 	TextureManager& texMgr{ TextureManager::instance() };
 	m_Texture = *texMgr.load("res/boss.png");
@@ -105,10 +105,13 @@ void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 	if(m_t_lazer.asSeconds() > fire_rate)
 	{
 		m_t_lazer = sf::seconds(0);
-		sf::Vector2f lazer_pos = m_Sprite.getPosition();
-		sf::Vector2u texture_size { m_Texture.getSize() };
-		float radius = texture_size.x / 2;
+		sf::Vector2f lazer_pos{ m_Sprite.getPosition() };
+		sf::Vector2u texture_size{ m_Texture.getSize() };
+		float radius = texture_size.x / 2.f;
 		float pi = 3.14f;
+
+		lazer_pos.x -= texture_size.x / 2.f;
+		lazer_pos.y -= texture_size.y / 2.f;
 		
 		switch(bossPhase)
 		{
@@ -128,7 +131,7 @@ void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 				for(int i { 0 }; i < 4; i++)
 				{
 					sf::Vector2f enhetscirkeln{ 3.f * radius * std::cos(phi + (i * pi / 2.f)), 3.f * radius * std::sin(phi + (i * pi / 2.f)) };
-					lazer_pos = (m_Sprite.getPosition() + enhetscirkeln);
+					lazer_pos += enhetscirkeln;
 					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, phi + (i * pi / 2.f)) };
 					new_objects.push_back(lazer);
 				}
@@ -140,7 +143,7 @@ void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 				for(int i { 0 }; i < 4; i++)
 				{
 					sf::Vector2f enhetscirkeln{ 3.f * radius * std::cos(phi + (i * pi / 2.f)), 3.f * radius * std::sin(phi + (i * pi / 2.f)) };
-					lazer_pos = (m_Sprite.getPosition() + enhetscirkeln);
+					lazer_pos += enhetscirkeln;
 					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, phi + (i * pi / 2.f)) };
 					new_objects.push_back(lazer);
 				}

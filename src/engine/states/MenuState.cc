@@ -215,7 +215,7 @@ void MenuState::init()
 
 void MenuState::cleanup()
 {
-	for (int i = 0; i < static_cast<int>(m_stars.size()); i++)
+	for (std::size_t i = 0; i < m_stars.size(); i++)
 	{
 		std::swap(m_stars.at(i), m_stars.back());
 		delete m_stars.back();

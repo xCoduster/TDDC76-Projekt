@@ -123,9 +123,9 @@ bool Spawner::readFile(const std::string& filePath, Player* playerObject)
 
 void Spawner::cleanup()
 {
-	for (int i{ 0 }; i < static_cast<int>(m_objects.size()); ++i)
+	for (std::size_t i{ 0 }; i < m_objects.size(); ++i)
 	{
-		for (int j{ 0 }; j < static_cast<int>(m_objects.at(i).size()); ++j)
+		for (std::size_t j{ 0 }; j < m_objects.at(i).size(); ++j)
 		{
 			std::swap(m_objects.at(i).at(j), m_objects.at(i).back());
 			delete m_objects.at(i).back();

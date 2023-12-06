@@ -36,7 +36,7 @@ private:
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
-        for (int i { 0 }; i < static_cast<int>(m_sprites.size()); ++i)
+        for (std::size_t i { 0 }; i < m_sprites.size(); ++i)
             target.draw(m_sprites.at(i), states);
         
         target.draw(life_pink, states);

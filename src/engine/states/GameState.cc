@@ -38,8 +38,6 @@ GameState::GameState()
 	m_gameOverText.setFillColor(sf::Color::Yellow);
 	m_gameOverText.setOrigin(m_gameOverText.getLocalBounds().width / 2.0f, m_gameOverText.getLocalBounds().height / 2.0f);
 	m_gameOverText.setPosition(640 / 2, 100 );
-
-	init();
 }
 
 int GameState::run(std::shared_ptr<sf::RenderWindow> window)
@@ -169,7 +167,7 @@ void GameState::update(const sf::Time& dt)
 	for (Object* object : objects)
 		object->update(dt, new_objects);
 	
-	for (int i = 0; i < static_cast<int>(objects.size()); i++)
+	for (std::size_t i{ 0 }; i < objects.size(); ++i)
 	{
 		if (objects.at(i)->m_Dead)
 		{
@@ -197,7 +195,7 @@ void GameState::update(const sf::Time& dt)
 		m_gameOver = true;
 	}
 
-	for (int i = 0; i < static_cast<int>(new_objects.size()); i++)
+	for (std::size_t i{ 0 }; i < new_objects.size(); ++i)
 	{
 		objects.push_back(new_objects.at(i));
 		std::swap(new_objects.at(i), new_objects.back());
@@ -205,15 +203,10 @@ void GameState::update(const sf::Time& dt)
 		--i;
 	}
 
+
 	if (!m_bossFight && m_score % 20 == 0 && m_score != 0)		// Spawna en boss om spelaren har nått multiplar av 20 poäng
 	{
-		for (int i = 0; i < static_cast<int>(objects.size()); i++)
-		{
-			std::swap(objects.at(i), objects.back());
-			delete objects.back();
-			objects.pop_back();
-			--i;
-		}
+		clearVector(objects);
 	
 		objects.push_back(new Boss{});
 		m_bossFight = true;
@@ -256,9 +249,9 @@ void GameState::checkCollision()
 {
 	objects.push_back(player);
 
-	for (unsigned i{ 0 }; i < objects.size(); ++i)
+	for (std::size_t i{ 0 }; i < objects.size(); ++i)
 	{
-		for (unsigned j{ i + 1 }; j < objects.size(); ++j)
+		for (std::size_t j{ i + 1 }; j < objects.size(); ++j)
 		{
 			Collidable* collidable1{ dynamic_cast<Collidable*>(objects.at(i)) };
 			Collidable* collidable2{ dynamic_cast<Collidable*>(objects.at(j)) };
@@ -286,14 +279,14 @@ void GameState::saveScore()
 	
 	std::ofstream outFile{ "highscore.csv", std::ios::trunc };
 
-	for (int i{ 0 }; i < 5; ++i)
+	for (std::size_t i{ 0 }; i < 5; ++i)
 	{
-		if (i >= static_cast<int>(scores.size()))
+		if (i >= scores.size())
 			break;
 
-		int index = scores.size() - 1 - i;
+		std::size_t index = scores.size() - 1 - i;
 
-		outFile << scores[index].first << "," << scores[index].second << std::endl;
+		outFile << scores.at(index).first << "," << scores.at(index).second << std::endl;
 	}
 
 }
@@ -320,30 +313,9 @@ void GameState::init()
 
 void GameState::cleanup()
 {
-	for (int i = 0; i < static_cast<int>(objects.size()); i++)
-	{
-		std::swap(objects.at(i), objects.back());
-       	delete objects.back();
-	 	objects.pop_back();
-	 	--i;
-	}
-
-
-	for (int i = 0; i < static_cast<int>(new_objects.size()); i++)
-	{
-		std::swap(new_objects.at(i), new_objects.back());
-       	delete new_objects.back();
-	 	new_objects.pop_back();
-	 	--i;
-	}
-
-	for (int i = 0; i < static_cast<int>(stars.size()); i++)
-	{
-		std::swap(stars.at(i), stars.back());
-		delete stars.back();
-		stars.pop_back();
-		--i;
-	}
+	clearVector(objects);
+	clearVector(new_objects);
+	clearVector(stars);
 
 	m_spawner.cleanup();
 	

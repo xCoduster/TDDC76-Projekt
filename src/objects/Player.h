@@ -15,7 +15,6 @@ public:
 
     void blast(const sf::Time& dt, std::vector<Object*>& new_objects);
     void hurt(int amount = 1);
-    sf::Vector2f getPosition();
 
     bool active_powerUp;
 

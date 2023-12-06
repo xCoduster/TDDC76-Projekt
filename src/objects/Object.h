@@ -29,6 +29,10 @@ public:
         m_Sprite.setPosition(position);
     }
 
+    sf::Vector2f getPosition() const
+    {
+        return m_Sprite.getPosition();
+    }
     sf::Sprite m_Sprite;
     bool m_Dead;
     bool m_addScore;

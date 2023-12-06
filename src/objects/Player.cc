@@ -153,8 +153,3 @@ void Player::hurt(int amount)
 		}
 	}
 }
-
-sf::Vector2f Player::getPosition()
-{
- return m_Sprite.getPosition();
-}

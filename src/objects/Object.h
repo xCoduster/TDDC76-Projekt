@@ -43,10 +43,9 @@ public:
     {
         return m_addScore;
     }
-    
-    sf::Sprite m_Sprite;
 
 protected:
+    sf::Sprite m_Sprite;
     sf::Texture m_Texture;
     bool m_Dead;
     bool m_addScore;

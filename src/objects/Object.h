@@ -1,6 +1,9 @@
 #pragma once
 
+#include "engine/resource/TextureManager.h"
+
 #include <SFML/Graphics.hpp>
+#include <string>
 
 class Object : public sf::Drawable
 {
@@ -32,6 +35,16 @@ public:
 
 protected:
     sf::Texture m_Texture;
+
+    void initialize(std::string Path)
+    {
+        TextureManager& texMgr{ TextureManager::instance() };
+        m_Texture = *texMgr.load(Path);
+
+	    m_Sprite.setTexture(m_Texture);
+        sf::Vector2u texture_size { m_Texture.getSize() };
+        m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
+    }
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const

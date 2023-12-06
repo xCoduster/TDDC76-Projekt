@@ -10,7 +10,7 @@ public:
     virtual void update(const sf::Time& dt, std::vector<Object*>& new_objects) override;
 
 private:
-    void initialize();
+    void starAllocation();
     sf::Vector2f m_Speed;
     sf::Color m_Color;
 

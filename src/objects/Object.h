@@ -38,14 +38,18 @@ public:
     {
         return m_Dead;
     }
+
+    bool addScore() const 
+    {
+        return m_addScore;
+    }
     
     sf::Sprite m_Sprite;
-
-    bool m_addScore;
 
 protected:
     sf::Texture m_Texture;
     bool m_Dead;
+    bool m_addScore;
 
     void initialize(std::string Path)
     {

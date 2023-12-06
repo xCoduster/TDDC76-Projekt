@@ -173,7 +173,7 @@ void GameState::update(const sf::Time& dt)
 	{
 		if (objects.at(i)->isDead())
 		{
-			if (objects.at(i)->m_addScore)
+			if (objects.at(i)->addScore())
 			{
 				m_score += 1;
 				m_gameBar->showScore(m_score);

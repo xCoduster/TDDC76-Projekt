@@ -121,14 +121,13 @@ void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 		if(active_powerUp == true)
 		{
 			sf::Vector2f lazer_pos = m_Sprite.getPosition();
-			Projectile* lazer1{ new Projectile(m_Sprite.getPosition()) };
-			lazer_pos.y += 30;
-			Projectile* lazer2{ new Projectile(lazer_pos) };
-			lazer_pos.y -= 60;
-			Projectile* lazer3{ new Projectile(lazer_pos) };
-			new_objects.push_back(lazer1);
-			new_objects.push_back(lazer2);
-			new_objects.push_back(lazer3);
+			lazer_pos.y += 60.f;
+			for(int i { 0 }; i < 3; i++)
+			{
+				lazer_pos.y -= 30.f;
+				Projectile* lazer{ new Projectile(lazer_pos)};
+				new_objects.push_back(lazer);
+			}
 		}
 		else
 		{	

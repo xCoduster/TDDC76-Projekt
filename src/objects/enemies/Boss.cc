@@ -108,10 +108,10 @@ void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 		{
 			case BossPhase::secondPhase:
 			{
-				lazer_pos.y += 30.f;
+				lazer_pos.y += 60.f;
 				for(int i { 0 }; i < 3; i++)
 				{
-					lazer_pos.y -= 30.f*i;
+					lazer_pos.y -= 30.f;
 					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, 5.f * pi / 6.f + i * pi / 6.f) };
 					new_objects.push_back(lazer);
 				}

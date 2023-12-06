@@ -5,7 +5,7 @@
 #include <iostream>
 
 PowerUp::PowerUp(sf::Vector2f cord)
-    :lifeTime{}
+    : Collidable{}, lifeTime {}
 {
     TextureManager& texMgr{ TextureManager::instance() };
     m_Texture = *texMgr.load("res/powerUp.png");

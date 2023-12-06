@@ -5,6 +5,7 @@
 #include <iostream>
 
 Bomb::Bomb()
+	: MovingObject{}
 {
 	TextureManager& texMgr{ TextureManager::instance() };
 	m_Texture = *texMgr.load("res/bomb.png");

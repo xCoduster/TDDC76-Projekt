@@ -10,7 +10,7 @@
 #include <iostream>
 
 Player::Player()
-	: active_powerUp{ false }, m_t_lazer{}, m_t_powerUp{}, 
+	: MovingObject{}, active_powerUp { false }, m_t_lazer{}, m_t_powerUp{},
 	m_t_invincibility{}, m_godMode{ false }, m_pickUpSound{}, 
 	m_laserSound{}, m_hurtSound{}
 {

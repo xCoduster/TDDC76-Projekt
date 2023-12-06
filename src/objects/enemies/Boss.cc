@@ -9,7 +9,7 @@
 #include <cmath>
 
 Boss::Boss()
-	: m_soundTimer{}, angle{ 0 }, m_t_lazer{}
+	: Enemy{}, m_soundTimer{}, angle{ 0 }, m_t_lazer{}
 {
 	TextureManager& texMgr{ TextureManager::instance() };
 	m_Texture = *texMgr.load("res/boss.png");

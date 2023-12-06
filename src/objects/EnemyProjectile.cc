@@ -4,6 +4,7 @@
 #include <cmath>
 
 EnemyProjectile::EnemyProjectile(sf::Vector2f cord, float angle)
+    : MovingObject{}
 {
     TextureManager& texMgr{ TextureManager::instance() };
     m_Texture = *texMgr.load("res/plasma.png");

@@ -9,6 +9,6 @@ bool Collidable::Collides(const Collidable* other)
 }
 
 Collidable::Collidable()
-    : m_Tag{ Collision::None }
+    : Object{}, m_Tag { Collision::None }
 {
 }

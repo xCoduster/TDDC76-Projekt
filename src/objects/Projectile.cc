@@ -3,6 +3,7 @@
 #include "engine/resource/TextureManager.h"
 
 Projectile::Projectile(sf::Vector2f cord)
+    : MovingObject{}
 {
     TextureManager& texMgr{ TextureManager::instance() };
     m_Texture = *texMgr.load("res/lazer.v2.png");

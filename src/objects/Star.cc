@@ -5,7 +5,7 @@
 #include "engine/resource/TextureManager.h"
 
 Star::Star()
-	: m_Color{}, m_Speed{}
+	: Object{}, m_Color {}, m_Speed{}
 {
 	TextureManager& texMgr{ TextureManager::instance() };
 	m_Texture = *texMgr.load("res/star.png");

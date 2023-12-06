@@ -1,6 +1,5 @@
 #include "Boss.h"
 
-#include "engine/resource/TextureManager.h"
 #include "engine/resource/AudioManager.h"
 
 #include "objects/EnemyProjectile.h"
@@ -11,14 +10,9 @@
 Boss::Boss()
 	: m_soundTimer{}, angle{ 0 }, m_t_lazer{}
 {
-	TextureManager& texMgr{ TextureManager::instance() };
-	m_Texture = *texMgr.load("res/boss.png");
-
-	m_Sprite.setTexture(m_Texture);
-
+	initialize("res/boss.png");
+	
 	m_Sprite.setScale(3.0f, 3.0f);
-    sf::Vector2u texture_size { m_Texture.getSize() };
-	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
 	m_Sprite.setPosition(640, 480 / 2);
 
 	m_Tag = Collision::Enemy;

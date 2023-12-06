@@ -2,7 +2,6 @@
 
 #include "Projectile.h"
 
-#include "engine/resource/TextureManager.h"
 #include "engine/resource/AudioManager.h"
 
 #include "util/Util.h"
@@ -20,13 +19,9 @@ Player::Player()
 	m_laserSound.setBuffer(*audioMgr.load("res/audio/laser.wav"));
 	m_laserSound.setVolume(75.0f);
 
-	TextureManager& texMgr{ TextureManager::instance() };
-	m_Texture = *texMgr.load("res/player.v2.png");
+	initialize("res/player.v2.png");
 
-	m_Sprite.setTexture(m_Texture);
 	sf::Vector2u texture_size { m_Texture.getSize() };
-
-	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
 	m_Sprite.setPosition(texture_size.x, 480 / 2);
 
 	m_Tag = Collision::Player;

@@ -2,18 +2,10 @@
 
 #include <cstdlib>
 
-#include "engine/resource/TextureManager.h"
-
 Star::Star()
 	: m_Color{}, m_Speed{}
 {
-	TextureManager& texMgr{ TextureManager::instance() };
-	m_Texture = *texMgr.load("res/star.png");
-
-	m_Sprite.setTexture(m_Texture);
-
-	sf::Vector2u texture_size { m_Texture.getSize() };
-	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
+	initialize("res/star.png");
 
 	m_Sprite.setScale(0.1f ,0.1f);
 	

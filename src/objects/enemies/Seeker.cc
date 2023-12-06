@@ -1,19 +1,12 @@
 #include "Seeker.h"
 
-#include "engine/resource/TextureManager.h"
-
 #include <iostream>
 #include <cmath>
 
 Seeker::Seeker(Player* player)
 	: Enemy{}, m_playerPtr(player)
 {
-	TextureManager& texMgr{ TextureManager::instance() };
-	m_Texture = *texMgr.load("res/asteroid2.png");
-
-	m_Sprite.setTexture(m_Texture);
-	sf::Vector2u texture_size { m_Texture.getSize() };
-	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
+	initialize("res/asteroid2.png");
 
 	m_Sprite.setScale(1.5f, 1.5f);
 

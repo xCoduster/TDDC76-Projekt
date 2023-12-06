@@ -1,6 +1,5 @@
 #include "UFO.h"
 
-#include "engine/resource/TextureManager.h"
 #include "engine/resource/AudioManager.h"
 
 #include "objects/EnemyProjectile.h"
@@ -19,10 +18,8 @@ UFO::UFO()
 	m_loop = true;
 
 	m_Path = "res/ufo/ufo-0";
+	initialize(m_Path + "0.png");
 	loadFrames(3);
-
-	sf::Vector2u texture_size{ m_Texture.getSize() };
-	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
 
 	m_Tag |= Collision::UFO;
 

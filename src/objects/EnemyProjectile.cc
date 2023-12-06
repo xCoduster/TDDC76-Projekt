@@ -1,16 +1,12 @@
 #include "EnemyProjectile.h"
 
-#include "engine/resource/TextureManager.h"
 #include <cmath>
 
 EnemyProjectile::EnemyProjectile(sf::Vector2f cord, float angle)
 {
-    TextureManager& texMgr{ TextureManager::instance() };
-    m_Texture = *texMgr.load("res/plasma.png");
+    initialize("res/plasma.png");
 
-	m_Sprite.setTexture(m_Texture);
     sf::Vector2u texture_size { m_Texture.getSize() };
-    m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
     m_Sprite.setPosition(cord.x + texture_size.x, cord.y);
 
     m_Speed.x = cos(angle);

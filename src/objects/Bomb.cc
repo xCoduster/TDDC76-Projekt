@@ -1,18 +1,10 @@
 #include "Bomb.h"
 
-#include "engine/resource/TextureManager.h"
-
 #include <iostream>
 
 Bomb::Bomb()
 {
-	TextureManager& texMgr{ TextureManager::instance() };
-	m_Texture = *texMgr.load("res/bomb.png");
-
-	m_Sprite.setTexture(m_Texture);
-
-    sf::Vector2u texture_size { m_Texture.getSize() };
-	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
+	initialize("res/bomb.png");
 
 	m_Speed.x = -1.0f;
 	m_Speed.y = 0.0f;

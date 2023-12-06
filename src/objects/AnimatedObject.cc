@@ -37,9 +37,4 @@ void AnimatedObject::loadFrames(int amountOfFrames)
     {
 	     m_frames.push_back(*texMgr.load(m_Path+ std::to_string(i) +".png"));
     }
-
-
-    m_Texture = m_frames.at(m_currentFrame);
-
-	m_Sprite.setTexture(m_Texture);
 }

@@ -1,7 +1,5 @@
 #include "PowerUp.h"
 
-#include "engine/resource/TextureManager.h"
-
 #include <iostream>
 
 PowerUp::PowerUp(sf::Vector2f cord)

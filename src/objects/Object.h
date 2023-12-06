@@ -1,6 +1,9 @@
 #pragma once
 
+#include "engine/resource/TextureManager.h"
+
 #include <SFML/Graphics.hpp>
+#include <string>
 
 class Object : public sf::Drawable
 {
@@ -26,12 +29,36 @@ public:
         m_Sprite.setPosition(position);
     }
 
+    sf::Vector2f getPosition() const
+    {
+        return m_Sprite.getPosition();
+    }
+
+    bool isDead() const 
+    {
+        return m_Dead;
+    }
+
+    bool addScore() const 
+    {
+        return m_addScore;
+    }
+
+protected:
     sf::Sprite m_Sprite;
+    sf::Texture m_Texture;
     bool m_Dead;
     bool m_addScore;
 
-protected:
-    sf::Texture m_Texture;
+    void initialize(std::string Path)
+    {
+        TextureManager& texMgr{ TextureManager::instance() };
+        m_Texture = *texMgr.load(Path);
+
+	    m_Sprite.setTexture(m_Texture);
+        sf::Vector2u texture_size { m_Texture.getSize() };
+        m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
+    }
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const

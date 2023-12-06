@@ -61,7 +61,7 @@ bool Enemy::Collision(const Collidable* other, std::vector<Object*>& new_objects
 
 	if (other->m_Tag == m_Tag)
 	{
-		if (m_Sprite.getPosition().y > other->m_Sprite.getPosition().y)
+		if (m_Sprite.getPosition().y > other->getPosition().y)
 		{
 			move(sf::Vector2f(0.0f, 10.0f));
 		}

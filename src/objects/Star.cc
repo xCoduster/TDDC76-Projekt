@@ -2,22 +2,14 @@
 
 #include <cstdlib>
 
-#include "engine/resource/TextureManager.h"
-
 Star::Star()
 	: Object{}, m_Color {}, m_Speed{}
 {
-	TextureManager& texMgr{ TextureManager::instance() };
-	m_Texture = *texMgr.load("res/star.png");
-
-	m_Sprite.setTexture(m_Texture);
-
-	sf::Vector2u texture_size { m_Texture.getSize() };
-	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
+	initialize("res/star.png");
 
 	m_Sprite.setScale(0.1f ,0.1f);
 	
-	initialize();
+	starAllocation();
 
 	float X = rand() % 640;
 	float Y = rand() % 480;
@@ -31,10 +23,10 @@ void Star::update(const sf::Time& dt, std::vector<Object*>& new_objects)
     move(m_Speed * 120.0f * dt.asSeconds());
 	sf::Vector2f position{ m_Sprite.getPosition() };
 	if (position.x < 0)
-		initialize();
+		starAllocation();
 }
 
-void Star::initialize()
+void Star::starAllocation()
 {
 	float X = 642.0f;
 	float Y = rand() % 480;

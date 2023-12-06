@@ -21,7 +21,7 @@ GameBar::GameBar(Player* player)
     life_pink.setFont(font);
     life_blue.setFont(font);
 
-    Hp = std::to_string(player_pointer->m_Hitpoints);
+    Hp = std::to_string(player_pointer->getHitpoints());
     
     life.setString(Hp);
     life.setCharacterSize(50.0f);
@@ -60,7 +60,7 @@ GameBar::GameBar(Player* player)
 
 void GameBar::update()
 {
-    Hp = std::to_string(player_pointer->m_Hitpoints);
+    Hp = std::to_string(player_pointer->getHitpoints());
     life.setString(Hp);
     life_pink.setString(Hp); 
     life_blue.setString(Hp);  

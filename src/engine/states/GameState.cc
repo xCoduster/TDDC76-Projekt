@@ -169,9 +169,9 @@ void GameState::update(const sf::Time& dt)
 	
 	for (std::size_t i{ 0 }; i < objects.size(); ++i)
 	{
-		if (objects.at(i)->m_Dead)
+		if (objects.at(i)->isDead())
 		{
-			if (objects.at(i)->m_addScore)
+			if (objects.at(i)->addScore())
 			{
 				m_score += 1;
 				m_gameBar->showScore(m_score);
@@ -180,7 +180,7 @@ void GameState::update(const sf::Time& dt)
 			if (dynamic_cast<Boss*>(objects.at(i)) != nullptr)		// Kolla om bossen är död
 			{
 				m_bossFight = false;
-				player->m_Hitpoints += 1;
+				player->addHitpoints();
 			}
 
 			std::swap(objects.at(i), objects.back());
@@ -190,7 +190,7 @@ void GameState::update(const sf::Time& dt)
 		}
 	}
 
-	if (player->m_Dead)
+	if (player->isDead())
 	{
 		m_gameOver = true;
 	}

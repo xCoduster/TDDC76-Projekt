@@ -1,6 +1,5 @@
 #include "Explosion.h"
 
-#include "engine/resource/TextureManager.h"
 #include "engine/resource/AudioManager.h"
 
 #include "util/Util.h"
@@ -23,12 +22,10 @@ Explosion::Explosion(sf::Vector2f start_pos)
     m_explosionSound.play();
 
     m_Path = "res/explosion/ex-0";
+    initialize(m_Path + "0.png");
     loadFrames(8);
 
-    sf::Vector2u texture_size {m_Texture.getSize() };
-    m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
 	m_Sprite.setPosition(start_pos);
-
     m_Sprite.setScale(2.5f, 2.5f);
 
     m_Tag = Collision::Explosion;

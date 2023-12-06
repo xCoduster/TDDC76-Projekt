@@ -2,7 +2,6 @@
 
 #include "Projectile.h"
 
-#include "engine/resource/TextureManager.h"
 #include "engine/resource/AudioManager.h"
 
 #include "util/Util.h"
@@ -20,13 +19,9 @@ Player::Player()
 	m_laserSound.setBuffer(*audioMgr.load("res/audio/laser.wav"));
 	m_laserSound.setVolume(75.0f);
 
-	TextureManager& texMgr{ TextureManager::instance() };
-	m_Texture = *texMgr.load("res/player.v2.png");
+	initialize("res/player.v2.png");
 
-	m_Sprite.setTexture(m_Texture);
 	sf::Vector2u texture_size { m_Texture.getSize() };
-
-	m_Sprite.setOrigin(texture_size.x / 2, texture_size.y / 2);
 	m_Sprite.setPosition(texture_size.x, 480 / 2);
 
 	m_Tag = Collision::Player;
@@ -89,9 +84,10 @@ void Player::movement(const sf::Time& dt)
 	if (position.x - boundingBox.width / 2 < 0 || position.x + boundingBox.width / 2 > 640)
 		m_Sprite.setPosition(sf::Vector2f{ old_position.x, position.y });
 
+	position = m_Sprite.getPosition();
+
 	if (position.y - boundingBox.height / 2 < 0 || position.y + boundingBox.height / 2 > 480)
 		m_Sprite.setPosition(sf::Vector2f{ position.x, old_position.y });
-
 }
 
 bool Player::Collision(const Collidable* other, std::vector<Object*>& new_objects)
@@ -125,14 +121,13 @@ void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 		if(active_powerUp == true)
 		{
 			sf::Vector2f lazer_pos = m_Sprite.getPosition();
-			Projectile* lazer1{ new Projectile(m_Sprite.getPosition()) };
-			lazer_pos.y += 30;
-			Projectile* lazer2{ new Projectile(lazer_pos) };
-			lazer_pos.y -= 60;
-			Projectile* lazer3{ new Projectile(lazer_pos) };
-			new_objects.push_back(lazer1);
-			new_objects.push_back(lazer2);
-			new_objects.push_back(lazer3);
+			lazer_pos.y += 60.f;
+			for(int i { 0 }; i < 3; i++)
+			{
+				lazer_pos.y -= 30.f;
+				Projectile* lazer{ new Projectile(lazer_pos)};
+				new_objects.push_back(lazer);
+			}
 		}
 		else
 		{	
@@ -157,9 +152,4 @@ void Player::hurt(int amount)
 			m_hurtSound.play();
 		}
 	}
-}
-
-sf::Vector2f Player::getPosition()
-{
- return m_Sprite.getPosition();
 }

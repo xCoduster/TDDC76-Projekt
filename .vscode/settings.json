@@ -1,6 +1,10 @@
 {
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "files.associations": {
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "*.tcc": "cpp",
+        "boundingbox": "cpp",
+        "boundingsphere": "cpp",
+        "timer": "cpp"
     }
 }

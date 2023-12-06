@@ -104,15 +104,12 @@ void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 		float radius = texture_size.x / 2.f;
 		float pi = 3.14f;
 
-		lazer_pos.x -= texture_size.x / 2.f;
-		lazer_pos.y -= texture_size.y / 2.f;
-		
 		switch(bossPhase)
 		{
 			case BossPhase::secondPhase:
 			{
 				lazer_pos.y += 60.f;
-				for(int i { 0 }; i < 3; i++)
+				for(int i{ 0 }; i < 3; i++)
 				{
 					lazer_pos.y -= 30.f;
 					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, 5.f * pi / 6.f + i * pi / 6.f) };
@@ -122,23 +119,21 @@ void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 				break;
 			case BossPhase::fourthPhase:
 			{
-				for(int i { 0 }; i < 4; i++)
+				for(int i{ 0 }; i < 4; i++)
 				{
 					sf::Vector2f enhetscirkeln{ 3.f * radius * std::cos(phi + (i * pi / 2.f)), 3.f * radius * std::sin(phi + (i * pi / 2.f)) };
-					lazer_pos += enhetscirkeln;
-					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, phi + (i * pi / 2.f)) };
+					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos + enhetscirkeln, phi + (i * pi / 2.f)) };
 					new_objects.push_back(lazer);
 				}
-				phi += pi*dt.asSeconds();
+				phi += 2 * pi * dt.asSeconds();
 			}
 				break;
 			case BossPhase::fifthPhase:
 			{
-				for(int i { 0 }; i < 4; i++)
+				for(int i{ 0 }; i < 4; i++)
 				{
 					sf::Vector2f enhetscirkeln{ 3.f * radius * std::cos(phi + (i * pi / 2.f)), 3.f * radius * std::sin(phi + (i * pi / 2.f)) };
-					lazer_pos += enhetscirkeln;
-					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, phi + (i * pi / 2.f)) };
+					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos + enhetscirkeln, phi + (i * pi / 2.f)) };
 					new_objects.push_back(lazer);
 				}
 				phi++;

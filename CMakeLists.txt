@@ -25,7 +25,7 @@ include_directories("src")
 # -Wextra -pedantic -Weffc++ -Wold-style-cast -fmax-errors=3
 set_source_files_properties(${SOURCE_FILES} PROPERTIES COMPILE_OPTIONS "-std=c++17;-Wextra;-pedantic;-Weffc++;-Wold-style-cast;-fmax-errors=3")
 
-add_executable(game ${SOURCE_FILES})
+add_executable(game src/catch/test_main.o ${SOURCE_FILES})
 
 # Länka med biblioteken som vi hittade tidigare.
 target_link_libraries(game ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})

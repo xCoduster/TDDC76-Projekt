@@ -33,12 +33,19 @@ public:
     {
         return m_Sprite.getPosition();
     }
+
+    bool isDead() const 
+    {
+        return m_Dead;
+    }
+    
     sf::Sprite m_Sprite;
-    bool m_Dead;
+
     bool m_addScore;
 
 protected:
     sf::Texture m_Texture;
+    bool m_Dead;
 
     void initialize(std::string Path)
     {

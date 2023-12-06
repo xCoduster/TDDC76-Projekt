@@ -171,7 +171,7 @@ void GameState::update(const sf::Time& dt)
 	
 	for (int i = 0; i < static_cast<int>(objects.size()); i++)
 	{
-		if (objects.at(i)->m_Dead)
+		if (objects.at(i)->isDead())
 		{
 			if (objects.at(i)->m_addScore)
 			{
@@ -192,7 +192,7 @@ void GameState::update(const sf::Time& dt)
 		}
 	}
 
-	if (player->m_Dead)
+	if (player->isDead())
 	{
 		m_gameOver = true;
 	}

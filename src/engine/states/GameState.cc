@@ -182,7 +182,7 @@ void GameState::update(const sf::Time& dt)
 			if (dynamic_cast<Boss*>(objects.at(i)) != nullptr)		// Kolla om bossen är död
 			{
 				m_bossFight = false;
-				player->m_Hitpoints += 1;
+				player->addHitpoints();
 			}
 
 			std::swap(objects.at(i), objects.back());

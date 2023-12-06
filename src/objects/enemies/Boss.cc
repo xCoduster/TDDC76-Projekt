@@ -7,6 +7,8 @@
 #include "util/Util.h"
 #include <cmath>
 
+#define MAX_HP 9
+
 Boss::Boss()
 	: Enemy{}, m_soundTimer{}, angle{ 0 }, m_t_lazer{}, phi{}
 {
@@ -17,7 +19,7 @@ Boss::Boss()
 
 	m_Tag = Collision::Enemy;
 
-	m_Hitpoints = 9;
+	m_Hitpoints = MAX_HP;
 
 	m_Speed.x = -1.0f;
 	m_Speed.y = 0.0f;
@@ -67,7 +69,7 @@ void Boss::set_phase()
 			}
 			break;
 		case BossPhase::secondPhase:
-			if (m_Hitpoints <= 6)
+			if (m_Hitpoints <= MAX_HP * 2 / 3)
 				bossPhase = BossPhase::thirdPhase;
 			break;
 		case BossPhase::thirdPhase:
@@ -78,7 +80,7 @@ void Boss::set_phase()
 			}
 			break;
 		case BossPhase::fourthPhase:
-			if(m_Hitpoints <= 3)
+			if(m_Hitpoints <= MAX_HP * 1 / 3)
 			{
 				fire_rate = 0.4f;
 				bossPhase = BossPhase::fifthPhase;

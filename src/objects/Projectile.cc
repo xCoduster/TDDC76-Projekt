@@ -3,7 +3,7 @@
 Projectile::Projectile(sf::Vector2f cord)
     : MovingObject{}
 {
-    initialize("res/lazer.v2.png");
+    initialize("res/lazer.png");
 
     sf::Vector2u texture_size { m_Texture.getSize() };
     m_Sprite.setPosition(cord.x + texture_size.x, cord.y);

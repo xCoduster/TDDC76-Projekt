@@ -9,7 +9,7 @@ GameBar::GameBar(Player* player)
     score_blue{}, score_pink{}, score{}, life_blue{}, life_pink{}, life{}, font{}
 {
     TextureManager& texMgr{ TextureManager::instance() };
-    m_images.push_back(*texMgr.load("res/player.v2.png"));
+    m_images.push_back(*texMgr.load("res/player.png"));
 
     sf::Sprite sprite {};
     sprite.setTexture(m_images.at(0));

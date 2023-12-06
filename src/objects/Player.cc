@@ -19,7 +19,7 @@ Player::Player()
 	m_laserSound.setBuffer(*audioMgr.load("res/audio/laser.wav"));
 	m_laserSound.setVolume(75.0f);
 
-	initialize("res/player.v2.png");
+	initialize("res/player.png");
 
 	sf::Vector2u texture_size { m_Texture.getSize() };
 	m_Sprite.setPosition(texture_size.x, 480 / 2);
@@ -82,13 +82,13 @@ void Player::movement(const sf::Time& dt)
 	sf::FloatRect boundingBox{ m_Sprite.getGlobalBounds() };
 
 	if (position.x - boundingBox.width / 2 < 0 || position.x + boundingBox.width / 2 > 640)
-		m_Sprite.setPosition(sf::Vector2f{ old_position.x, position.y });
-
-	position = m_Sprite.getPosition();
+		position.x = old_position.x;
 
 	if (position.y - boundingBox.height / 2 < 0 || position.y + boundingBox.height / 2 > 480)
-		m_Sprite.setPosition(sf::Vector2f{ position.x, old_position.y });
-}
+		position.y = old_position.y;
+
+	m_Sprite.setPosition(position);
+}		
 
 bool Player::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {

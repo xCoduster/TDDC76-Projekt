@@ -6,7 +6,7 @@
 Seeker::Seeker(Player* player)
 	: Enemy{}, m_playerPtr(player)
 {
-	initialize("res/asteroid2.png");
+	initialize("res/asteroid.png");
 
 	m_Sprite.setScale(1.5f, 1.5f);
 

@@ -84,9 +84,10 @@ void Player::movement(const sf::Time& dt)
 	if (position.x - boundingBox.width / 2 < 0 || position.x + boundingBox.width / 2 > 640)
 		m_Sprite.setPosition(sf::Vector2f{ old_position.x, position.y });
 
+	position = m_Sprite.getPosition();
+
 	if (position.y - boundingBox.height / 2 < 0 || position.y + boundingBox.height / 2 > 480)
 		m_Sprite.setPosition(sf::Vector2f{ position.x, old_position.y });
-
 }
 
 bool Player::Collision(const Collidable* other, std::vector<Object*>& new_objects)

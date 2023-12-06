@@ -20,10 +20,12 @@ public:
     {
         sf::Vector2f size{ static_cast<float>(event.width), static_cast<float>(event.height) };
 
-        if (size.x / size.y > 4.f / 3.f)
-            view.setViewport(sf::FloatRect((1 - (4.f / 3.f * size.y) / size.x) / 2, 0, (4.f / 3.f * size.y) / size.x, 1.0f));
+        float ratio = view.getSize().x / view.getSize().y;
+
+        if (size.x / size.y > ratio)
+            view.setViewport(sf::FloatRect((1 - (ratio * size.y) / size.x) / 2, 0, (ratio * size.y) / size.x, 1.0f));
         else
-            view.setViewport(sf::FloatRect(0, (1 - (3.f / 4.f * size.x) / size.y) / 2, 1.0f, (3.f / 4.f * size.x) / size.y));
+            view.setViewport(sf::FloatRect(0, (1 - (1 / ratio * size.x) / size.y) / 2, 1.0f, (1 / ratio * size.x) / size.y));
     }
 
     virtual void init() = 0;

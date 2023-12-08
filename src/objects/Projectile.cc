@@ -6,7 +6,7 @@ Projectile::Projectile(sf::Vector2f cord)
     initialize("res/lazer.png");
 
     sf::Vector2u texture_size { m_Texture.getSize() };
-    m_Sprite.setPosition(cord.x + texture_size.x, cord.y);
+    m_Sprite.setPosition(cord.x, cord.y);
     m_Speed.x = 1.0f; 
 
     m_Tag = Collision::PlayerProj;

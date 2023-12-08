@@ -1,55 +1,77 @@
 #include "catch.hpp"
 #include "objects/Object.h"
 #include "objects/Projectile.h"
+#include "objects/enemies/Seeker.h"
+#include "objects/enemies/UFO.h"
+#include "objects/enemies/Boss.h"
+#include "objects/Bomb.h"
+#include "objects/Player.h"
 #include "engine/resource/AudioManager.h"
 #include "engine/resource/TextureManager.h"
+#include <cmath>
 
 using namespace std;
+// inspiration togs från time.pdf sida 10, flyttalsjämförelse
+bool compare(float lhs, float rhs )
+{
+    return abs(lhs - rhs) <= 1e-4;
+}
 
 TEST_CASE ("Projectile")
 {
     sf::Clock clock;
     std::vector<Object*> new_objects;
-    sf::Vector2f lazer_position {100.0f, 100.0f};
-    Projectile* lazer{ new Projectile(lazer_position)};
+    sf::Vector2f position {100.0f, 100.0f};
+    Projectile* lazer{ new Projectile(position)};
+    Player* player{ new Player()};
     
-    SECTION("constructor")
+    SECTION("Constructor")
     {
         
-        CHECK( lazer -> getPosition().x == lazer_position.x );
-        CHECK( lazer -> getPosition().y == lazer_position.y );
+        CHECK( lazer -> getPosition().x == position.x );
+        CHECK( lazer -> getPosition().y == position.y );
     }
 
    SECTION("Update")
    {
-    sf::Vector2f out_of_bounds {1000.0f, 1000.0f};
-    lazer -> setPosition(out_of_bounds);
     sf::Time now = clock.getElapsedTime();
     lazer -> update(now, new_objects);
-    CHECK(lazer -> isDead());
-    //CHECK( lazer -> getPosition().x)
-    /*
-      Time t0{0,0,0};
-      Time t1{12,30,30};
-      Time t2{23,59,59};
+    CHECK( compare( lazer -> getPosition().x, 250.0f * now.asSeconds() + 100.0f));
+    CHECK( compare( lazer -> getPosition().y, 100.0f));
 
-      CHECK_THROWS( Time{13,35,60} );
-      CHECK_THROWS( Time{13,60,35} );
-      CHECK_THROWS( Time{24,35,35} );
-             
-      CHECK( t0.get_hour()   == 0 );
-      CHECK( t0.get_minute() == 0 );
-      CHECK( t0.get_second() == 0 );
-      CHECK( t1.get_hour()   == 12 );
-      CHECK( t1.get_minute() == 30 );
-      CHECK( t1.get_second() == 30 );
-      CHECK( t2.get_hour()   == 23 );
-      CHECK( t2.get_minute() == 59 );
-      CHECK( t2.get_second() == 59 );
-      */
+    sf::Vector2f out_of_bounds {1000.0f, 1000.0f};
+    lazer -> setPosition(out_of_bounds);
+    lazer -> update(now, new_objects);
+    CHECK(lazer -> isDead());
+
    }
    SECTION("Collision")
    {
-    
+    Seeker* seeker{ new Seeker(player)};
+    seeker -> setPosition(position);
+    lazer -> Collision(seeker, new_objects);
+    seeker -> Collision(lazer, new_objects);
+    CHECK( lazer -> isDead() );
+    CHECK(seeker -> getHitpoints() == 1);
+    seeker -> Collision(lazer, new_objects);
+    CHECK(seeker -> getHitpoints() == 0);
+
+    Bomb* bomb{ new Bomb()};
+    bomb -> setPosition(position);
+    bomb -> Collision(lazer, new_objects);
+    CHECK( bomb -> isDead());
+    CHECK( new_objects.size() == 1);
+
+    Boss* boss{ new Boss()};
+    int oldHP = boss -> getHitpoints();
+    boss -> setPosition(position);
+    boss -> Collision(lazer, new_objects);
+    CHECK( boss -> getHitpoints() == oldHP - 1 );
+
+    UFO* ufo{ new UFO()};
+    oldHP = ufo -> getHitpoints();
+    ufo -> setPosition(position);
+    ufo -> Collision(lazer, new_objects);
+    CHECK(ufo -> getHitpoints() == oldHP - 1 );
    }
 }

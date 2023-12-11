@@ -17,12 +17,12 @@ foreach(i ${SFML_MODULES})
 	list(APPEND SFML_LIBRARIES "sfml-${i}")
 endforeach(i)
 
-find_library(LIBJSONCPP jsoncpp "/dependencies/jsoncpp/build/debug/lib/")
+find_library(LIBJSONCPP jsoncpp "/dependencies/jsoncpp/")
 
 # Ange källfiler
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS "src/*.h" "src/*.cc")
 
-include_directories("src" "dependencies/jsoncpp/jsoncpp-1.9.5/include/")
+include_directories("src" "dependencies/jsoncpp/include/")
 
 # -Wextra -pedantic -Weffc++ -Wold-style-cast -fmax-errors=3
 set_source_files_properties(${SOURCE_FILES} PROPERTIES COMPILE_OPTIONS "-std=c++17;-Wextra;-pedantic;-Weffc++;-Wold-style-cast;-fmax-errors=3")

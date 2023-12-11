@@ -27,7 +27,7 @@ void Projectile::movement(const sf::Time& dt)
 
 bool Projectile::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
-    if (other->m_Tag & (Collision::Explosion | Collision::Enemy))
+    if (other->getTag() & (Collision::Explosion | Collision::Enemy))
     {
         m_Dead = true;
         return true; 

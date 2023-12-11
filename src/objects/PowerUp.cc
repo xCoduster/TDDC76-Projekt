@@ -23,7 +23,7 @@ void PowerUp::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 
 bool PowerUp::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
-    if (other->m_Tag & Collision::Player)
+    if (other->getTag() & Collision::Player)
     {
         m_Dead = true;
         return true;

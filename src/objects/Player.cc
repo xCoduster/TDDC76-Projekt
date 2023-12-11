@@ -95,7 +95,7 @@ bool Player::Collision(const Collidable* other, std::vector<Object*>& new_object
 	if (m_Hitpoints <= 0)
 		return false;
 
-	if (other->m_Tag & Collision::PowerUp)
+	if (other->getTag() & Collision::PowerUp)
 	{
 		active_powerUp = true;
 		m_t_powerUp = sf::seconds(0);
@@ -104,7 +104,7 @@ bool Player::Collision(const Collidable* other, std::vector<Object*>& new_object
 		return true;
 	}
 
-	if (other->m_Tag & (Collision::Explosion | Collision::Enemy | Collision::EnemyProj))
+	if (other->getTag() & (Collision::Explosion | Collision::Enemy | Collision::EnemyProj))
 	{
 		hurt();
 		return true;

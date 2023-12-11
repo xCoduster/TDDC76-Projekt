@@ -41,7 +41,7 @@ bool Seeker::Collision(const Collidable* other, std::vector<Object*>& new_object
 	if (Enemy::Collision(other, new_objects))
 		return true;
 
-    if (other->m_Tag & Collision::Player)
+    if (other->getTag() & Collision::Player)
 	{
 		m_Dead = true;
 		return true;

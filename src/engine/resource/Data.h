@@ -15,6 +15,7 @@ struct Data
 		Player,
 		PowerUp,
 		Seeker,
+		Star,
 		UFO
 	};
 };
@@ -77,4 +78,21 @@ struct PowerUpData : public Data
 	}
 
 	float lifeTime;
+};
+
+struct StarData : public Data
+{
+	StarData(const Json::Value& value) 
+	{
+		greenSpeed = value["greenSpeed"].asFloat();
+		blueSpeed = value["blueSpeed"].asFloat();
+		redSpeed = value["redSpeed"].asFloat();
+		scale = value["scale"].asFloat();
+	}
+
+	float greenSpeed;
+	float blueSpeed;
+	float redSpeed;
+
+	float scale;
 };

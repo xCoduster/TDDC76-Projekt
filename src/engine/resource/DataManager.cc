@@ -48,4 +48,6 @@ void DataManager::readFile(const std::string& filePath)
     data[Data::Type::Seeker] = new EnemyData{ root["Seeker"] };
     data[Data::Type::UFO] = new EnemyData{ root["UFO"] };
 
+    data[Data::Type::Star] = new StarData{ root["Star"] };
+
 }

@@ -33,6 +33,13 @@
         "speed": 120
     },
 
+    "Star" : {
+        "greenSpeed" :  -6,
+        "blueSpeed" :  -10,
+        "redSpeed" :   -14,
+        "scale" :  0.0625
+    },
+
     "UFO": {
         "hp": 1,
         "speed": 75

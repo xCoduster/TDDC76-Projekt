@@ -1,7 +1,7 @@
 const int fps { 60 };
 
-const int screenWidth = { 640 };
-const int screenHeight = { 480 };
+const int screenWidth { 640 };
+const int screenHeight { 480 };
 
 const float pi { 3.1415926f };
 const float root2{ 1.4142135f };

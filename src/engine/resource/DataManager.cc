@@ -34,4 +34,6 @@ void DataManager::readFile(const std::string& filePath)
 
     data[Data::Type::Boss] = new BossData{ root["Boss"] };
 
+    data[Data::Type::Star] = new StarData{ root["Star"] };
+
 }

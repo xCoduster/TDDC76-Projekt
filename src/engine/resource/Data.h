@@ -8,7 +8,8 @@ struct Data
 
 	enum class Type
 	{
-		Boss
+		Boss,
+		Star
 	};
 };
 
@@ -20,4 +21,21 @@ struct BossData : public Data
 	}
 
 	int hp;
+};
+
+struct StarData : public Data
+{
+	StarData(const Json::Value& value) 
+	{
+		greenSpeed = value["greenSpeed"].asFloat();
+		blueSpeed = value["blueSpeed"].asFloat();
+		redSpeed = value["redSpeed"].asFloat();
+		scale = value["scale"].asFloat();
+	}
+
+	float greenSpeed;
+	float blueSpeed;
+	float redSpeed;
+
+	float scale;
 };

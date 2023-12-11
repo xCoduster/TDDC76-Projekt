@@ -16,10 +16,15 @@ public:
     void blast(const sf::Time& dt, std::vector<Object*>& new_objects);
     void hurt(int amount = 1);
 
-    bool active_powerUp;
+    void setgodMode()
+    {
+        m_godMode = !m_godMode;
+    }
 
-    bool m_godMode;
 private:
+    bool active_powerUp;
+    bool m_godMode;
+
     sf::Time m_t_lazer;
     sf::Time m_t_powerUp;
     sf::Time m_t_invincibility;

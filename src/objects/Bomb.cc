@@ -1,6 +1,5 @@
 #include "Bomb.h"
 
-#include <iostream>
 
 Bomb::Bomb()
 	: MovingObject{}
@@ -31,7 +30,19 @@ void Bomb::movement(const sf::Time& dt)
 
 bool Bomb::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
-	if (other->m_Tag & Collision::PlayerProj)
+	if (other->getTag() & (Collision::PlayerProj |Collision::Explosion) )
+	{
+		Explosion* ex{ new Explosion{ m_Sprite.getPosition() } };
+		new_objects.push_back(ex);
+
+		m_Dead = true;
+
+		m_addScore = true;
+
+		return true;
+	}
+
+	if (other->getTag() & Collision::Player)
 	{
 		Explosion* ex{ new Explosion{ m_Sprite.getPosition() } };
 		new_objects.push_back(ex);
@@ -41,27 +52,7 @@ bool Bomb::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 		return true;
 	}
 
-	if (other->m_Tag & Collision::Player)
-	{
-		Explosion* ex{ new Explosion{ m_Sprite.getPosition() } };
-		new_objects.push_back(ex);
-
-		m_Dead = true;
-
-		return true;
-	}
-
-	if (other->m_Tag & Collision::Explosion)
-	{
-		Explosion* ex{ new Explosion{ m_Sprite.getPosition() } };
-		new_objects.push_back(ex);
-
-		m_Dead = true;
-
-		return true;
-	}
-
-	if (other->m_Tag == m_Tag)
+	if (other->getTag() == m_Tag)
 	{
 		if (m_Sprite.getPosition().y > other->getPosition().y)
 		{

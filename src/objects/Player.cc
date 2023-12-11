@@ -5,8 +5,8 @@
 #include "engine/resource/AudioManager.h"
 
 #include "util/Util.h"
+#include "util/Constants.h"
 
-#include <iostream>
 
 Player::Player()
 	: MovingObject{}, active_powerUp { false }, m_t_lazer{}, m_t_powerUp{},
@@ -22,7 +22,7 @@ Player::Player()
 	initialize("res/player.png");
 
 	sf::Vector2u texture_size { m_Texture.getSize() };
-	m_Sprite.setPosition(texture_size.x, 480 / 2);
+	m_Sprite.setPosition(texture_size.x, screenHeight / 2);
 
 	m_Tag = Collision::Player;
 
@@ -95,7 +95,7 @@ bool Player::Collision(const Collidable* other, std::vector<Object*>& new_object
 	if (m_Hitpoints <= 0)
 		return false;
 
-	if (other->m_Tag & Collision::PowerUp)
+	if (other->getTag() & Collision::PowerUp)
 	{
 		active_powerUp = true;
 		m_t_powerUp = sf::seconds(0);
@@ -104,7 +104,7 @@ bool Player::Collision(const Collidable* other, std::vector<Object*>& new_object
 		return true;
 	}
 
-	if (other->m_Tag & (Collision::Explosion | Collision::Enemy | Collision::EnemyProj))
+	if (other->getTag() & (Collision::Explosion | Collision::Enemy | Collision::EnemyProj))
 	{
 		hurt();
 		return true;

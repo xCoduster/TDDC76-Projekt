@@ -10,7 +10,7 @@
 #define MAX_HP 9
 
 Boss::Boss()
-	: Enemy{}, m_soundTimer{}, angle{ 0 }, m_t_lazer{}, phi{}
+	: Enemy{}, angle{ 0 }, m_laserTimer{}, m_t_lazer{}, phi{}, fire_rate{}, bossPhase{ BossPhase::firstPhase }
 {
 	initialize("res/boss.png");
 	
@@ -23,7 +23,6 @@ Boss::Boss()
 
 	m_Speed.x = -1.0f;
 	m_Speed.y = 0.0f;
-	bossPhase = BossPhase::firstPhase; 
 }
 
 void Boss::update(const sf::Time& dt, std::vector<Object*>& new_objects)

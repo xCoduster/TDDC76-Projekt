@@ -15,8 +15,6 @@ public:
 
     void blast(const sf::Time& dt, std::vector<Object*>& new_objects);
 private:
-    sf::Sound m_deathSound;
-    sf::Time m_soundTimer;
     sf::Time m_laserTimer;
     sf::Time m_t_lazer;
     float fire_rate;

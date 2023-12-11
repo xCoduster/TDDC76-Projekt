@@ -9,7 +9,8 @@
 #include "util/Util.h"
 
 MenuState::MenuState()
-	: m_buttons{}, m_titleText{}, m_stars{}, m_objects{}, m_font{}, m_toggleScore{ false }
+	: m_buttons{}, m_titleText{}, m_stars{}, m_objects{}, m_font{}, m_toggleScore{ false }, m_scoreText{}, 
+	m_scoreList{}, m_scores{}
 {
 	m_font.loadFromFile("res/fonts/ShareTechMono-Regular.ttf");
 

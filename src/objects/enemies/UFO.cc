@@ -41,10 +41,10 @@ void UFO::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 
 void UFO::movement(const sf::Time& dt)
 {
-	m_Speed.x = -1.0f;
-	m_Speed.y = 1.f * sin(m_Sprite.getPosition().x / 10);
+	m_Velocity.x = -1.0f;
+	m_Velocity.y = 1.f * sin(m_Sprite.getPosition().x / 10);
 
-	move(m_Speed * 75.0f * dt.asSeconds());
+	move(m_Velocity * 75.0f * dt.asSeconds());
 }
 
 bool UFO::Collision(const Collidable* other, std::vector<Object*>& new_objects)

@@ -19,8 +19,8 @@ Boss::Boss()
 
 	m_Tag = Collision::Enemy;
 
-	m_Speed.x = -1.0f;
-	m_Speed.y = 0.0f;
+	m_Velocity.x = -1.0f;
+	m_Velocity.y = 0.0f;
 
 	DataManager& dataMgr { DataManager::instance() };
 	BossData* data{ dynamic_cast<BossData*>(dataMgr.getData(Data::Type::Boss)) };
@@ -42,20 +42,20 @@ void Boss::movement(const sf::Time& dt)
 	switch(bossPhase)
 	{
 		case BossPhase::firstPhase:
-			move(m_Speed * 120.0f * dt.asSeconds());
+			move(m_Velocity * 120.0f * dt.asSeconds());
 			break;
 		case BossPhase::secondPhase:
-			m_Speed.x = 0.0f;
-			m_Speed.y = cos(angle);
+			m_Velocity.x = 0.0f;
+			m_Velocity.y = cos(angle);
 			angle += pi / 2 * dt.asSeconds();
-			move(m_Speed * 180.0f * dt.asSeconds());
+			move(m_Velocity * 180.0f * dt.asSeconds());
 			break;
 		case BossPhase::thirdPhase:
 			sf::Vector2f center {screenWidth / 2, screenHeight / 2};
 		    sf::Vector2f difVec =  center - m_Sprite.getPosition();
 			float vecSize = sqrt(difVec.x*difVec.x+ difVec.y*difVec.y);
-			m_Speed = difVec/vecSize;
-			move(m_Speed * 120.0f * dt.asSeconds());
+			m_Velocity = difVec/vecSize;
+			move(m_Velocity * 120.0f * dt.asSeconds());
 			break;
 	}
 }

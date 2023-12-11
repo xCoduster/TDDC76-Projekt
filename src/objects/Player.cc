@@ -53,29 +53,29 @@ void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 
 void Player::movement(const sf::Time& dt)
 {
-	m_Speed.x = 0.0f;
-	m_Speed.y = 0.0f;
+	m_Velocity.x = 0.0f;
+	m_Velocity.y = 0.0f;
 
 	sf::Vector2f old_position{ m_Sprite.getPosition() };
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		m_Speed.x = -1.0f;
+		m_Velocity.x = -1.0f;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		m_Speed.x = 1.0f;
+		m_Velocity.x = 1.0f;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		m_Speed.y = -1.0f;
+		m_Velocity.y = -1.0f;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		m_Speed.y = 1.0f;
+		m_Velocity.y = 1.0f;
 
-	if (m_Speed.x != 0.0f || m_Speed.y != 0.0f)
+	if (m_Velocity.x != 0.0f || m_Velocity.y != 0.0f)
 	{
-		if (m_Speed.x != 0.0f && m_Speed.y != 0.0f)
-			m_Speed *= 0.70710678f;
+		if (m_Velocity.x != 0.0f && m_Velocity.y != 0.0f)
+			m_Velocity *= 0.70710678f;
 
-		move(m_Speed * 150.0f * dt.asSeconds());
+		move(m_Velocity * 150.0f * dt.asSeconds());
 	}
 
 	sf::Vector2f position{ m_Sprite.getPosition() };

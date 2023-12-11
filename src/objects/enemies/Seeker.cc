@@ -31,9 +31,9 @@ void Seeker::movement(const sf::Time& dt)
 
     float vecSize = sqrt(difVec.x*difVec.x+ difVec.y*difVec.y);
 
-    m_Speed = difVec/vecSize;
+    m_Velocity = difVec/vecSize;
 
-	move(m_Speed * 120.0f * dt.asSeconds());
+	move(m_Velocity * 120.0f * dt.asSeconds());
 }
 
 bool Seeker::Collision(const Collidable* other, std::vector<Object*>& new_objects)

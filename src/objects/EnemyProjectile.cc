@@ -9,8 +9,8 @@ EnemyProjectile::EnemyProjectile(sf::Vector2f cord, float angle)
 
     m_Sprite.setPosition(cord.x, cord.y);
 
-    m_Speed.x = cos(angle);
-    m_Speed.y = sin(angle);
+    m_Velocity.x = cos(angle);
+    m_Velocity.y = sin(angle);
     m_Tag = Collision::EnemyProj;
 } 
 
@@ -21,7 +21,7 @@ void EnemyProjectile::update(const sf::Time& dt, std::vector<Object*>& new_objec
 
 void EnemyProjectile::movement(const sf::Time& dt)
 {
-    move(m_Speed * 150.0f * dt.asSeconds());
+    move(m_Velocity * 150.0f * dt.asSeconds());
 
     sf::Vector2f position{ m_Sprite.getPosition() };
 

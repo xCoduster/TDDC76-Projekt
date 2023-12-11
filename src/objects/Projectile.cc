@@ -7,7 +7,7 @@ Projectile::Projectile(sf::Vector2f cord)
 
     sf::Vector2u texture_size { m_Texture.getSize() };
     m_Sprite.setPosition(cord.x + texture_size.x, cord.y);
-    m_Speed.x = 1.0f; 
+    m_Velocity.x = 1.0f; 
 
     m_Tag = Collision::PlayerProj;
 } 
@@ -19,7 +19,7 @@ void Projectile::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 
 void Projectile::movement(const sf::Time& dt)
 {   
-    move(m_Speed * 250.0f * dt.asSeconds());
+    move(m_Velocity * 250.0f * dt.asSeconds());
     if ( m_Sprite.getPosition().x > 640 )
     {   
         m_Dead = true;

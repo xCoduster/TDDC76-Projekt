@@ -6,8 +6,8 @@ Bomb::Bomb()
 {
 	initialize("res/bomb.png");
 
-	m_Speed.x = -1.0f;
-	m_Speed.y = 0.0f;
+	m_Velocity.x = -1.0f;
+	m_Velocity.y = 0.0f;
 
 	m_Tag = Collision::Enemy | Collision::Bomb;
 }
@@ -19,7 +19,7 @@ void Bomb::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 
 void Bomb::movement(const sf::Time& dt)
 {
-	move(m_Speed * 120.0f * dt.asSeconds());
+	move(m_Velocity * 120.0f * dt.asSeconds());
 
 	if ( m_Sprite.getPosition().x < 0 )
 	{

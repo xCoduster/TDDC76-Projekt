@@ -33,10 +33,10 @@ Explosion::Explosion(sf::Vector2f start_pos)
 
 void Explosion::movement(const sf::Time& dt)
 {
-    m_Speed.x = -0.15f;
-	m_Speed.y = 0.0f;
+    m_Velocity.x = -0.15f;
+	m_Velocity.y = 0.0f;
 
-	move(m_Speed * 120.0f * dt.asSeconds());
+	move(m_Velocity * 120.0f * dt.asSeconds());
 
 	if ( m_Sprite.getPosition().x < 0 )
 	{

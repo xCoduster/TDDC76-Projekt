@@ -11,6 +11,7 @@
 #include "objects/enemies/Seeker.h"
 #include "util/Log.h"
 #include "util/Util.h"
+#include "util/Constants.h"
 
 Spawner::Spawner(float spawnDelay, float waveDelay)
 	: m_timer{}, m_spawnDelay(spawnDelay), m_waveDelay(waveDelay), m_objects{}
@@ -96,15 +97,15 @@ bool Spawner::readFile(const std::string& filePath, Player* playerObject)
 					{
 					case 'b':
 						objects.push_back(new Bomb{});
-						objects.back()->setPosition(sf::Vector2f(640 + random(0, 32), random(32, 448)));
+						objects.back()->setPosition(sf::Vector2f(screenWidth + random(0, 32), random(32, 448)));
 						break;
 					case 's':
 						objects.push_back(new Seeker{playerObject});
-						objects.back()->setPosition(sf::Vector2f(640 + random(0, 32), random(32, 448)));
+						objects.back()->setPosition(sf::Vector2f(screenWidth + random(0, 32), random(32, 448)));
 						break;
 					case 'u':
 						objects.push_back(new UFO{});
-						objects.back()->setPosition(sf::Vector2f(640 + random(0, 32), random(32, 448)));
+						objects.back()->setPosition(sf::Vector2f(screenWidth + random(0, 32), random(32, 448)));
 						break;
 					}
 				}

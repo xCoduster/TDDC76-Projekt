@@ -6,6 +6,7 @@
 #include "objects/PowerUp.h"
 
 #include "util/Util.h"
+#include "util/Constants.h"
 
 #include <cmath>
 
@@ -63,7 +64,7 @@ void UFO::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 		if (random(1, 3) != 1)
 			return;
 
-		EnemyProjectile* laser{ new EnemyProjectile(sf::Vector2f{ m_Sprite.getPosition().x - 64.f, m_Sprite.getPosition().y }, 3.14f) };
+		EnemyProjectile* laser{ new EnemyProjectile(sf::Vector2f{ m_Sprite.getPosition().x - 64.f, m_Sprite.getPosition().y }, pi) };
 		new_objects.push_back(laser);
 
 		//m_laserSound.setPitch(1.0f + random(0, 15) / 10.0f);

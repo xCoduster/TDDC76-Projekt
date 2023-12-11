@@ -5,8 +5,8 @@
 #include "engine/resource/AudioManager.h"
 
 #include "util/Util.h"
+#include "util/Constants.h"
 
-#include <iostream>
 
 Player::Player()
 	: active_powerUp{ false }, m_t_lazer{}, m_t_powerUp{}, 
@@ -22,7 +22,7 @@ Player::Player()
 	initialize("res/player.v2.png");
 
 	sf::Vector2u texture_size { m_Texture.getSize() };
-	m_Sprite.setPosition(texture_size.x, 480 / 2);
+	m_Sprite.setPosition(texture_size.x, screenHeight / 2);
 
 	m_Tag = Collision::Player;
 

@@ -22,6 +22,8 @@ private:
     float phi;
     void set_phase();
 
+    int MAX_HP;
+
     enum class BossPhase
     {
         firstPhase,

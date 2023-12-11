@@ -20,6 +20,8 @@ public:
 private:
 	DataManager();
 
+	void readFile(const std::string& filePath);
+
 	std::map<Data::Type, Data*> data;
 };
 

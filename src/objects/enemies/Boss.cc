@@ -1,13 +1,13 @@
 #include "Boss.h"
 
 #include "engine/resource/AudioManager.h"
+#include "engine/resource/DataManager.h"
 
 #include "objects/EnemyProjectile.h"
 
 #include "util/Util.h"
-#include <cmath>
 
-#define MAX_HP 9
+#include <cmath>
 
 Boss::Boss()
 	: Enemy{}, angle{ 0 }, m_laserTimer{}, m_t_lazer{}, phi{}, fire_rate{}, bossPhase{ BossPhase::firstPhase }
@@ -19,10 +19,14 @@ Boss::Boss()
 
 	m_Tag = Collision::Enemy;
 
-	m_Hitpoints = MAX_HP;
-
 	m_Speed.x = -1.0f;
 	m_Speed.y = 0.0f;
+
+	DataManager& dataMgr { DataManager::instance() };
+	BossData* data{ dynamic_cast<BossData*>(dataMgr.getData(Data::Type::Boss)) };
+
+	MAX_HP = data->hp;
+	m_Hitpoints = MAX_HP;
 }
 
 void Boss::update(const sf::Time& dt, std::vector<Object*>& new_objects)

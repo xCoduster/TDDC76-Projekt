@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include <json/json.h>
 
 struct Data
 {
@@ -14,7 +14,10 @@ struct Data
 
 struct BossData : public Data
 {
-	BossData(float fireRate) : fireRate{fireRate} {}
+	BossData(const Json::Value& value) 
+	{
+		hp = value["hp"].asInt();
+	}
 
-	float fireRate;
+	int hp;
 };

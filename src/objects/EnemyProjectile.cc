@@ -35,7 +35,7 @@ void EnemyProjectile::movement(const sf::Time& dt)
 
 bool EnemyProjectile::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
-    if (other->m_Tag & Collision::Player)
+    if (other->m_Tag & (Collision::Explosion | Collision::Player))
     {
         m_Dead = true;
 

@@ -30,27 +30,19 @@ void Bomb::movement(const sf::Time& dt)
 
 bool Bomb::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
-	if (other->m_Tag & Collision::PlayerProj)
+	if (other->m_Tag & (Collision::PlayerProj |Collision::Explosion) )
 	{
 		Explosion* ex{ new Explosion{ m_Sprite.getPosition() } };
 		new_objects.push_back(ex);
 
 		m_Dead = true;
+
+		m_addScore = true;
 
 		return true;
 	}
 
 	if (other->m_Tag & Collision::Player)
-	{
-		Explosion* ex{ new Explosion{ m_Sprite.getPosition() } };
-		new_objects.push_back(ex);
-
-		m_Dead = true;
-
-		return true;
-	}
-
-	if (other->m_Tag & Collision::Explosion)
 	{
 		Explosion* ex{ new Explosion{ m_Sprite.getPosition() } };
 		new_objects.push_back(ex);

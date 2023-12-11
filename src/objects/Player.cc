@@ -3,15 +3,15 @@
 #include "Projectile.h"
 
 #include "engine/resource/AudioManager.h"
+#include "engine/resource/DataManager.h"
 
 #include "util/Util.h"
 #include "util/Constants.h"
 
-
 Player::Player()
 	: MovingObject{}, active_powerUp { false }, m_t_lazer{}, m_t_powerUp{},
 	m_t_invincibility{}, m_godMode{ false }, m_pickUpSound{}, 
-	m_laserSound{}, m_hurtSound{}
+	m_laserSound{}, m_hurtSound{}, m_fireRate{}
 {
 	AudioManager& audioMgr{ AudioManager::instance() };
 	m_hurtSound.setBuffer(*audioMgr.load("res/audio/hurt.wav"));
@@ -26,7 +26,12 @@ Player::Player()
 
 	m_Tag = Collision::Player;
 
-	m_Hitpoints = 5;
+	DataManager& dataMgr{ DataManager::instance() };
+	PlayerData* data{ dynamic_cast<PlayerData*>(dataMgr.getData(Data::Type::Player)) };
+
+	m_fireRate = data->fireRate;
+	m_Hitpoints = data->hp;
+	m_Speed = data->speed;
 }
 
 void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
@@ -73,18 +78,18 @@ void Player::movement(const sf::Time& dt)
 	if (m_Velocity.x != 0.0f || m_Velocity.y != 0.0f)
 	{
 		if (m_Velocity.x != 0.0f && m_Velocity.y != 0.0f)
-			m_Velocity *= 0.70710678f;
+			m_Velocity /= root2;
 
-		move(m_Velocity * 150.0f * dt.asSeconds());
+		move(m_Velocity * m_Speed * dt.asSeconds());
 	}
 
 	sf::Vector2f position{ m_Sprite.getPosition() };
 	sf::FloatRect boundingBox{ m_Sprite.getGlobalBounds() };
 
-	if (position.x - boundingBox.width / 2 < 0 || position.x + boundingBox.width / 2 > 640)
+	if (position.x - boundingBox.width / 2 < 0 || position.x + boundingBox.width / 2 > screenWidth)
 		position.x = old_position.x;
 
-	if (position.y - boundingBox.height / 2 < 0 || position.y + boundingBox.height / 2 > 480)
+	if (position.y - boundingBox.height / 2 < 0 || position.y + boundingBox.height / 2 > screenHeight)
 		position.y = old_position.y;
 
 	m_Sprite.setPosition(position);
@@ -115,7 +120,7 @@ bool Player::Collision(const Collidable* other, std::vector<Object*>& new_object
 
 void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_t_lazer > sf::seconds(0.4f))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_t_lazer.asSeconds() > m_fireRate)
 	{
 		m_t_lazer = sf::seconds(0);
 		if(active_powerUp == true)

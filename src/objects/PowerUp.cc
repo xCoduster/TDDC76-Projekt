@@ -2,20 +2,27 @@
 
 #include <iostream>
 
+#include "engine/resource/DataManager.h"
+
 PowerUp::PowerUp(sf::Vector2f cord)
-    : Collidable{}, lifeTime {}
+    : Collidable{}, lifeTime{}, life{}
 {
     initialize("res/powerUp.png");
 
     m_Sprite.setPosition(cord.x, cord.y);
 
     m_Tag = Collision::PowerUp;
+
+    DataManager& dataMgr{ DataManager::instance() };
+    PowerUpData* data{ dynamic_cast<PowerUpData*>(dataMgr.getData(Data::Type::PowerUp)) };
+
+    life = data->lifeTime;
 }
 
 void PowerUp::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
     lifeTime += dt;
-    if (lifeTime > sf::seconds(10))
+    if (lifeTime.asSeconds() > life)
     {   
         m_Dead = true;        
     }

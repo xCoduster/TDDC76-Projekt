@@ -11,4 +11,5 @@ public:
 
 private:
     sf::Time lifeTime;
+    float life;
 };

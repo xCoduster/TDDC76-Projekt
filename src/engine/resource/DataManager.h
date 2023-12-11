@@ -1,7 +1,6 @@
 #pragma once
 
 #include <map>
-#include <memory>
 #include <string>
 
 #include "Data.h"
@@ -9,6 +8,8 @@
 class DataManager
 {
 public:
+	~DataManager();
+
 	static DataManager& instance()
 	{
 		static DataManager instance;

@@ -15,14 +15,20 @@ public:
 
     void blast(const sf::Time& dt, std::vector<Object*>& new_objects);
 private:
+    void set_phase();
+
     sf::Time m_laserTimer;
     sf::Time m_t_lazer;
+    
+    float m_speed1;
+    float m_speed2;
     float fire_rate;
     float angle;
     float phi;
-    void set_phase();
-
+    
     int MAX_HP;
+
+
 
     enum class BossPhase
     {

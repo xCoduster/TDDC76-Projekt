@@ -25,6 +25,8 @@ private:
     bool active_powerUp;
     bool m_godMode;
 
+    float m_fireRate;
+
     sf::Time m_t_lazer;
     sf::Time m_t_powerUp;
     sf::Time m_t_invincibility;

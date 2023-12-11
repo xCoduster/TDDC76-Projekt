@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include "engine/resource/DataManager.h"
+
 EnemyProjectile::EnemyProjectile(sf::Vector2f cord, float angle)
     : MovingObject{}
 {
@@ -12,6 +14,11 @@ EnemyProjectile::EnemyProjectile(sf::Vector2f cord, float angle)
     m_Velocity.x = cos(angle);
     m_Velocity.y = sin(angle);
     m_Tag = Collision::EnemyProj;
+
+    DataManager& dataMgr{ DataManager::instance() };
+    ProjectileData* data{ dynamic_cast<ProjectileData*>(dataMgr.getData(Data::Type::EnemyProjectile)) };
+
+    m_Speed = data->speed;
 } 
 
 void EnemyProjectile::update(const sf::Time& dt, std::vector<Object*>& new_objects)
@@ -21,7 +28,7 @@ void EnemyProjectile::update(const sf::Time& dt, std::vector<Object*>& new_objec
 
 void EnemyProjectile::movement(const sf::Time& dt)
 {
-    move(m_Velocity * 150.0f * dt.asSeconds());
+    move(m_Velocity * m_Speed * dt.asSeconds());
 
     sf::Vector2f position{ m_Sprite.getPosition() };
 

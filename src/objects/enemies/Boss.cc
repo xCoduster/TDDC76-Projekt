@@ -27,6 +27,8 @@ Boss::Boss()
 
 	MAX_HP = data->hp;
 	m_Hitpoints = MAX_HP;
+	m_speed1 = data->speed1;
+	m_speed2 = data->speed2;
 }
 
 void Boss::update(const sf::Time& dt, std::vector<Object*>& new_objects)
@@ -42,20 +44,20 @@ void Boss::movement(const sf::Time& dt)
 	switch(bossPhase)
 	{
 		case BossPhase::firstPhase:
-			move(m_Velocity * 120.0f * dt.asSeconds());
+			move(m_Velocity * m_speed1 * dt.asSeconds());
 			break;
 		case BossPhase::secondPhase:
 			m_Velocity.x = 0.0f;
 			m_Velocity.y = cos(angle);
 			angle += pi / 2 * dt.asSeconds();
-			move(m_Velocity * 180.0f * dt.asSeconds());
+			move(m_Velocity * m_speed2 * dt.asSeconds());
 			break;
 		case BossPhase::thirdPhase:
 			sf::Vector2f center {screenWidth / 2, screenHeight / 2};
 		    sf::Vector2f difVec =  center - m_Sprite.getPosition();
 			float vecSize = sqrt(difVec.x*difVec.x+ difVec.y*difVec.y);
 			m_Velocity = difVec/vecSize;
-			move(m_Velocity * 120.0f * dt.asSeconds());
+			move(m_Velocity * m_speed1 * dt.asSeconds());
 			break;
 	}
 }

@@ -1,5 +1,7 @@
 #include "Projectile.h"
 
+#include "engine/resource/DataManager.h"
+
 Projectile::Projectile(sf::Vector2f cord)
     : MovingObject{}
 {
@@ -10,6 +12,11 @@ Projectile::Projectile(sf::Vector2f cord)
     m_Velocity.x = 1.0f; 
 
     m_Tag = Collision::PlayerProj;
+
+    DataManager& dataMgr{ DataManager::instance() };
+    ProjectileData* data{ dynamic_cast<ProjectileData*>(dataMgr.getData(Data::Type::Projectile)) };
+
+    m_Speed = data->speed;
 } 
 
 void Projectile::update(const sf::Time& dt, std::vector<Object*>& new_objects)
@@ -19,7 +26,7 @@ void Projectile::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 
 void Projectile::movement(const sf::Time& dt)
 {   
-    move(m_Velocity * 250.0f * dt.asSeconds());
+    move(m_Velocity * m_Speed * dt.asSeconds());
     if ( m_Sprite.getPosition().x > 640 )
     {   
         m_Dead = true;

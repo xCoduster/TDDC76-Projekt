@@ -1,5 +1,6 @@
 #include "Bomb.h"
 
+#include "engine/resource/DataManager.h"
 
 Bomb::Bomb()
 	: MovingObject{}
@@ -10,6 +11,11 @@ Bomb::Bomb()
 	m_Velocity.y = 0.0f;
 
 	m_Tag = Collision::Enemy | Collision::Bomb;
+
+	DataManager& dataMgr{ DataManager::instance() };
+	EnemyData* data{ dynamic_cast<EnemyData*>(dataMgr.getData(Data::Type::Bomb)) };
+
+	m_Speed = data->speed;
 }
 
 void Bomb::update(const sf::Time& dt, std::vector<Object*>& new_objects)
@@ -19,7 +25,7 @@ void Bomb::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 
 void Bomb::movement(const sf::Time& dt)
 {
-	move(m_Velocity * 120.0f * dt.asSeconds());
+	move(m_Velocity * m_Speed * dt.asSeconds());
 
 	if ( m_Sprite.getPosition().x < 0 )
 	{

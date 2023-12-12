@@ -10,8 +10,13 @@ public:
     bool Collides(const Collidable* other);
     virtual bool Collision(const Collidable* other, std::vector<Object*>& new_objects) = 0;
     
-    unsigned int m_Tag;
+    unsigned int getTag() const
+    {
+        return m_Tag;
+    }
+
 protected:
+    unsigned int m_Tag;
     Collidable();
 };
 
@@ -28,6 +33,8 @@ namespace Collision
         PowerUp = 1 << 5,
         PlayerProj = 1 << 6,
         EnemyProj = 1 << 7,
-        Explosion = 1 << 8
+        Explosion = 1 << 8,
+        HpUp = 1 << 9,
+        MissileUp = 1 << 10
     };
 }

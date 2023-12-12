@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include "engine/resource/DataManager.h"
+
 EnemyProjectile::EnemyProjectile(sf::Vector2f cord, float angle)
     : MovingObject{}
 {
@@ -9,9 +11,14 @@ EnemyProjectile::EnemyProjectile(sf::Vector2f cord, float angle)
 
     m_Sprite.setPosition(cord.x, cord.y);
 
-    m_Speed.x = cos(angle);
-    m_Speed.y = sin(angle);
+    m_Velocity.x = cos(angle);
+    m_Velocity.y = sin(angle);
     m_Tag = Collision::EnemyProj;
+
+    DataManager& dataMgr{ DataManager::instance() };
+    ProjectileData* data{ dynamic_cast<ProjectileData*>(dataMgr.getData(Data::Type::EnemyProjectile)) };
+
+    m_Speed = data->speed;
 } 
 
 void EnemyProjectile::update(const sf::Time& dt, std::vector<Object*>& new_objects)
@@ -21,7 +28,7 @@ void EnemyProjectile::update(const sf::Time& dt, std::vector<Object*>& new_objec
 
 void EnemyProjectile::movement(const sf::Time& dt)
 {
-    move(m_Speed * 150.0f * dt.asSeconds());
+    move(m_Velocity * m_Speed * dt.asSeconds());
 
     sf::Vector2f position{ m_Sprite.getPosition() };
 
@@ -35,7 +42,7 @@ void EnemyProjectile::movement(const sf::Time& dt)
 
 bool EnemyProjectile::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
-    if (other->m_Tag & Collision::Player)
+    if (other->getTag() & (Collision::Explosion | Collision::Player))
     {
         m_Dead = true;
 

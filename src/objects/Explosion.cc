@@ -3,6 +3,7 @@
 #include "engine/resource/AudioManager.h"
 
 #include "util/Util.h"
+#include "util/Log.h"
 
 #include <string>
 
@@ -33,21 +34,12 @@ Explosion::Explosion(sf::Vector2f start_pos)
 
 void Explosion::movement(const sf::Time& dt)
 {
-    m_Speed.x = -0.15f;
-	m_Speed.y = 0.0f;
 
-	move(m_Speed * 120.0f * dt.asSeconds());
-
-	if ( m_Sprite.getPosition().x < 0 )
-	{
-		m_Dead = true;
-	}
 }
 
 void Explosion::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
     animUpdate(dt);
-    movement(dt);
 }
 
 bool Explosion::Collision(const Collidable* other, std::vector<Object*>& new_objects)

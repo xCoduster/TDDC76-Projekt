@@ -1,16 +1,21 @@
 #include "Bomb.h"
 
-#include <iostream>
+#include "engine/resource/DataManager.h"
 
 Bomb::Bomb()
 	: MovingObject{}
 {
 	initialize("res/bomb.png");
 
-	m_Speed.x = -1.0f;
-	m_Speed.y = 0.0f;
+	m_Velocity.x = -1.0f;
+	m_Velocity.y = 0.0f;
 
 	m_Tag = Collision::Enemy | Collision::Bomb;
+
+	DataManager& dataMgr{ DataManager::instance() };
+	EnemyData* data{ dynamic_cast<EnemyData*>(dataMgr.getData(Data::Type::Bomb)) };
+
+	m_Speed = data->speed;
 }
 
 void Bomb::update(const sf::Time& dt, std::vector<Object*>& new_objects)
@@ -20,7 +25,7 @@ void Bomb::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 
 void Bomb::movement(const sf::Time& dt)
 {
-	move(m_Speed * 120.0f * dt.asSeconds());
+	move(m_Velocity * m_Speed * dt.asSeconds());
 
 	if ( m_Sprite.getPosition().x < 0 )
 	{
@@ -31,7 +36,19 @@ void Bomb::movement(const sf::Time& dt)
 
 bool Bomb::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
-	if (other->m_Tag & Collision::PlayerProj)
+	if (other->getTag() & (Collision::PlayerProj |Collision::Explosion) )
+	{
+		Explosion* ex{ new Explosion{ m_Sprite.getPosition() } };
+		new_objects.push_back(ex);
+
+		m_Dead = true;
+
+		m_addScore = true;
+
+		return true;
+	}
+
+	if (other->getTag() & Collision::Player)
 	{
 		Explosion* ex{ new Explosion{ m_Sprite.getPosition() } };
 		new_objects.push_back(ex);
@@ -41,27 +58,7 @@ bool Bomb::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 		return true;
 	}
 
-	if (other->m_Tag & Collision::Player)
-	{
-		Explosion* ex{ new Explosion{ m_Sprite.getPosition() } };
-		new_objects.push_back(ex);
-
-		m_Dead = true;
-
-		return true;
-	}
-
-	if (other->m_Tag & Collision::Explosion)
-	{
-		Explosion* ex{ new Explosion{ m_Sprite.getPosition() } };
-		new_objects.push_back(ex);
-
-		m_Dead = true;
-
-		return true;
-	}
-
-	if (other->m_Tag == m_Tag)
+	if (other->getTag() == m_Tag)
 	{
 		if (m_Sprite.getPosition().y > other->getPosition().y)
 		{

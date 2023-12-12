@@ -13,5 +13,9 @@ private:
     void starAllocation();
     sf::Vector2f m_Speed;
     sf::Color m_Color;
+    float greenSpeed;
+    float blueSpeed;
+    float redSpeed;
+
 
 };

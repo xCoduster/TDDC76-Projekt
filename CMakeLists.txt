@@ -17,10 +17,12 @@ foreach(i ${SFML_MODULES})
 	list(APPEND SFML_LIBRARIES "sfml-${i}")
 endforeach(i)
 
+find_library(LIBJSONCPP jsoncpp "/dependencies/jsoncpp/")
+
 # Ange källfiler
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS "src/*.h" "src/*.cc")
 
-include_directories("src")
+include_directories("src" "dependencies/jsoncpp/include/")
 
 # -Wextra -pedantic -Weffc++ -Wold-style-cast -fmax-errors=3
 set_source_files_properties(${SOURCE_FILES} PROPERTIES COMPILE_OPTIONS "-std=c++17;-Wextra;-pedantic;-Weffc++;-Wold-style-cast;-fmax-errors=3")
@@ -28,4 +30,4 @@ set_source_files_properties(${SOURCE_FILES} PROPERTIES COMPILE_OPTIONS "-std=c++
 add_executable(game ${SOURCE_FILES})
 
 # Länka med biblioteken som vi hittade tidigare.
-target_link_libraries(game ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
+target_link_libraries(game ${SFML_LIBRARIES} ${SFML_DEPENDENCIES} ${LIBJSONCPP})

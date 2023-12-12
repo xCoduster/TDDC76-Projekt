@@ -2,20 +2,39 @@
 
 #include <iostream>
 
-PowerUp::PowerUp(sf::Vector2f cord)
-    : Collidable{}, lifeTime {}
+#include "engine/resource/DataManager.h"
+
+PowerUp::PowerUp(sf::Vector2f cord, int type)
+    : Collidable{}, lifeTime{}, life{}
 {
-    initialize("res/powerUp.png");
+    if ( type == 1 )
+    {
+        initialize("res/powerUpTripleShot.png");
+        m_Tag = Collision::PowerUp;
+    }
+    if ( type == 2 )
+    {
+        initialize("res/hpUp.png");
+        m_Tag = Collision::HpUp;
+    }
+    if ( type == 3 )
+    {
+        initialize("res/powerUpMissile.png");
+        m_Tag = Collision::MissileUp;
+    }
 
     m_Sprite.setPosition(cord.x, cord.y);
 
-    m_Tag = Collision::PowerUp;
+    DataManager& dataMgr{ DataManager::instance() };
+    PowerUpData* data{ dynamic_cast<PowerUpData*>(dataMgr.getData(Data::Type::PowerUp)) };
+
+    life = data->lifeTime;
 }
 
 void PowerUp::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
     lifeTime += dt;
-    if (lifeTime > sf::seconds(10))
+    if (lifeTime.asSeconds() > life)
     {   
         m_Dead = true;        
     }
@@ -23,7 +42,7 @@ void PowerUp::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 
 bool PowerUp::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
-    if (other->m_Tag & Collision::Player)
+    if (other->getTag() & Collision::Player)
     {
         m_Dead = true;
         return true;

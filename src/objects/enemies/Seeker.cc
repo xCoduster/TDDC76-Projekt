@@ -3,6 +3,8 @@
 #include <iostream>
 #include <cmath>
 
+#include "engine/resource/DataManager.h"
+
 Seeker::Seeker(Player* player)
 	: Enemy{}, m_playerPtr(player)
 {
@@ -12,7 +14,11 @@ Seeker::Seeker(Player* player)
 
 	m_Tag |= Collision::Seeker;
 
-    m_Hitpoints = 2;
+	DataManager& dataMgr{ DataManager::instance() };
+	EnemyData* data{ dynamic_cast<EnemyData*>(dataMgr.getData(Data::Type::Seeker)) };
+
+	m_Hitpoints = data->hp;
+	m_Speed = data->speed;
 }
 
 void Seeker::update(const sf::Time& dt, std::vector<Object*>& new_objects)
@@ -31,9 +37,9 @@ void Seeker::movement(const sf::Time& dt)
 
     float vecSize = sqrt(difVec.x*difVec.x+ difVec.y*difVec.y);
 
-    m_Speed = difVec/vecSize;
+    m_Velocity = difVec/vecSize;
 
-	move(m_Speed * 120.0f * dt.asSeconds());
+	move(m_Velocity * m_Speed * dt.asSeconds());
 }
 
 bool Seeker::Collision(const Collidable* other, std::vector<Object*>& new_objects)
@@ -41,7 +47,7 @@ bool Seeker::Collision(const Collidable* other, std::vector<Object*>& new_object
 	if (Enemy::Collision(other, new_objects))
 		return true;
 
-    if (other->m_Tag & Collision::Player)
+    if (other->getTag() & Collision::Player)
 	{
 		m_Dead = true;
 		return true;

@@ -1,0 +1,47 @@
+{
+    "Bomb": {
+        "speed": 120.0
+    },
+
+    "Boss": {
+        "hp": 9,
+        "speed1": 120,
+        "speed2": 180
+    },
+
+    "Player": {
+        "fireRate": 0.4,
+        "hp": 5,
+        "speed": 150
+    },
+
+    "PowerUp": {
+        "lifeTime": 10
+    },
+
+    "Projectile": {
+        "Enemy": {
+            "speed": 150
+        },
+        "Player": {
+            "speed": 250
+        }
+    },
+
+    "Seeker": {
+        "hp": 2,
+        "speed": 120
+    },
+
+    "Star" : {
+        "greenSpeed" :  -6,
+        "blueSpeed" :  -10,
+        "redSpeed" :   -14,
+        "scale" :  0.0625
+    },
+
+    "UFO": {
+        "hp": 1,
+        "speed": 75
+    }
+}

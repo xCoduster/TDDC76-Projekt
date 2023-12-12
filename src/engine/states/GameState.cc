@@ -110,7 +110,7 @@ void GameState::handle(sf::Event event)
 			m_state = State::Pause;					// Byt skärm till pausemenyn
 
 		if (event.key.code == sf::Keyboard::G)
-			player->m_godMode = !player->m_godMode;
+			player->setgodMode();
 
 		if (m_gameOver)
 		{

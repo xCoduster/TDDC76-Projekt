@@ -1,17 +1,20 @@
 #include "Player.h"
 
-#include "Projectile.h"
+#include "PlayerProjectile.h"
+#include "Lazer.h"
+#include "Missile.h"
 
 #include "engine/resource/AudioManager.h"
+#include "engine/resource/DataManager.h"
 
 #include "util/Util.h"
+#include "util/Constants.h"
 
-#include <iostream>
 
 Player::Player()
-	: MovingObject{}, active_powerUp { false }, m_t_lazer{}, m_t_powerUp{},
-	m_t_invincibility{}, m_godMode{ false }, m_pickUpSound{}, 
-	m_laserSound{}, m_hurtSound{}
+	: MovingObject{}, active_tripleshot { false }, active_missile{ false }, m_t_lazer{}, m_t_tripleshot{},
+	m_t_invincibility{}, m_godMode{ false }, m_pickUpSound{}, m_t_missile{},  
+	m_laserSound{}, m_hurtSound{}, m_fireRate{}
 {
 	AudioManager& audioMgr{ AudioManager::instance() };
 	m_hurtSound.setBuffer(*audioMgr.load("res/audio/hurt.wav"));
@@ -22,19 +25,28 @@ Player::Player()
 	initialize("res/player.png");
 
 	sf::Vector2u texture_size { m_Texture.getSize() };
-	m_Sprite.setPosition(texture_size.x, 480 / 2);
+	m_Sprite.setPosition(texture_size.x, screenHeight / 2);
 
 	m_Tag = Collision::Player;
 
-	m_Hitpoints = 5;
+	DataManager& dataMgr{ DataManager::instance() };
+	PlayerData* data{ dynamic_cast<PlayerData*>(dataMgr.getData(Data::Type::Player)) };
+
+	m_fireRate = data->fireRate;
+	m_Hitpoints = data->hp;
+	m_Speed = data->speed;
 }
 
 void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
-	m_t_powerUp += dt;
+	m_t_tripleshot += dt;
+	m_t_missile +=dt;
 
-	if (m_t_powerUp > sf::seconds(10))
-		active_powerUp = false;
+	if (m_t_tripleshot > sf::seconds(10))
+		active_tripleshot = false;
+
+	if (m_t_missile > sf::seconds(10))
+		active_missile = false;
 
 	if (m_t_invincibility >= sf::seconds(0.0f))
 		m_t_invincibility -= dt;
@@ -53,38 +65,38 @@ void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 
 void Player::movement(const sf::Time& dt)
 {
-	m_Speed.x = 0.0f;
-	m_Speed.y = 0.0f;
+	m_Velocity.x = 0.0f;
+	m_Velocity.y = 0.0f;
 
 	sf::Vector2f old_position{ m_Sprite.getPosition() };
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		m_Speed.x = -1.0f;
+		m_Velocity.x = -1.0f;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		m_Speed.x = 1.0f;
+		m_Velocity.x = 1.0f;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		m_Speed.y = -1.0f;
+		m_Velocity.y = -1.0f;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		m_Speed.y = 1.0f;
+		m_Velocity.y = 1.0f;
 
-	if (m_Speed.x != 0.0f || m_Speed.y != 0.0f)
+	if (m_Velocity.x != 0.0f || m_Velocity.y != 0.0f)
 	{
-		if (m_Speed.x != 0.0f && m_Speed.y != 0.0f)
-			m_Speed *= 0.70710678f;
+		if (m_Velocity.x != 0.0f && m_Velocity.y != 0.0f)
+			m_Velocity /= root2;
 
-		move(m_Speed * 150.0f * dt.asSeconds());
+		move(m_Velocity * m_Speed * dt.asSeconds());
 	}
 
 	sf::Vector2f position{ m_Sprite.getPosition() };
 	sf::FloatRect boundingBox{ m_Sprite.getGlobalBounds() };
 
-	if (position.x - boundingBox.width / 2 < 0 || position.x + boundingBox.width / 2 > 640)
+	if (position.x - boundingBox.width / 2 < 0 || position.x + boundingBox.width / 2 > screenWidth)
 		position.x = old_position.x;
 
-	if (position.y - boundingBox.height / 2 < 0 || position.y + boundingBox.height / 2 > 480)
+	if (position.y - boundingBox.height / 2 < 0 || position.y + boundingBox.height / 2 > screenHeight)
 		position.y = old_position.y;
 
 	m_Sprite.setPosition(position);
@@ -95,16 +107,33 @@ bool Player::Collision(const Collidable* other, std::vector<Object*>& new_object
 	if (m_Hitpoints <= 0)
 		return false;
 
-	if (other->m_Tag & Collision::PowerUp)
+	if (other->getTag() & Collision::PowerUp)
 	{
-		active_powerUp = true;
-		m_t_powerUp = sf::seconds(0);
+		active_tripleshot = true;
+		m_t_tripleshot = sf::seconds(0);
 		m_pickUpSound.play();
 
 		return true;
 	}
 
-	if (other->m_Tag & (Collision::Explosion | Collision::Enemy | Collision::EnemyProj))
+	if (other->getTag() & Collision::HpUp)
+	{
+		m_Hitpoints += 1;
+		m_pickUpSound.play();
+
+		return true;
+	}
+
+	if (other->getTag() & Collision::MissileUp)
+	{
+		active_missile = true;
+		m_t_missile = sf::seconds(0);
+		m_pickUpSound.play();
+
+		return true;
+	}
+
+	if (other->getTag() & (Collision::Explosion | Collision::Enemy | Collision::EnemyProj))
 	{
 		hurt();
 		return true;
@@ -115,23 +144,43 @@ bool Player::Collision(const Collidable* other, std::vector<Object*>& new_object
 
 void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_t_lazer > sf::seconds(0.4f))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_t_lazer.asSeconds() > m_fireRate)
 	{
 		m_t_lazer = sf::seconds(0);
-		if(active_powerUp == true)
+
+		if(active_tripleshot == true && active_missile == true)
 		{
 			sf::Vector2f lazer_pos = m_Sprite.getPosition();
 			lazer_pos.y += 60.f;
 			for(int i { 0 }; i < 3; i++)
 			{
 				lazer_pos.y -= 30.f;
-				Projectile* lazer{ new Projectile(lazer_pos)};
+				Missile* rocket{ new Missile(lazer_pos)};
+				new_objects.push_back(rocket);
+			}
+		}
+
+		else if(active_tripleshot == true && active_missile == false)
+		{
+			sf::Vector2f lazer_pos = m_Sprite.getPosition();
+			lazer_pos.y += 60.f;
+			for(int i { 0 }; i < 3; i++)
+			{
+				lazer_pos.y -= 30.f;
+				Lazer* lazer{ new Lazer(lazer_pos)};
 				new_objects.push_back(lazer);
 			}
 		}
+
+		else if(active_missile == true && active_tripleshot == false)
+		{
+			Missile* rocket{ new Missile(m_Sprite.getPosition())};
+			new_objects.push_back(rocket);
+		}
+
 		else
 		{	
-			Projectile* lazer{ new Projectile(m_Sprite.getPosition()) };
+			Lazer* lazer{ new Lazer(m_Sprite.getPosition()) };
 			new_objects.push_back(lazer);
 		}
 

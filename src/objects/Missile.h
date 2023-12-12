@@ -1,15 +1,14 @@
 #pragma once
 
-#include "Collidable.h"
+#include "PlayerProjectile.h"
+#include "Explosion.h"
 
-class PowerUp : public Collidable
+class Missile : public PlayerProjectile
 {
 public:
-    PowerUp(sf::Vector2f cord, int type);
+    Missile(sf::Vector2f cord);
+
     virtual void update(const sf::Time& dt, std::vector<Object*>& new_objects) override;
     virtual bool Collision(const Collidable* other, std::vector<Object*>& new_objects) override;
-
-private:
-    sf::Time lifeTime;
-    float life;
+    virtual void movement(const sf::Time& dt) override;
 };

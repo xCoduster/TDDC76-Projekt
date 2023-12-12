@@ -5,7 +5,7 @@
 class PowerUp : public Collidable
 {
 public:
-    PowerUp(sf::Vector2f cord);
+    PowerUp(sf::Vector2f cord, int type);
     virtual void update(const sf::Time& dt, std::vector<Object*>& new_objects) override;
     virtual bool Collision(const Collidable* other, std::vector<Object*>& new_objects) override;
 

@@ -109,6 +109,14 @@ bool Player::Collision(const Collidable* other, std::vector<Object*>& new_object
 		return true;
 	}
 
+	if (other->getTag() & Collision::HpUp)
+	{
+		m_Hitpoints += 1;
+		m_pickUpSound.play();
+
+		return true;
+	}
+
 	if (other->getTag() & (Collision::Explosion | Collision::Enemy | Collision::EnemyProj))
 	{
 		hurt();

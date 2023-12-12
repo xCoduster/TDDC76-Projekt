@@ -1,7 +1,7 @@
 #pragma once
 
 #include "PlayerProjectile.h"
-#include "Explosion.h"
+#include "objects/Explosion.h"
 
 class Missile : public PlayerProjectile
 {

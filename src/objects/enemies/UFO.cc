@@ -3,7 +3,7 @@
 #include "engine/resource/AudioManager.h"
 
 #include "objects/EnemyProjectile.h"
-#include "objects/PowerUp.h"
+#include "objects/powerups/PowerUp.h"
 
 #include "util/Util.h"
 #include "util/Constants.h"

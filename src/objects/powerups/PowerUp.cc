@@ -4,25 +4,9 @@
 
 #include "engine/resource/DataManager.h"
 
-PowerUp::PowerUp(sf::Vector2f cord, int type)
+PowerUp::PowerUp(sf::Vector2f cord)
     : Collidable{}, lifeTime{}, life{}
 {
-    if ( type == 1 )
-    {
-        initialize("res/powerUpTripleShot.png");
-        m_Tag = Collision::PowerUp;
-    }
-    if ( type == 2 )
-    {
-        initialize("res/hpUp.png");
-        m_Tag = Collision::HpUp;
-    }
-    if ( type == 3 )
-    {
-        initialize("res/powerUpMissile.png");
-        m_Tag = Collision::MissileUp;
-    }
-
     m_Sprite.setPosition(cord.x, cord.y);
 
     DataManager& dataMgr{ DataManager::instance() };

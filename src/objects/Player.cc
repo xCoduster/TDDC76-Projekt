@@ -1,8 +1,8 @@
 #include "Player.h"
 
-#include "PlayerProjectile.h"
-#include "Lazer.h"
-#include "Missile.h"
+#include "playerprojectiles/PlayerProjectile.h"
+#include "playerprojectiles/Lazer.h"
+#include "playerprojectiles/Missile.h"
 
 #include "engine/resource/AudioManager.h"
 #include "engine/resource/DataManager.h"

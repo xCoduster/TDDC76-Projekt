@@ -1,7 +1,9 @@
 #include "Enemy.h"
 
 #include "engine/resource/AudioManager.h"
-#include "objects/PowerUp.h"
+#include "objects/powerups/TripleShot.h"
+#include "objects/powerups/HpUp.h"
+#include "objects/powerups/MissileUp.h"
 
 #include "util/Util.h"
 
@@ -26,7 +28,15 @@ void Enemy::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 			m_Sprite.setColor(sf::Color(0, 0, 0, 0));
 
 			if (random(2, 1) == 0)
-				new_objects.push_back(new PowerUp{ m_Sprite.getPosition() ,  random(1, 3)});
+			{
+				int powerUpType = random(1, 3);
+				if (powerUpType == 1)
+					new_objects.push_back(new TripleShot{ m_Sprite.getPosition()});
+				else if (powerUpType == 2)
+				 	new_objects.push_back(new HpUp{ m_Sprite.getPosition()});
+				else if (powerUpType == 3)
+				 	new_objects.push_back(new MissileUp{ m_Sprite.getPosition()});
+			}
 		}
 		else
 		{

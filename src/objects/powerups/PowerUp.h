@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Collidable.h"
+#include "objects/Collidable.h"
 
 class PowerUp : public Collidable
 {
@@ -11,4 +11,5 @@ public:
 
 private:
     sf::Time lifeTime;
+    float life;
 };

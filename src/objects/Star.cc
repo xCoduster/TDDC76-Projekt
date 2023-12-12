@@ -1,4 +1,6 @@
 #include "Star.h"
+#include "util/Constants.h"
+#include "engine/resource/DataManager.h"
 
 #include <cstdlib>
 
@@ -7,12 +9,20 @@ Star::Star()
 {
 	initialize("res/star.png");
 
-	m_Sprite.setScale(0.1f ,0.1f);
+	DataManager& dataMgr { DataManager::instance() };
+	StarData* data{ dynamic_cast<StarData*>(dataMgr.getData(Data::Type::Star)) };
+
+	greenSpeed = data -> greenSpeed;
+	redSpeed = data -> redSpeed;
+	blueSpeed = data -> blueSpeed;
+
+	float scale { data -> scale };
+	m_Sprite.setScale( scale, scale);
 	
 	starAllocation();
 
-	float X = rand() % 640;
-	float Y = rand() % 480;
+	float X = rand() % screenWidth;
+	float Y = rand() % screenHeight;
 
 	m_Sprite.setPosition( X , Y);
 
@@ -20,7 +30,7 @@ Star::Star()
 
 void Star::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
-    move(m_Speed * 120.0f * dt.asSeconds());
+    move(m_Speed * dt.asSeconds());
 	sf::Vector2f position{ m_Sprite.getPosition() };
 	if (position.x < 0)
 		starAllocation();
@@ -28,23 +38,23 @@ void Star::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 
 void Star::starAllocation()
 {
-	float X = 642.0f;
-	float Y = rand() % 480;
+	float X = screenWidth;
+	float Y = rand() % screenHeight;
 	
 	int type = std::rand() % 3;
 	switch(type)
 	{
 		case 0:
-			m_Speed.x = -0.05f;
-			m_Color = sf::Color(108,108,255,255);
+			m_Speed.x = blueSpeed;
+			m_Color = starBlue;
 			break;
 		case 1:
-			m_Speed.x = -0.08f;
-			m_Color = sf::Color(158,255,158,255);
+			m_Speed.x = greenSpeed;
+			m_Color = starGreen;
 			break;
 		case 2:
-			m_Speed.x = -0.12f;
-			m_Color = sf::Color(255,200,200,255);
+			m_Speed.x = redSpeed;
+			m_Color = starRed;
 			break;
 
 	}

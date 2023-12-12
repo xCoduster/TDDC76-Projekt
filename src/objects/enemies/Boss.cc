@@ -1,29 +1,34 @@
 #include "Boss.h"
 
 #include "engine/resource/AudioManager.h"
+#include "engine/resource/DataManager.h"
 
 #include "objects/EnemyProjectile.h"
 
 #include "util/Util.h"
+#include "util/Constants.h"
 #include <cmath>
 
-#define MAX_HP 9
-
 Boss::Boss()
-	: Enemy{}, m_soundTimer{}, angle{ 0 }, m_t_lazer{}, phi{}
+	: Enemy{}, angle{ 0 }, m_laserTimer{}, m_t_lazer{}, phi{}, fire_rate{}, bossPhase{ BossPhase::firstPhase }
 {
 	initialize("res/boss.png");
 	
 	m_Sprite.setScale(3.0f, 3.0f);
-	m_Sprite.setPosition(640, 480 / 2);
+	m_Sprite.setPosition(screenWidth, screenHeight/ 2);
 
 	m_Tag = Collision::Enemy;
 
-	m_Hitpoints = MAX_HP;
+	m_Velocity.x = -1.0f;
+	m_Velocity.y = 0.0f;
 
-	m_Speed.x = -1.0f;
-	m_Speed.y = 0.0f;
-	bossPhase = BossPhase::firstPhase; 
+	DataManager& dataMgr { DataManager::instance() };
+	BossData* data{ dynamic_cast<BossData*>(dataMgr.getData(Data::Type::Boss)) };
+
+	MAX_HP = data->hp;
+	m_Hitpoints = MAX_HP;
+	m_speed1 = data->speed1;
+	m_speed2 = data->speed2;
 }
 
 void Boss::update(const sf::Time& dt, std::vector<Object*>& new_objects)
@@ -39,20 +44,20 @@ void Boss::movement(const sf::Time& dt)
 	switch(bossPhase)
 	{
 		case BossPhase::firstPhase:
-			move(m_Speed * 120.0f * dt.asSeconds());
+			move(m_Velocity * m_speed1 * dt.asSeconds());
 			break;
 		case BossPhase::secondPhase:
-			m_Speed.x = 0.0f;
-			m_Speed.y = cos(angle);
-			angle += 0.0157f;
-			move(m_Speed * 180.0f * dt.asSeconds());
+			m_Velocity.x = 0.0f;
+			m_Velocity.y = cos(angle);
+			angle += pi / 2 * dt.asSeconds();
+			move(m_Velocity * m_speed2 * dt.asSeconds());
 			break;
 		case BossPhase::thirdPhase:
-			sf::Vector2f center {320.0f, 240.0f};
+			sf::Vector2f center {screenWidth / 2, screenHeight / 2};
 		    sf::Vector2f difVec =  center - m_Sprite.getPosition();
 			float vecSize = sqrt(difVec.x*difVec.x+ difVec.y*difVec.y);
-			m_Speed = difVec/vecSize;
-			move(m_Speed * 120.0f * dt.asSeconds());
+			m_Velocity = difVec/vecSize;
+			move(m_Velocity * m_speed1 * dt.asSeconds());
 			break;
 	}
 }
@@ -62,7 +67,7 @@ void Boss::set_phase()
 	switch(bossPhase)
 	{
 		case BossPhase::firstPhase:
-			if (m_Sprite.getPosition().x < 550)
+			if (m_Sprite.getPosition().x < screenWidth * 0.85f)
 			{
 				fire_rate = 0.6f;
 				bossPhase = BossPhase::secondPhase;
@@ -104,18 +109,18 @@ void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 		sf::Vector2f lazer_pos{ m_Sprite.getPosition() };
 		sf::Vector2u texture_size{ m_Texture.getSize() };
 		float radius = texture_size.x / 2.f;
-		float pi = 3.14f;
 
 		switch(bossPhase)
 		{
 			case BossPhase::secondPhase:
 			{
 				lazer_pos.y += 60.f;
-				for(int i{ 0 }; i < 3; i++)
+				for(int i { 0 }; i < 3; i++)
 				{
 					lazer_pos.y -= 30.f;
 					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos, 5.f * pi / 6.f + i * pi / 6.f) };
 					new_objects.push_back(lazer);
+					lazer_pos.y -= 30.f;
 				}
 			}
 				break;
@@ -123,8 +128,8 @@ void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 			{
 				for(int i{ 0 }; i < 4; i++)
 				{
-					sf::Vector2f enhetscirkeln{ 3.f * radius * std::cos(phi + (i * pi / 2.f)), 3.f * radius * std::sin(phi + (i * pi / 2.f)) };
-					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos + enhetscirkeln, phi + (i * pi / 2.f)) };
+					sf::Vector2f bossCircumference{ 3.f * radius * std::cos(phi + (i * pi / 2.f)), 3.f * radius * std::sin(phi + (i * pi / 2.f)) };
+					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos + bossCircumference, phi + (i * pi / 2.f)) };
 					new_objects.push_back(lazer);
 				}
 				phi += 2 * pi * dt.asSeconds();
@@ -134,8 +139,8 @@ void Boss::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 			{
 				for(int i{ 0 }; i < 4; i++)
 				{
-					sf::Vector2f enhetscirkeln{ 3.f * radius * std::cos(phi + (i * pi / 2.f)), 3.f * radius * std::sin(phi + (i * pi / 2.f)) };
-					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos + enhetscirkeln, phi + (i * pi / 2.f)) };
+					sf::Vector2f bossCircumference{ 3.f * radius * std::cos(phi + (i * pi / 2.f)), 3.f * radius * std::sin(phi + (i * pi / 2.f)) };
+					EnemyProjectile* lazer{ new EnemyProjectile(lazer_pos + bossCircumference, phi + (i * pi / 2.f)) };
 					new_objects.push_back(lazer);
 				}
 				phi++;

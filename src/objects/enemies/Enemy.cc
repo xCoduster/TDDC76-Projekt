@@ -1,7 +1,9 @@
 #include "Enemy.h"
 
 #include "engine/resource/AudioManager.h"
-#include "objects/PowerUp.h"
+#include "objects/powerups/TripleShot.h"
+#include "objects/powerups/HpUp.h"
+#include "objects/powerups/MissileUp.h"
 
 #include "util/Util.h"
 
@@ -25,8 +27,16 @@ void Enemy::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 			m_deathSound.play();
 			m_Sprite.setColor(sf::Color(0, 0, 0, 0));
 
-			if (random(1, 10) == 1)
-				new_objects.push_back(new PowerUp{ m_Sprite.getPosition() });
+			if (random(2, 1) == 0)
+			{
+				int powerUpType = random(1, 3);
+				if (powerUpType == 1)
+					new_objects.push_back(new TripleShot{ m_Sprite.getPosition()});
+				else if (powerUpType == 2)
+				 	new_objects.push_back(new HpUp{ m_Sprite.getPosition()});
+				else if (powerUpType == 3)
+				 	new_objects.push_back(new MissileUp{ m_Sprite.getPosition()});
+			}
 		}
 		else
 		{
@@ -47,19 +57,19 @@ void Enemy::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 
 bool Enemy::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
-	if (other->m_Tag & Collision::PlayerProj)
+	if (other->getTag() & Collision::PlayerProj)
 	{
 		m_Hitpoints -= 1;
 		return true;
 	}
 
-	if (other->m_Tag & Collision::Explosion)
+	if (other->getTag() & Collision::Explosion)
 	{
 		m_Hitpoints -= 1;
 		return true;
 	}
 
-	if (other->m_Tag == m_Tag)
+	if (other->getTag() == m_Tag)
 	{
 		if (m_Sprite.getPosition().y > other->getPosition().y)
 		{

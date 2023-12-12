@@ -3,9 +3,12 @@
 #include "engine/resource/AudioManager.h"
 
 #include "objects/EnemyProjectile.h"
-#include "objects/PowerUp.h"
+#include "objects/powerups/PowerUp.h"
 
 #include "util/Util.h"
+#include "util/Constants.h"
+
+#include "engine/resource/DataManager.h"
 
 #include <cmath>
 
@@ -23,7 +26,11 @@ UFO::UFO()
 
 	m_Tag |= Collision::UFO;
 
-	m_Hitpoints = 1;
+	DataManager& dataMgr{ DataManager::instance() };
+	EnemyData* data{ dynamic_cast<EnemyData*>(dataMgr.getData(Data::Type::UFO)) };
+
+	m_Hitpoints = data->hp;
+	m_Speed = data->speed;
 }
 
 void UFO::update(const sf::Time& dt, std::vector<Object*>& new_objects)
@@ -40,10 +47,10 @@ void UFO::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 
 void UFO::movement(const sf::Time& dt)
 {
-	m_Speed.x = -1.0f;
-	m_Speed.y = 1.f * sin(m_Sprite.getPosition().x / 10);
+	m_Velocity.x = -1.0f;
+	m_Velocity.y = 1.f * sin(m_Sprite.getPosition().x / 10);
 
-	move(m_Speed * 75.0f * dt.asSeconds());
+	move(m_Velocity * m_Speed * dt.asSeconds());
 }
 
 bool UFO::Collision(const Collidable* other, std::vector<Object*>& new_objects)
@@ -63,11 +70,8 @@ void UFO::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 		if (random(1, 3) != 1)
 			return;
 
-		EnemyProjectile* laser{ new EnemyProjectile(sf::Vector2f{ m_Sprite.getPosition().x - 64.f, m_Sprite.getPosition().y }, 3.14f) };
+		EnemyProjectile* laser{ new EnemyProjectile(sf::Vector2f{ m_Sprite.getPosition().x - 64.f, m_Sprite.getPosition().y }, pi) };
 		new_objects.push_back(laser);
-
-		//m_laserSound.setPitch(1.0f + random(0, 15) / 10.0f);
-		//m_laserSound.play();
 	}
 
 	m_laserTimer += dt;

@@ -21,9 +21,10 @@ public:
 
 protected:
     MovingObject()
-        : Collidable{}, m_Speed{}, m_Hitpoints{ 1 }
+        : Collidable{}, m_Velocity{}, m_Speed{ 0.f }, m_Hitpoints{ 1 }
     {}
 
-    sf::Vector2f m_Speed;
+    sf::Vector2f m_Velocity;
+    float m_Speed;
     int m_Hitpoints;
 };

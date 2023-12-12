@@ -35,6 +35,6 @@ namespace Collision
         EnemyProj = 1 << 7,
         Explosion = 1 << 8,
         HpUp = 1 << 9,
-        missile = 1 << 10
+        Missile = 1 << 10
     };
 }

@@ -25,11 +25,8 @@ void Enemy::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 			m_deathSound.play();
 			m_Sprite.setColor(sf::Color(0, 0, 0, 0));
 
-			if (random(1, 2) == 1)
-			{
-
-				new_objects.push_back(new PowerUp{ m_Sprite.getPosition() , random(1, 2)});
-			}
+			if (random(1, 10) == 1)
+				new_objects.push_back(new PowerUp{ m_Sprite.getPosition() ,  random(1, 3)});
 		}
 		else
 		{

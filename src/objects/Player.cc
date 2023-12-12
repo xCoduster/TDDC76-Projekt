@@ -1,6 +1,7 @@
 #include "Player.h"
 
 #include "Projectile.h"
+#include "Missile.h"
 
 #include "engine/resource/AudioManager.h"
 #include "engine/resource/DataManager.h"
@@ -9,8 +10,8 @@
 #include "util/Constants.h"
 
 Player::Player()
-	: MovingObject{}, active_powerUp { false }, m_t_lazer{}, m_t_powerUp{},
-	m_t_invincibility{}, m_godMode{ false }, m_pickUpSound{}, 
+	: MovingObject{}, active_tripleshot { false }, active_missile{ false }, m_t_lazer{}, m_t_tripleshot{},
+	m_t_invincibility{}, m_godMode{ false }, m_pickUpSound{}, m_t_missile{},  
 	m_laserSound{}, m_hurtSound{}, m_fireRate{}
 {
 	AudioManager& audioMgr{ AudioManager::instance() };
@@ -36,10 +37,14 @@ Player::Player()
 
 void Player::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
-	m_t_powerUp += dt;
+	m_t_tripleshot += dt;
+	m_t_missile +=dt;
 
-	if (m_t_powerUp > sf::seconds(10))
-		active_powerUp = false;
+	if (m_t_tripleshot > sf::seconds(10))
+		active_tripleshot = false;
+
+	if (m_t_missile > sf::seconds(10))
+		active_missile = false;
 
 	if (m_t_invincibility >= sf::seconds(0.0f))
 		m_t_invincibility -= dt;
@@ -102,8 +107,8 @@ bool Player::Collision(const Collidable* other, std::vector<Object*>& new_object
 
 	if (other->getTag() & Collision::PowerUp)
 	{
-		active_powerUp = true;
-		m_t_powerUp = sf::seconds(0);
+		active_tripleshot = true;
+		m_t_tripleshot = sf::seconds(0);
 		m_pickUpSound.play();
 
 		return true;
@@ -112,6 +117,15 @@ bool Player::Collision(const Collidable* other, std::vector<Object*>& new_object
 	if (other->getTag() & Collision::HpUp)
 	{
 		m_Hitpoints += 1;
+		m_pickUpSound.play();
+
+		return true;
+	}
+
+	if (other->getTag() & Collision::Missile)
+	{
+		active_missile = true;
+		m_t_missile = sf::seconds(0);
 		m_pickUpSound.play();
 
 		return true;
@@ -131,7 +145,20 @@ void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_t_lazer.asSeconds() > m_fireRate)
 	{
 		m_t_lazer = sf::seconds(0);
-		if(active_powerUp == true)
+
+		if(active_tripleshot == true && active_missile == true)
+		{
+			sf::Vector2f lazer_pos = m_Sprite.getPosition();
+			lazer_pos.y += 60.f;
+			for(int i { 0 }; i < 3; i++)
+			{
+				lazer_pos.y -= 30.f;
+				Missile* rocket{ new Missile(lazer_pos)};
+				new_objects.push_back(rocket);
+			}
+		}
+
+		else if(active_tripleshot == true && active_missile == false)
 		{
 			sf::Vector2f lazer_pos = m_Sprite.getPosition();
 			lazer_pos.y += 60.f;
@@ -142,6 +169,13 @@ void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 				new_objects.push_back(lazer);
 			}
 		}
+
+		else if(active_missile == true && active_tripleshot == false)
+		{
+			Missile* rocket{ new Missile(m_Sprite.getPosition())};
+			new_objects.push_back(rocket);
+		}
+
 		else
 		{	
 			Projectile* lazer{ new Projectile(m_Sprite.getPosition()) };

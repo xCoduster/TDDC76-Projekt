@@ -19,8 +19,8 @@ PowerUp::PowerUp(sf::Vector2f cord, int type)
     }
     if ( type == 3 )
     {
-        initialize("res/missile.png");
-        m_Tag = Collision::missile;
+        initialize("res/powerUpMissile.png");
+        m_Tag = Collision::Missile;
     }
 
     m_Sprite.setPosition(cord.x, cord.y);

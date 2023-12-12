@@ -22,13 +22,15 @@ public:
     }
 
 private:
-    bool active_powerUp;
+    bool active_tripleshot;
+    bool active_missile;
     bool m_godMode;
 
     float m_fireRate;
 
     sf::Time m_t_lazer;
-    sf::Time m_t_powerUp;
+    sf::Time m_t_tripleshot;
+    sf::Time m_t_missile;
     sf::Time m_t_invincibility;
 
     sf::Sound m_hurtSound;

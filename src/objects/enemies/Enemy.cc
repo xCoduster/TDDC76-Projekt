@@ -27,7 +27,7 @@ void Enemy::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 			m_deathSound.play();
 			m_Sprite.setColor(sf::Color(0, 0, 0, 0));
 
-			if (random(2, 1) == 0)
+			if (random(1, 5) == 1)
 			{
 				int powerUpType = random(1, 3);
 				if (powerUpType == 1)

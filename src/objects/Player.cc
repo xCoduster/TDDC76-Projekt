@@ -147,40 +147,40 @@ void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_t_lazer.asSeconds() > m_fireRate)
 	{
 		m_t_lazer = sf::seconds(0);
+		sf::Vector2f projectilePos = m_Sprite.getPosition();
+		projectilePos.x += 40.f;
 
 		if(active_tripleshot == true && active_missile == true)
 		{
-			sf::Vector2f lazer_pos = m_Sprite.getPosition();
-			lazer_pos.y += 30.f;
+			projectilePos.y += 30.f;
 			for(int i { 0 }; i < 3; i++)
 			{
-				Missile* rocket{ new Missile(lazer_pos)};
+				Missile* rocket{ new Missile(projectilePos)};
 				new_objects.push_back(rocket);
-				lazer_pos.y -= 30.f;
+				projectilePos.y -= 30.f;
 			}
 		}
 
 		else if(active_tripleshot == true && active_missile == false)
 		{
-			sf::Vector2f lazer_pos = m_Sprite.getPosition();
-			lazer_pos.y += 30.f;
+			projectilePos.y += 30.f;
 			for(int i { 0 }; i < 3; i++)
 			{
-				Lazer* lazer{ new Lazer(lazer_pos)};
+				Lazer* lazer{ new Lazer(projectilePos)};
 				new_objects.push_back(lazer);
-				lazer_pos.y -= 30.f;
+				projectilePos.y -= 30.f;
 			}
 		}
 
 		else if(active_missile == true && active_tripleshot == false)
 		{
-			Missile* rocket{ new Missile(m_Sprite.getPosition())};
+			Missile* rocket{ new Missile(projectilePos)};
 			new_objects.push_back(rocket);
 		}
 
 		else
 		{	
-			Lazer* lazer{ new Lazer(m_Sprite.getPosition()) };
+			Lazer* lazer{ new Lazer(projectilePos) };
 			new_objects.push_back(lazer);
 		}
 

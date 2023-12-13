@@ -12,7 +12,7 @@
 #include <string>
 
 GameState::GameState()
-	: m_spawner{ 1.0f, 5.0f }, m_nameInput{}, m_score{ 0 }, m_gameOver{ false }, m_gameOverText{}, m_textBox{}, m_font{},
+	: m_spawner{ 1.0f, 1.0f }, m_nameInput{}, m_score{ 0 }, m_gameOver{ false }, m_gameOverText{}, m_textBox{}, m_font{},
 	stars{}, new_objects{}, objects{}, m_gameBar{ nullptr }, player{ nullptr }, m_bossFight{ false }
 {
 	// Ladda in alla ljudfiler från start
@@ -180,7 +180,6 @@ void GameState::update(const sf::Time& dt)
 			if (dynamic_cast<Boss*>(objects.at(i)) != nullptr)		// Kolla om bossen är död
 			{
 				m_bossFight = false;
-				player->addHitpoints();
 			}
 
 			std::swap(objects.at(i), objects.back());

@@ -40,6 +40,8 @@ void Explosion::movement(const sf::Time& dt)
 void Explosion::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 {
     animUpdate(dt);
+    if(m_currentFrame == 1)
+        m_Tag = Collision::None;
 }
 
 bool Explosion::Collision(const Collidable* other, std::vector<Object*>& new_objects)

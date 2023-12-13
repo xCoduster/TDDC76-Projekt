@@ -63,6 +63,7 @@ TEST_CASE ("Lazer")
     bomb -> setPosition(position);
     bomb -> Collision(lazer, new_objects);
     CHECK( bomb -> isDead());
+    //kollar så bomb skaper en explotion när den dör.
     CHECK( new_objects.size() == 1);
 
     Boss* boss{ new Boss()};
@@ -119,6 +120,7 @@ TEST_CASE ("Missile")
     rocket -> Collision(seeker, new_objects);
     seeker -> Collision(rocket, new_objects);
     CHECK( rocket -> isDead() );
+    // kollar så att missilen skapar en explotion när den dör
     CHECK( new_objects.size() == 1);
     CHECK(seeker -> getHitpoints() == 1);
     seeker -> Collision(rocket, new_objects);
@@ -128,6 +130,7 @@ TEST_CASE ("Missile")
     bomb -> setPosition(position);
     bomb -> Collision(rocket, new_objects);
     CHECK( bomb -> isDead());
+    // kollar så att både missilen och bomber exploderar när de dör
     CHECK( new_objects.size() == 2);
 
     Boss* boss{ new Boss()};

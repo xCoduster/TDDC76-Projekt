@@ -8,7 +8,7 @@
 class Explosion : public AnimatedObject 
 {
 public:
-    Explosion(sf::Vector2f start_pos);
+    Explosion(const sf::Vector2f start_pos);
 
     virtual void update(const sf::Time&, std::vector<Object*>& new_objects) override;
     virtual void movement(const sf::Time& dt) override;

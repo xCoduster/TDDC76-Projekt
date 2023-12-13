@@ -4,7 +4,7 @@
 
 #include "engine/resource/DataManager.h"
 
-MissileUp::MissileUp(sf::Vector2f cord)
+MissileUp::MissileUp(const sf::Vector2f cord)
     : PowerUp{cord}
 {
     initialize("res/powerUpMissile.png");

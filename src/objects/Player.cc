@@ -151,24 +151,24 @@ void Player::blast(const sf::Time& dt, std::vector<Object*>& new_objects)
 		if(active_tripleshot == true && active_missile == true)
 		{
 			sf::Vector2f lazer_pos = m_Sprite.getPosition();
-			lazer_pos.y += 60.f;
+			lazer_pos.y += 30.f;
 			for(int i { 0 }; i < 3; i++)
 			{
-				lazer_pos.y -= 30.f;
 				Missile* rocket{ new Missile(lazer_pos)};
 				new_objects.push_back(rocket);
+				lazer_pos.y -= 30.f;
 			}
 		}
 
 		else if(active_tripleshot == true && active_missile == false)
 		{
 			sf::Vector2f lazer_pos = m_Sprite.getPosition();
-			lazer_pos.y += 60.f;
+			lazer_pos.y += 30.f;
 			for(int i { 0 }; i < 3; i++)
 			{
-				lazer_pos.y -= 30.f;
 				Lazer* lazer{ new Lazer(lazer_pos)};
 				new_objects.push_back(lazer);
+				lazer_pos.y -= 30.f;
 			}
 		}
 

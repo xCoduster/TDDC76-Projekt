@@ -7,7 +7,7 @@
 
 #include <string>
 
-Explosion::Explosion(sf::Vector2f start_pos)
+Explosion::Explosion(const sf::Vector2f start_pos)
     : AnimatedObject{}, m_explosionSound{}
 {
     m_animTimer = 0;

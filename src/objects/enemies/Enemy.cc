@@ -57,13 +57,7 @@ void Enemy::update(const sf::Time& dt, std::vector<Object*>& new_objects)
 
 bool Enemy::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {
-	if (other->getTag() & Collision::PlayerProj)
-	{
-		m_Hitpoints -= 1;
-		return true;
-	}
-
-	if (other->getTag() & Collision::Explosion)
+	if (other->getTag() & (Collision::PlayerProj | Collision::Explosion))
 	{
 		m_Hitpoints -= 1;
 		return true;

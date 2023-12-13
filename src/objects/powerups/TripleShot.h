@@ -5,5 +5,5 @@
 class TripleShot : public PowerUp
 {
 public:
-    TripleShot(sf::Vector2f cord);
+    TripleShot(const sf::Vector2f cord);
 };

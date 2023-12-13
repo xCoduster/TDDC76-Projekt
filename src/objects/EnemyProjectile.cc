@@ -3,8 +3,9 @@
 #include <cmath>
 
 #include "engine/resource/DataManager.h"
+#include "util/Constants.h"
 
-EnemyProjectile::EnemyProjectile(sf::Vector2f cord, float angle)
+EnemyProjectile::EnemyProjectile(const sf::Vector2f cord,const float angle)
     : MovingObject{}
 {
     initialize("res/plasma.png");
@@ -32,10 +33,10 @@ void EnemyProjectile::movement(const sf::Time& dt)
 
     sf::Vector2f position{ m_Sprite.getPosition() };
 
-	if (position.x < 0 || position.x > 640)
+	if (position.x < 0 || position.x > screenWidth)
         m_Dead = true;
 
-	if (position.y < 0 || position.y > 480)
+	if (position.y < 0 || position.y > screenHeight)
 		m_Dead = true;
 }
 

@@ -5,5 +5,5 @@
 class HpUp : public PowerUp
 {
 public:
-    HpUp(sf::Vector2f cord);
+    HpUp(const sf::Vector2f cord);
 };

@@ -24,11 +24,8 @@ private:
     float m_speed2;
     float fire_rate;
     float angle;
-    float phi;
-    
+    float phi;    
     int MAX_HP;
-
-
 
     enum class BossPhase
     {

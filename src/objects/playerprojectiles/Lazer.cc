@@ -2,21 +2,11 @@
 
 #include "engine/resource/DataManager.h"
 
-Lazer::Lazer(sf::Vector2f cord)
+Lazer::Lazer(const sf::Vector2f cord)
     : PlayerProjectile{cord}
 {
     initialize("res/lazer.png");
 } 
-
-void Lazer::update(const sf::Time& dt, std::vector<Object*>& new_objects)
-{
-    movement(dt);
-}
-
-void Lazer::movement(const sf::Time& dt)
-{   
-    PlayerProjectile::movement(dt);
-}
 
 bool Lazer::Collision(const Collidable* other, std::vector<Object*>& new_objects)
 {

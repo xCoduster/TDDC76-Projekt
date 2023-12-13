@@ -159,7 +159,7 @@ void GameState::update(const sf::Time& dt)
 {
 	 
 	// Hanteringen av objects inspirerades från föreläsning 8 av Christoffer Holm.
-	// T.ex. hur nya objekts läggs till och tas bort
+	// T.ex. hur nya objekts läggs till och hur objekt tas bort
 
 	for (Star* star : stars)
 		star->update(dt, new_objects);

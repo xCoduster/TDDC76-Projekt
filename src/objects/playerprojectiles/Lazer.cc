@@ -2,7 +2,7 @@
 
 #include "engine/resource/DataManager.h"
 
-Lazer::Lazer(const sf::Vector2f cord)
+Lazer::Lazer(const sf::Vector2f& cord)
     : PlayerProjectile{cord}
 {
     initialize("res/lazer.png");

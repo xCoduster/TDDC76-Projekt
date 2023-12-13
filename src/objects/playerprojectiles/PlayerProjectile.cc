@@ -3,7 +3,7 @@
 #include "engine/resource/DataManager.h"
 #include "util/Constants.h"
 
-PlayerProjectile::PlayerProjectile(const sf::Vector2f cord)
+PlayerProjectile::PlayerProjectile(const sf::Vector2f& cord)
     : MovingObject{}
 {
 

@@ -4,7 +4,7 @@
 
 #include "engine/resource/DataManager.h"
 
-HpUp::HpUp(const sf::Vector2f cord)
+HpUp::HpUp(const sf::Vector2f& cord)
     : PowerUp{cord}
 {
     initialize("res/hpUp.png");

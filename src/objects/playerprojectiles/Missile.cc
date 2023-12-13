@@ -2,7 +2,7 @@
 
 #include "engine/resource/DataManager.h"
 
-Missile::Missile(const sf::Vector2f cord)
+Missile::Missile(const sf::Vector2f& cord)
     : PlayerProjectile{cord}
 {
     initialize("res/missile.png");

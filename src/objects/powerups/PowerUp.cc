@@ -4,7 +4,7 @@
 
 #include "engine/resource/DataManager.h"
 
-PowerUp::PowerUp(const sf::Vector2f cord)
+PowerUp::PowerUp(const sf::Vector2f& cord)
     : Collidable{}, lifeTime{}, life{}
 {
     m_Sprite.setPosition(cord.x, cord.y);

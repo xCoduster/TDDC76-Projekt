@@ -10,7 +10,7 @@
 #include <cmath>
 
 Boss::Boss()
-	: Enemy{}, angle{ 0 }, m_laserTimer{}, m_t_lazer{}, phi{}, fire_rate{}, bossPhase{ BossPhase::firstPhase }
+	: Enemy{}, angle{ 0 }, m_laserTimer{}, m_t_lazer{}, phi{}, fire_rate{}, bossPhase{ BossPhase::firstPhase }, m_speed1{}, m_speed2{}, MAX_HP{}
 {
 	initialize("res/boss.png");
 	

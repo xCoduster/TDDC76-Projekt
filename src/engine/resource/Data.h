@@ -22,7 +22,8 @@ struct Data
 
 struct BossData : public Data
 {
-	BossData(const Json::Value& value) 
+	BossData(const Json::Value& value)
+	: hp{}, speed1{}, speed2{}
 	{
 		hp = value["hp"].asInt();
 		speed1 = value["speed1"].asFloat();
@@ -37,6 +38,7 @@ struct BossData : public Data
 struct EnemyData : public Data
 {
 	EnemyData(const Json::Value& value)
+	: hp{}, speed{}
 	{
 		hp = value["hp"].asInt();
 		speed = value["speed"].asFloat();
@@ -46,9 +48,11 @@ struct EnemyData : public Data
 	float speed;
 };
 
+
 struct ProjectileData : public Data
 {
 	ProjectileData(const Json::Value& value)
+	: speed{}
 	{
 		speed = value["speed"].asFloat();
 	}
@@ -59,6 +63,7 @@ struct ProjectileData : public Data
 struct PlayerData : public Data
 {
 	PlayerData(const Json::Value& value)
+	: fireRate{}, hp{}, speed{}
 	{
 		fireRate = value["fireRate"].asFloat();
 		hp = value["hp"].asInt();
@@ -73,6 +78,7 @@ struct PlayerData : public Data
 struct PowerUpData : public Data
 {
 	PowerUpData(const Json::Value& value)
+	: lifeTime{}
 	{
 		lifeTime = value["lifeTime"].asFloat();
 	}
@@ -83,6 +89,7 @@ struct PowerUpData : public Data
 struct StarData : public Data
 {
 	StarData(const Json::Value& value) 
+	: greenSpeed{}, blueSpeed{}, redSpeed{}, scale{} 
 	{
 		greenSpeed = value["greenSpeed"].asFloat();
 		blueSpeed = value["blueSpeed"].asFloat();

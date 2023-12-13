@@ -5,7 +5,7 @@
 #include <cstdlib>
 
 Star::Star()
-	: Object{}, m_Color {}, m_Speed{}
+	: Object{}, m_Color {}, m_Speed{}, greenSpeed{}, redSpeed{}, blueSpeed{}
 {
 	initialize("res/star.png");
 

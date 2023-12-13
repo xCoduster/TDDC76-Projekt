@@ -4,7 +4,7 @@
 
 #include "objects/Player.h"
 #include "objects/Star.h"
-#include "objects/GameBar.h"
+#include "ui/GameBar.h"
 
 #include "engine/Spawner.h"
 

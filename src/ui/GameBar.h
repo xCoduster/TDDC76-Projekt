@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Object.h"
-#include "Player.h"
+#include "objects/Player.h"
 #include <string>
 #include <SFML/Graphics.hpp>
 

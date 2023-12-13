@@ -6,7 +6,7 @@
 
 GameBar::GameBar(Player* player)
     : m_sprites{}, m_images{}, scoreStr{ "" }, Hp{ "" }, player_pointer{ player }, 
-    score_blue{}, score_pink{}, score{}, life_blue{}, life_pink{}, life{}, font{}
+    font{}, m_hpText{}, m_scoreText{}
 {
     TextureManager& texMgr{ TextureManager::instance() };
     m_images.push_back(*texMgr.load("res/player.png"));
@@ -17,53 +17,50 @@ GameBar::GameBar(Player* player)
     m_sprites.push_back(sprite);
 
     font.loadFromFile("res/fonts/PixeloidSansBold.ttf");
-    life.setFont(font);
-    life_pink.setFont(font);
-    life_blue.setFont(font);
 
     Hp = std::to_string(player_pointer->getHitpoints());
     
-    life.setString(Hp);
-    life.setCharacterSize(50.0f);
-    life.setFillColor(sf::Color::White);
-    life.setPosition(100.0f, 10.0f);
+    
+    for (int i { 0 }; i < 3; ++i)
+    {
+        sf::Text tmpText1 {};
+        sf::Text tmpText2 {};
+    
+        tmpText1.setFont(font);
+        tmpText1.setString(Hp);
+        tmpText1.setCharacterSize(50.0f);
+        tmpText1.setPosition(98.0f + 2.0f * i, 8.0f + 2.0f * i);
 
-    life_pink.setString(Hp);
-    life_pink.setCharacterSize(50.0f);
-    life_pink.setFillColor(sf::Color::Magenta);
-    life_pink.setPosition(98.0f, 8.0f);
+        tmpText2.setFont(font);
+        tmpText2.setString("0000");
+        tmpText2.setCharacterSize(50.0f);
+        tmpText2.setPosition(448.0f + 2.0f * i, 8.0f + 2.0f * i);
 
-    life_blue.setString(Hp);
-    life_blue.setCharacterSize(50.0f);
-    life_blue.setFillColor(sf::Color::Cyan);
-    life_blue.setPosition(102.0f, 12.0f);
+        m_hpText.push_back(tmpText1);
+        m_scoreText.push_back(tmpText2);
+        
+    }
 
-    score.setFont(font);
-    score_pink.setFont(font);
-    score_blue.setFont(font);
+    
+    m_scoreText.at(2).setFillColor(sf::Color::Cyan);
+    m_scoreText.at(1).setFillColor(sf::Color::White);
+    m_scoreText.at(0).setFillColor(sf::Color::Magenta);
+    
+    m_hpText.at(2).setFillColor(sf::Color::Cyan);
+    m_hpText.at(1).setFillColor(sf::Color::White);
+    m_hpText.at(0).setFillColor(sf::Color::Magenta);
 
-    score.setString("0000");
-    score.setCharacterSize(50.0f);
-    score.setFillColor(sf::Color::White);
-    score.setPosition(450.0f, 10.0f);
-
-    score_pink.setString("0000");
-    score_pink.setCharacterSize(50.0f);
-    score_pink.setFillColor(sf::Color::Magenta);
-    score_pink.setPosition(448.0f, 8.0f);
-
-    score_blue.setString("0000");
-    score_blue.setCharacterSize(50.0f);
-    score_blue.setFillColor(sf::Color::Cyan);
-    score_blue.setPosition(452.0f, 12.0f);    
+    std::swap(m_hpText.at(1), m_hpText.back());
+    std::swap(m_scoreText.at(1), m_scoreText.back());
+     
 }
 
 void GameBar::update()
 {
     Hp = std::to_string(player_pointer->getHitpoints());
-    life.setString(Hp);
-    life_pink.setString(Hp); 
-    life_blue.setString(Hp);  
+    m_hpText.at(0).setString(Hp);
+    m_hpText.at(1).setString(Hp);
+    m_hpText.at(2).setString(Hp);
 }
 
 void GameBar::showScore(int score)
@@ -81,7 +78,7 @@ void GameBar::showScore(int score)
     }
 
     temp += scoreStr;
-    this->score.setString(temp);
-    score_pink.setString(temp);
-    score_blue.setString(temp);
+    m_scoreText.at(0).setString(temp);
+    m_scoreText.at(1).setString(temp);
+    m_scoreText.at(2).setString(temp);
 }

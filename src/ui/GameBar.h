@@ -18,15 +18,13 @@ public:
 private:
     std::vector<sf::Sprite> m_sprites;
     std::vector<sf::Texture> m_images;
+    
+    std::vector<sf::Text> m_hpText;
+    std::vector<sf::Text> m_scoreText;
+
     sf::Font font;
 
-    sf::Text life;
-    sf::Text life_pink;
-    sf::Text life_blue;
-
-    sf::Text score;
-    sf::Text score_pink;
-    sf::Text score_blue;
+   
     
     Player* player_pointer;
 
@@ -38,12 +36,11 @@ private:
         for (std::size_t i { 0 }; i < m_sprites.size(); ++i)
             target.draw(m_sprites.at(i), states);
         
-        target.draw(life_pink, states);
-        target.draw(life_blue, states);
-        target.draw(life, states);
-
-        target.draw(score_pink, states);
-        target.draw(score_blue, states);
-        target.draw(score, states);
+        for (std::size_t i { 0 }; i < m_hpText.size(); ++i)
+        {
+            target.draw(m_hpText.at(i), states);
+            target.draw(m_scoreText.at(i), states);
+        }
+    
     }
 };

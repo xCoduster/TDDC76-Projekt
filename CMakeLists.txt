@@ -17,7 +17,7 @@ foreach(i ${SFML_MODULES})
 	list(APPEND SFML_LIBRARIES "sfml-${i}")
 endforeach(i)
 
-find_library(LIBJSONCPP jsoncpp "/dependencies/jsoncpp/")
+find_library(LIBJSONCPP jsoncpp "${PROJECT_SOURCE_DIR}/dependencies/jsoncpp/")
 
 # Ange källfiler
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS "src/*.h" "src/*.cc")
